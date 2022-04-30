@@ -5,7 +5,6 @@ class Entity:
     """Абстрактный класс сущности."""
 
     def __init__(self, name: str, location: Vector, size: Size) -> None:
-        """Конструктор класса сущности."""
         self.name = name
         self.location = location
         self.size = size

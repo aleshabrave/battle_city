@@ -1,47 +1,38 @@
-from app.domain.entities.details.body import Body
-from app.domain.entities.details.bullet import Bullet
-from app.domain.entities.details.gun import Gun
+from app.domain.data import Direction, Size, Vector
+from app.domain.entities.details.bullet import Bullet, BulletSchema
 
-from ..data.enums import Direction
-from .interfaces import LivingEntity
+from .interfaces import Entity, Living, Moveable
 
 DEFAULT_TANK_SPEED = 2
 DEFAULT_TANK_HEALTH_POINTS = 3
 
 
-class Tank(LivingEntity):
+class Tank(Moveable, Living, Entity):
     """Класс сущности танк."""
 
     def __init__(
         self,
         name: str,
-        gun: Gun,
-        body: Body,
+        location: Vector,
+        size: Size,
+        speed: int,
+        direction: Direction,
         health_points: int,
+        bullet_schema: BulletSchema,
     ) -> None:
-        """Конструктор класса Tank."""
-        super().__init__(name, body.location, body.size, health_points)
-        self._gun = gun
-        self._body = body
-
-    def update_location(self) -> None:
-        """Обновить позиции основы и пушки танка"""
-        self._body.update_location()
-        self._gun.update_location()
-
-    def change_speed(self, added_value: int) -> None:
-        """Изменяет скорость танка."""
-        self._body.speed += added_value
-        self._gun.speed += added_value
-
-    def change_body_direction(self, new_dir: Direction) -> None:
-        """Изменяет направление движения танка."""
-        self._body.direction = new_dir.value
-
-    def change_gun_direction(self, new_dir: Direction) -> None:
-        """Изменяет направление пушки."""
-        self._gun.direction = new_dir
+        Entity.__init__(self, name, location, size)
+        Living.__init__(self, health_points)
+        Moveable.__init__(self, speed, direction)
+        self._bullet_schema = bullet_schema
 
     def get_bullet(self) -> Bullet:
         """Получить снаряд."""
-        return self._gun.get_bullet()
+
+        return Bullet(
+            name=self._bullet_schema.name,
+            location=self._bullet_schema.location,
+            size=self._bullet_schema.size,
+            damage=self._bullet_schema.damage,
+            speed=self._bullet_schema.speed,
+            direction=self.direction,
+        )
