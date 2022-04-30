@@ -1,7 +1,4 @@
-from .map import Map
 from .game import Game
+from .map import Map
 
-__all__ = [
-    'Map',
-    'Game'
-]
+__all__ = ["Map", "Game"]

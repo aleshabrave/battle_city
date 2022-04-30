@@ -1,11 +1,22 @@
+from dataclasses import dataclass
+
 from app.domain.data import Size, Vector
 from app.domain.data.enums import Direction
-from app.domain.entities.interfaces import DangerousEntity, MoveableEntity
+from app.domain.entities.interfaces import Dangerous, Entity, Moveable
 
 DEFAULT_DAMAGE = 1
 
 
-class Bullet(DangerousEntity, MoveableEntity):
+@dataclass
+class BulletSchema:
+    name: str
+    location: Vector
+    size: Size
+    damage: int
+    speed: int
+
+
+class Bullet(Dangerous, Moveable, Entity):
     """Класс снаряда."""
 
     def __init__(
@@ -18,6 +29,6 @@ class Bullet(DangerousEntity, MoveableEntity):
         direction: Direction,
     ):
         """Конструктор класса Bullet."""
-        super().__init__(name, location, size, damage)
-        self.speed = speed
-        self.direction = direction
+        Entity.__init__(self, name, location, size)
+        Dangerous.__init__(self, damage)
+        Moveable.__init__(self, speed, direction)

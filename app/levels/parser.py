@@ -1,7 +1,6 @@
-from app.domain.data import Size, Vector
-from app.domain.entities.details.body import Body
+from app.domain.data import Direction, Size, Vector
+from app.domain.entities.details import BulletSchema
 from app.domain.entities.details.bullet import DEFAULT_DAMAGE
-from app.domain.entities.details.gun import Gun
 from app.domain.entities.tank import (
     DEFAULT_TANK_HEALTH_POINTS,
     DEFAULT_TANK_SPEED,
@@ -34,30 +33,22 @@ def parse_map(filename: str) -> Map:
 
 def _get_default_tank(location: Vector) -> Tank:
     """Создать дефолтный танк."""
-
-    gun = Gun(
-        name="default_gun",
+    bullet_schema = BulletSchema(
+        name="default_bullet",
+        size=Size.one() * (CELL_SIZE // 4),
+        damage=DEFAULT_DAMAGE,
+        speed=DEFAULT_TANK_SPEED * 2,
         location=location,
-        size=Size.one() * (CELL_SIZE // 2),
-        speed=DEFAULT_TANK_SPEED,
-        direction=0,
-        bullet_size=Size.one() * (CELL_SIZE // 4),
-        bullet_damage=DEFAULT_DAMAGE,
-        bullet_speed=DEFAULT_TANK_SPEED * 2,
-    )
-    body = Body(
-        name="default_body",
-        location=location,
-        size=Size.one() * CELL_SIZE,
-        speed=DEFAULT_TANK_SPEED,
-        direction=0,
     )
 
     return Tank(
         name="default_tank",
-        gun=gun,
-        body=body,
+        speed=DEFAULT_TANK_SPEED,
+        direction=Direction.FORWARD,
+        size=Size.one() * CELL_SIZE,
+        location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
+        bullet_schema=bullet_schema,
     )
 
 
