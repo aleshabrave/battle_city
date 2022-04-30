@@ -1,8 +1,8 @@
 import math
 
-from entity import Entity
-
 from app.domain.data import Size, Vector
+
+from .entity import Entity
 
 
 class MoveableEntity(Entity):
@@ -22,5 +22,5 @@ class MoveableEntity(Entity):
             int(math.cos(self._direction) * self._speed),
             int(math.sin(self._direction) * self._speed),
         )
-        self.location.add(shift)
+        self.location += shift
         return shift

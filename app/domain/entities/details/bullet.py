@@ -1,6 +1,8 @@
 from app.domain.data import Size, Vector
 from app.domain.entities.interfaces import DangerousEntity, MoveableEntity
 
+DEFAULT_DAMAGE = 1
+
 
 class Bullet(DangerousEntity, MoveableEntity):
     """Класс снаряда."""

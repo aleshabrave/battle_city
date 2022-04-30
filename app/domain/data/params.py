@@ -7,12 +7,18 @@ class Vector:
 
     x: int
     y: int
-    z: int = 3  # индекс для отрисовки
 
-    def add(self, other: "Vector") -> None:
+    def __add__(self, other: "Vector") -> "Vector":
         """Добавить вектор."""
-        self.x += other.x
-        self.y += other.y
+        x = self.x + other.x
+        y = self.y + other.y
+        return Vector(x, y)
+
+    def __mul__(self, scalar: int) -> "Vector":
+        """Умножить на скаляр."""
+        x = self.x * scalar
+        y = self.y * scalar
+        return Vector(x, y)
 
 
 @dataclass
@@ -21,3 +27,15 @@ class Size:
 
     width: int
     height: int
+
+    @staticmethod
+    def one() -> "Size":
+        """Получить единичный размер."""
+
+        return Size(1, 1)
+
+    def __mul__(self, scalar: int) -> "Size":
+        """Умножить на скаляр."""
+        width = self.width * scalar
+        height = self.height * scalar
+        return Size(width, height)

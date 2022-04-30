@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.domain.data.enums import GameState, GameResult
+from app.domain.data.enums import GameResult, GameState
 from app.domain.map import Map
 
 
