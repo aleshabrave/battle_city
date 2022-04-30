@@ -1,4 +1,5 @@
 from app.domain.data import Size, Vector
+from app.domain.data.enums import Direction
 from app.domain.entities.details.body import Body
 from app.domain.entities.details.bullet import DEFAULT_DAMAGE
 from app.domain.entities.details.gun import Gun
@@ -40,7 +41,7 @@ def _get_default_tank(location: Vector) -> Tank:
         location=location,
         size=Size.one() * (CELL_SIZE // 2),
         speed=DEFAULT_TANK_SPEED,
-        direction=0,
+        direction=Direction.RIGHT,
         bullet_size=Size.one() * (CELL_SIZE // 4),
         bullet_damage=DEFAULT_DAMAGE,
         bullet_speed=DEFAULT_TANK_SPEED * 2,
@@ -50,7 +51,7 @@ def _get_default_tank(location: Vector) -> Tank:
         location=location,
         size=Size.one() * CELL_SIZE,
         speed=DEFAULT_TANK_SPEED,
-        direction=0,
+        direction=Direction.RIGHT,
     )
 
     return Tank(

@@ -1,6 +1,6 @@
 from app.domain import Map
-from app.domain.entities.interfaces import DangerousEntity, LivingEntity, MoveableEntity
 from app.domain.entities.details import Bullet
+from app.domain.entities.interfaces import DangerousEntity, LivingEntity, MoveableEntity
 
 
 class MapController:
@@ -39,6 +39,7 @@ class MapController:
         """Разрешить выход за пределы карты."""
 
     @staticmethod
-    def _resolve_move_conflict_with_other_entity(mover: MoveableEntity, entity: LivingEntity) -> None:
+    def _resolve_move_conflict_with_other_entity(
+        mover: MoveableEntity, entity: LivingEntity
+    ) -> None:
         """Разрешить столкновение сущности."""
-

@@ -24,7 +24,7 @@ class GameResult(Enum):
 class Direction(Enum):
     """Направления движения в виде угла в радианах"""
 
-    FORWARD = pi / 2
-    BACK = -pi / 2
+    UP = pi / 2
+    DOWN = -pi / 2
     LEFT = pi
     RIGHT = 0
