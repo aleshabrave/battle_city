@@ -31,7 +31,22 @@ class Map:
             if Entity.is_intersected(entity, neighbour):
                 return neighbour
 
+    def check_out_of_bounds(self, entity: Entity) -> bool:
+        """Проверить выход сущности за пределы карты."""
+
+        return (
+            entity.location.x < 0
+            or entity.location.x + entity.size.width >= self.size.width
+            or entity.location.y < 0
+            or entity.location.y + entity.size.height >= self.size.height
+        )
+
     def add_entity(self, entity: Entity) -> None:
-        """Добавить сущность на карту."""
-        # TODO проверка на возможность размещения сущности
+        """Добавить сущность."""
+
         self.entities.append(entity)
+
+    def remove_entity(self, entity: Entity) -> None:
+        """Удалить сущность."""
+
+        self.entities.remove(entity)

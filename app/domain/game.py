@@ -8,9 +8,6 @@ from app.domain.map import Map
 class Game:
     """Класс игры."""
 
-    castle_name: str
     game_map: Map
     state: GameState = GameState.PAUSE
     game_result: GameResult = GameResult.UNDEFINED
-
-    ## как-то менять состояние игры.
