@@ -16,6 +16,22 @@ class MoveableEntity(Entity):
         self._speed = speed
         self._direction = direction
 
+    @property
+    def speed(self) -> int:
+        return self._speed
+
+    @speed.setter
+    def speed(self, new: int) -> None:
+        self.speed = new
+
+    @property
+    def direction(self) -> float:
+        return self._direction
+
+    @direction.setter
+    def direction(self, new: float) -> None:
+        self._direction = new
+
     def update_location(self) -> Vector:
         """Обновить позицию сущности и получить смещение."""
         shift = Vector(

@@ -30,3 +30,8 @@ class Map:
         for neighbour in self.entities:
             if Entity.is_intersected(entity, neighbour):
                 return neighbour
+
+    def add_entity(self, entity: Entity) -> None:
+        """Добавить сущность на карту."""
+        # TODO проверка на возможность размещения сущности
+        self.entities.append(entity)
