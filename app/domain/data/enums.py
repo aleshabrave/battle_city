@@ -1,4 +1,5 @@
 from enum import Enum, unique
+from math import pi
 
 
 @unique
@@ -17,3 +18,13 @@ class GameResult(Enum):
     WIN = 1
     LOSE = 2
     UNDEFINED = 3
+
+
+@unique
+class Direction(Enum):
+    """Направления движения в виде угла в радианах"""
+
+    FORWARD = pi / 2
+    BACK = -pi / 2
+    LEFT = pi
+    RIGHT = 0
