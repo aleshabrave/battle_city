@@ -12,7 +12,7 @@ class Entity:
 
     def move(self, shift: Vector) -> None:
         """Переместить объект."""
-        self.location.add(shift)
+        self.location += shift
 
     @staticmethod
     def is_intersected(entity1: "Entity", entity2: "Entity") -> bool:

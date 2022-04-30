@@ -1,7 +1,7 @@
-from entity import Entity
-from living_entity import LivingEntity
-
 from app.domain.data.params import Size, Vector
+
+from .entity import Entity
+from .living_entity import LivingEntity
 
 
 class DangerousEntity(Entity):

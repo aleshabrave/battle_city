@@ -4,6 +4,8 @@ from typing import List
 from app.domain.data import Size, Vector
 from app.domain.entities.interfaces import Entity
 
+CELL_SIZE = 10
+
 
 @dataclass
 class Map:
@@ -14,6 +16,7 @@ class Map:
 
     def get_entity(self, point: Vector) -> Entity:
         """Получить сущность по координатам."""
+
         for entity in self.entities:
             if (
                 0 <= point.x - entity.location.x <= entity.size.width
@@ -23,6 +26,7 @@ class Map:
 
     def get_neighbour(self, entity: Entity) -> Entity:
         """Получить соседа по локации."""
+
         for neighbour in self.entities:
             if Entity.is_intersected(entity, neighbour):
                 return neighbour
