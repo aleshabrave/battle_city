@@ -1,6 +1,6 @@
-from app.domain.data.enums import Direction
 from interfaces import LivingEntity
 
+from app.domain.data.enums import Direction
 from app.domain.entities.details.body import Body
 from app.domain.entities.details.bullet import Bullet
 from app.domain.entities.details.gun import Gun

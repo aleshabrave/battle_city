@@ -1,3 +1,4 @@
+from app.domain.data.enums import Direction
 from app.domain.entities.tank import Tank
 from app.domain.map import Map
 
@@ -15,7 +16,7 @@ class TankController:
         """Изменяет скорость танка."""
         self._tank.change_speed(added_value)
 
-    def change_body_direction(self, new_dir: float) -> None:
+    def change_body_direction(self, new_dir: Direction) -> None:
         """Изменяет направление движения танка."""
         self._tank.change_body_direction(new_dir)
 
