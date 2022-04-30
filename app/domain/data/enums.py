@@ -13,6 +13,7 @@ class GameState(Enum):
 @unique
 class GameResult(Enum):
     """Результаты игры."""
+
     WIN = 1
     LOSE = 2
     UNDEFINED = 3

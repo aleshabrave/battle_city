@@ -12,3 +12,5 @@ class Game:
     game_map: Map
     state: GameState = GameState.PAUSE
     game_result: GameResult = GameResult.UNDEFINED
+
+    ## как-то менять состояние игры.
