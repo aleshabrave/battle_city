@@ -29,7 +29,7 @@ def parse_map(filename: str) -> Map:
                     entity = mapper(location)
                     entities.append(entity)
 
-        return Map(size=Size((idx + 1), column_counter) * CELL_SIZE, entities=entities)
+    return Map(size=Size((idx + 1), column_counter) * CELL_SIZE, entities=entities)
 
 
 def _get_default_tank(location: Vector) -> Tank:
