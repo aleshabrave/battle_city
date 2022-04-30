@@ -15,10 +15,8 @@ def parse_map(filename: str) -> Map:
         column_counter = 0
         entities = []
 
-        while True:
-            line = file.readline().replace("\n", "")
-            if len(line) == 0:
-                break
+        for line in file:
+            line = line.replace("\n", "")
             column_counter += 1
 
             for idx, obj in enumerate(line):
