@@ -1,4 +1,5 @@
 from app.domain.data import Size, Vector
+from app.domain.data.enums import Direction
 from app.domain.entities.interfaces import DangerousEntity, MoveableEntity
 
 DEFAULT_DAMAGE = 1
@@ -14,7 +15,7 @@ class Bullet(DangerousEntity, MoveableEntity):
         size: Size,
         damage: int,
         speed: int,
-        direction: float,
+        direction: Direction,
     ):
         """Конструктор класса Bullet."""
         super().__init__(name, location, size, damage)

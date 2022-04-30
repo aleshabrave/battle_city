@@ -2,6 +2,7 @@ from app.domain.entities.details.body import Body
 from app.domain.entities.details.bullet import Bullet
 from app.domain.entities.details.gun import Gun
 
+from ..data.enums import Direction
 from .interfaces import LivingEntity
 
 DEFAULT_TANK_SPEED = 2
@@ -37,7 +38,7 @@ class Tank(LivingEntity):
         """Изменяет направление движения танка."""
         self._body.direction = new_dir.value
 
-    def change_gun_direction(self, new_dir: float) -> None:
+    def change_gun_direction(self, new_dir: Direction) -> None:
         """Изменяет направление пушки."""
         self._gun.direction = new_dir
 

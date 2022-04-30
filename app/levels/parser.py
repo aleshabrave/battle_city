@@ -2,8 +2,11 @@ from app.domain.data import Size, Vector
 from app.domain.entities.details.body import Body
 from app.domain.entities.details.bullet import DEFAULT_DAMAGE
 from app.domain.entities.details.gun import Gun
-from app.domain.entities.tank import (DEFAULT_TANK_HEALTH_POINTS,
-                                      DEFAULT_TANK_SPEED, Tank)
+from app.domain.entities.tank import (
+    DEFAULT_TANK_HEALTH_POINTS,
+    DEFAULT_TANK_SPEED,
+    Tank,
+)
 from app.domain.entities.wall import DEFAULT_WALL_HEALTH_POINTS, Wall
 from app.domain.map import CELL_SIZE, Map
 

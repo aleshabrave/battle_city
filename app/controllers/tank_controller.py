@@ -5,6 +5,7 @@ from app.domain.map import Map
 
 class TankController:
     """Контроллер для сущности Tank"""
+
     def __init__(self, tank: Tank):
         self._tank = tank
 

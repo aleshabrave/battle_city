@@ -1,4 +1,5 @@
 from app.domain.data import Size, Vector
+from app.domain.data.enums import Direction
 from app.domain.entities.details.bullet import Bullet
 from app.domain.entities.interfaces import MoveableEntity
 
@@ -12,7 +13,7 @@ class Gun(MoveableEntity):
         location: Vector,
         size: Size,
         speed: int,
-        direction: float,
+        direction: Direction,
         bullet_size: Size,
         bullet_damage: int,
         bullet_speed: int,
