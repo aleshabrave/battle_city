@@ -1,11 +1,11 @@
-from .dangerous_entity import DangerousEntity
+from .dangerous import Dangerous
 from .entity import Entity
-from .living_entity import LivingEntity
-from .moveable_entity import MoveableEntity
+from .living import Living
+from .moveable import Moveable
 
 __all__ = [
-    "MoveableEntity",
-    "DangerousEntity",
-    "LivingEntity",
+    "Moveable",
+    "Dangerous",
+    "Living",
     "Entity",
 ]

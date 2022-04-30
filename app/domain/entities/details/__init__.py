@@ -1,5 +1,3 @@
-from .body import Body
-from .bullet import Bullet
-from .gun import Gun
+from .bullet import Bullet, BulletSchema
 
-__all__ = ["Bullet", "Body", "Gun"]
+__all__ = ["Bullet", "BulletSchema"]
