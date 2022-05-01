@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QPoint, QRect
+
 from app.domain import Game
 from app.domain.data import GameResult
 from app.domain.data.enums import GameState
@@ -11,4 +13,8 @@ if __name__ == "__main__":
         state=GameState.PLAY,
         game_result=GameResult.UNDEFINED,
     )
-    MainLoop(tick_duration_secs=0.5, game=game)
+    MainLoop(
+        game=game,
+        tick_duration_secs=0.5,
+        window_size=QRect(QPoint(0, 0), QPoint(1000, 900)),
+    )

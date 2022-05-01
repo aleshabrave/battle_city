@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QLabel
 
 from app.domain.entities.interfaces import Entity, Moveable
 
+BASIC_TRANSITION = 8
+
 
 class Sprite(QLabel):
     def __init__(
@@ -13,8 +15,14 @@ class Sprite(QLabel):
     ):
         super().__init__(parent_frame)
         self.entity = entity
-        self.resize(8 * self.entity.size.width, 8 * self.entity.size.height)
-        self.move(8 * self.entity.location.x, 8 * self.entity.location.y)
+        self.resize(
+            BASIC_TRANSITION * self.entity.size.width,
+            BASIC_TRANSITION * self.entity.size.height,
+        )
+        self.move(
+            BASIC_TRANSITION * self.entity.location.x,
+            BASIC_TRANSITION * self.entity.location.y,
+        )
         self._display_image(path_to_image)
 
     def _display_image(self, path_to_image: str) -> None:
@@ -24,4 +32,4 @@ class Sprite(QLabel):
 
     def move_sprite(self) -> None:
         loc = self.entity.location
-        self.move(QPoint(8 * loc.x, 8 * loc.y))
+        self.move(QPoint(BASIC_TRANSITION * loc.x, BASIC_TRANSITION * loc.y))
