@@ -1,6 +1,6 @@
 import sys
-from time import sleep
 import threading
+from time import sleep
 
 from PyQt5.QtWidgets import QApplication
 
@@ -9,21 +9,15 @@ from app.levels import parser
 from app.ui.ui import UI
 
 
-# class MyApp(QApplication):
-#     def __init__(self, *args, **kwargs):
-#         super().
-
-def method_name(map_controller, ui: UI):
+def move_spites() -> None:
     while True:
-        # ui.show_entities(map_controller)
-        sleep(2)
-        map_controller.move_entities()
-        # ui.clear()
+        sleep(0.5)
+        ui.move_spites()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     map_controller = MapController(parser.parse_map("./levels/wall_level.txt"))
     ui = UI(map_controller)
-    threading.Thread(target=method_name, args=(map_controller, ui)).start()
+    threading.Thread(target=move_spites).start()
     sys.exit(app.exec_())
