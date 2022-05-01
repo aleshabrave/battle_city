@@ -1,23 +1,14 @@
-import sys
-import threading
-from time import sleep
-
-from PyQt5.QtWidgets import QApplication
-
-from app.controllers.map_controller import MapController
+from app.domain import Game
+from app.domain.data import GameResult
+from app.domain.data.enums import GameState
 from app.levels import parser
-from app.ui.ui import UI
-
-
-def move_spites() -> None:
-    while True:
-        sleep(0.5)
-        ui.move_spites()
-
+from app.main_loop import MainLoop
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    map_controller = MapController(parser.parse_map("./levels/wall_level.txt"))
-    ui = UI(map_controller)
-    threading.Thread(target=move_spites).start()
-    sys.exit(app.exec_())
+    # TODO переход на след уровни
+    game = Game(
+        parser.parse_map("./levels/wall_level.txt"),
+        state=GameState.PLAY,
+        game_result=GameResult.UNDEFINED,
+    )
+    MainLoop(tick_duration_secs=0.5, game=game)

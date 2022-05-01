@@ -1,17 +1,9 @@
-from time import sleep
-from typing import Union
-
 from PyQt5.QtCore import QPoint, QRect
-from PyQt5.QtGui import QPixmap, QWindow
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QMainWindow
+from PyQt5.QtWidgets import QHBoxLayout, QMainWindow
 
 from app.controllers.map_controller import MapController
-from app.domain.entities.interfaces import Entity, Moveable
-
-PATHS_TO_IMAGES = {
-    "default_tank": r".\app\ui\spites\tank.png",
-    "default_wall": r".\app\ui\spites\wall.png",
-}
+from app.ui.paths_to_images import PATHS_TO_IMAGES
+from app.ui.sprite import Sprite
 
 
 class UI(QMainWindow):
@@ -39,23 +31,3 @@ class UI(QMainWindow):
         self._map_controller.move_entities()
         for sprite in self._sprites:
             sprite.move_sprite()
-
-
-class Sprite(QLabel):
-    def __init__(
-        self, parent_frame: QWindow, entity: Union[Entity, Moveable], path_to_image: str
-    ):
-        super().__init__(parent_frame)
-        self.entity = entity
-        self.resize(8 * self.entity.size.width, 8 * self.entity.size.height)
-        self.move(8 * self.entity.location.x, 8 * self.entity.location.y)
-        self._display_image(path_to_image)
-
-    def _display_image(self, path_to_image: str) -> None:
-        pixmap = QPixmap(path_to_image)
-        self.resize(pixmap.width(), pixmap.height())
-        self.setPixmap(pixmap)
-
-    def move_sprite(self) -> None:
-        loc = self.entity.location
-        self.move(QPoint(8 * loc.x, 8 * loc.y))
