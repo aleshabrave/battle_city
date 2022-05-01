@@ -12,14 +12,14 @@ class MapController:
     def move_entities(self) -> None:
         """Подвинуть moveable entities."""
 
-        for entity in self._map.entities:
+        for entity in self._map._entities:
             if isinstance(entity, Moveable):
                 entity.update_location()
 
     def resolve_dangerous_conflicts(self) -> None:
         """Разрешить ситуации с взаимодействием опасных сущностей."""
 
-        for entity in self._map.entities:
+        for entity in self._map._entities:
             if not isinstance(entity, Dangerous):
                 continue
             neighbour = self._map.get_neighbour(entity)
@@ -31,7 +31,7 @@ class MapController:
     def resolve_move_conflicts(self) -> None:
         """Разрешить столкновения сущностей."""
 
-        for entity in self._map.entities:
+        for entity in self._map._entities:
             if not isinstance(entity, Moveable):
                 continue
 

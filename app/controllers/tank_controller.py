@@ -9,10 +9,6 @@ class TankController:
     def __init__(self, tank: Tank):
         self._tank = tank
 
-    def move(self) -> None:
-        """Изменяет координаты танка."""
-        self._tank.update_location()
-
     def update_speed(self, speed: int) -> None:
         """Обновить скорость танка."""
         self._tank.speed = speed
@@ -25,6 +21,6 @@ class TankController:
         """Принять урон."""
         self._tank.take_damage(damage)
 
-    def shoot(self, map_: Map) -> None:
-        """Добавляет снаряд на карту."""
-        map_.add_entity(self._tank.get_bullet())
+    def fire(self, _map: Map) -> None:
+        """Выстрелить."""
+        _map.add_entity(self._tank.get_bullet())

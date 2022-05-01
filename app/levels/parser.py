@@ -28,7 +28,7 @@ def parse_map(filename: str) -> Map:
                     entity = mapper(location)
                     entities.append(entity)
 
-    return Map(size=Size((idx + 1), column_counter) * CELL_SIZE, entities=entities)
+    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities)
 
 
 def _get_default_tank(location: Vector) -> Tank:
@@ -44,7 +44,7 @@ def _get_default_tank(location: Vector) -> Tank:
     return Tank(
         name="default_tank",
         speed=DEFAULT_TANK_SPEED,
-        direction=Direction.FORWARD,
+        direction=Direction.UP,
         size=Size.one() * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
