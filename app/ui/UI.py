@@ -12,22 +12,22 @@ class UI(QMainWindow):
         self._map_controller = map_controller
         self._size = size
         self.setGeometry(self._size)
-        self._init_graphic(map_controller)
+        self._init_graphic()
         self.show()
 
-    def _init_graphic(self, map_controller):
+    def _init_graphic(self):
         self.setStyleSheet("background-color: black;")
         self._init_layout()
         self._sprites = []
-        self._show_entities(map_controller)
+        self._show_entities()
 
     def _init_layout(self) -> None:
         self._layout = QHBoxLayout(self)
         self._layout.setGeometry(self._size)
         self.setLayout(self._layout)
 
-    def _show_entities(self, map_controller) -> None:
-        for en in map_controller.map.entities:
+    def _show_entities(self) -> None:
+        for en in self._map_controller.map.entities:
             sprite = Sprite(self, en, PATHS_TO_IMAGES[en.name])
             self._sprites.append(sprite)
             self._layout.addWidget(sprite)

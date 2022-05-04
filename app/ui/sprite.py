@@ -31,5 +31,9 @@ class Sprite(QLabel):
         self.setPixmap(pixmap)
 
     def move_sprite(self) -> None:
-        loc = self.entity.location
-        self.move(QPoint(BASIC_TRANSITION * loc.x, BASIC_TRANSITION * loc.y))
+        self.move(
+            QPoint(
+                BASIC_TRANSITION * self.entity.location.x,
+                BASIC_TRANSITION * self.entity.location.y,
+            )
+        )
