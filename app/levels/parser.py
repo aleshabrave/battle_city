@@ -7,6 +7,7 @@ from app.domain.entities.tank import (
     Tank,
 )
 from app.domain.entities.wall import DEFAULT_WALL_HEALTH_POINTS, Wall
+from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
 from app.domain.map import CELL_SIZE, Map
 
 
@@ -63,4 +64,20 @@ def _get_default_wall(location: Vector) -> Wall:
     )
 
 
-object_mapper = {"W": _get_default_wall, "T": _get_default_tank, ".": None}
+def _get_default_castle(location: Vector) -> Castle:
+    """Получить дефолтную базу."""
+
+    return Castle(
+        name="default_castle",
+        location=location,
+        size=Size.one() * CELL_SIZE,
+        health_points=DEFAULT_CASTLE_HEALTH_POINTS,
+    )
+
+
+object_mapper = {
+    "W": _get_default_wall,
+    "T": _get_default_tank,
+    "C": _get_default_castle,
+    ".": None,
+}

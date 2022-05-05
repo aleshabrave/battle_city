@@ -1,6 +1,6 @@
 from app.domain import Map
 from app.domain.entities.details import Bullet
-from app.domain.entities.interfaces import Dangerous, Living, Moveable
+from app.domain.entities.interfaces import Dangerous, Living, Movable
 
 
 class MapController:
@@ -13,7 +13,7 @@ class MapController:
         """Подвинуть moveable entities."""
 
         for entity in self.map.entities:
-            if isinstance(entity, Moveable):
+            if isinstance(entity, Movable):
                 entity.update_location()
 
     def resolve_dangerous_conflicts(self) -> None:
@@ -32,7 +32,7 @@ class MapController:
         """Разрешить столкновения сущностей."""
 
         for entity in self.map.entities:
-            if not isinstance(entity, Moveable):
+            if not isinstance(entity, Movable):
                 continue
 
             neighbour = self.map.get_neighbour(entity)
@@ -42,11 +42,11 @@ class MapController:
             if self.map.check_out_of_bounds(entity):
                 self._resolve_out_of_bounds(entity)
 
-    def _resolve_out_of_bounds(self, mover: Moveable) -> None:
+    def _resolve_out_of_bounds(self, mover: Movable) -> None:
         """Разрешить выход за пределы карты."""
 
     @staticmethod
     def _resolve_move_conflict_with_other_entity(
-        mover: Moveable, entity: Living
+        mover: Movable, entity: Living
     ) -> None:
         """Разрешить столкновение сущности."""

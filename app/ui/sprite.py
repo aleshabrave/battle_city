@@ -4,14 +4,14 @@ from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QPixmap, QWindow
 from PyQt5.QtWidgets import QLabel
 
-from app.domain.entities.interfaces import Entity, Moveable
+from app.domain.entities.interfaces import Entity, Movable
 
 BASIC_TRANSITION = 8
 
 
 class Sprite(QLabel):
     def __init__(
-        self, parent_frame: QWindow, entity: Union[Entity, Moveable], path_to_image: str
+        self, parent_frame: QWindow, entity: Union[Entity, Movable], path_to_image: str
     ):
         super().__init__(parent_frame)
         self.entity = entity
