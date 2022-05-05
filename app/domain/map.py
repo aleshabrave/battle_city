@@ -11,13 +11,13 @@ CELL_SIZE = 10
 class Map:
     """Класс карты."""
 
-    _size: Size
-    _entities: List[Entity]
+    size: Size
+    entities: List[Entity]
 
     def get_entity(self, point: Vector) -> Entity:
         """Получить сущность по координатам."""
 
-        for entity in self._entities:
+        for entity in self.entities:
             if (
                 0 <= point.x - entity.location.x <= entity.size.width
                 and 0 <= point.y - entity.location.y <= entity.size.height
@@ -27,7 +27,7 @@ class Map:
     def get_neighbour(self, entity: Entity) -> Entity:
         """Получить соседа по локации."""
 
-        for neighbour in self._entities:
+        for neighbour in self.entities:
             if Entity.is_intersected(entity, neighbour):
                 return neighbour
 
@@ -36,17 +36,17 @@ class Map:
 
         return (
             entity.location.x < 0
-            or entity.location.x + entity.size.width >= self._size.width
+            or entity.location.x + entity.size.width >= self.size.width
             or entity.location.y < 0
-            or entity.location.y + entity.size.height >= self._size.height
+            or entity.location.y + entity.size.height >= self.size.height
         )
 
     def add_entity(self, entity: Entity) -> None:
         """Добавить сущность."""
 
-        self._entities.append(entity)
+        self.entities.append(entity)
 
     def remove_entity(self, entity: Entity) -> None:
         """Удалить сущность."""
 
-        self._entities.remove(entity)
+        self.entities.remove(entity)
