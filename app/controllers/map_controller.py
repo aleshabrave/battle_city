@@ -1,6 +1,7 @@
 from app.domain import Map
 from app.domain.entities.details import Bullet
-from app.domain.entities.interfaces import Dangerous, Living, Moveable
+from app.domain.entities.interfaces import Dangerous, Living, Moveable, Entity
+from typing import Union
 
 
 class MapController:
@@ -42,11 +43,29 @@ class MapController:
             if self.map.check_out_of_bounds(entity):
                 self._resolve_out_of_bounds(entity)
 
-    def _resolve_out_of_bounds(self, mover: Moveable) -> None:
+    def _resolve_out_of_bounds(self, mover: Union[Moveable, Entity]) -> None:
         """Разрешить выход за пределы карты."""
+
+        if mover.location.x < 0:
+            mover.location.x = 0
+        if mover.location.y < 0:
+            mover.location.y = 0
+        if mover.location.x + mover.size.width >= self.map.size.width:
+            mover.location.x = self.map.size.width - mover.size.width - 1
+        if mover.location.y + mover.size.height >= self.map.size.height:
+            mover.location.y = self.map.size.height - mover.size.height - 1
 
     @staticmethod
     def _resolve_move_conflict_with_other_entity(
-        mover: Moveable, entity: Living
+        mover: Union[Moveable, Entity], entity: Union[Living, Entity]
     ) -> None:
-        """Разрешить столкновение сущности."""
+        """Разрешить столкновение сущности (если оно есть)."""
+
+        if mover.location.x <= entity.location.x + entity.size.width:
+            mover.location.x = entity.location.x + entity.size.width + 1
+        if mover.location.x + mover.size.width >= entity.location.x:
+            mover.location.x -= entity.location.x - mover.size.width - 1
+        if mover.location.y <= entity.location.y + entity.size.height:
+            mover.location.y = entity.location.y + entity.size.height + 1
+        if mover.location.y + mover.size.height >= entity.location.y:
+            mover.location.y -= entity.location.y - mover.size.height - 1
