@@ -6,7 +6,7 @@ from app.controllers.map_controller import MapController
 from app.domain.entities.interfaces import Entity
 from app.ui.paths_to_images import PATHS_TO_IMAGES
 
-BASIC_TRANSITION = 8
+_BASIC_TRANSITION = 8
 
 
 class UI(QMainWindow):
@@ -26,6 +26,6 @@ class UI(QMainWindow):
     @staticmethod
     def _convert_entity_location_to_rendering_coordinates(entity: Entity) -> QPoint:
         return QPoint(
-            BASIC_TRANSITION * entity.location.x,
-            BASIC_TRANSITION * entity.location.y,
+            _BASIC_TRANSITION * entity.location.x,
+            _BASIC_TRANSITION * entity.location.y,
         )

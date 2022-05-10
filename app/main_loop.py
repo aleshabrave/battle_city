@@ -19,12 +19,15 @@ class MainLoop:
     ):
         self._game_controller = game_controller
         self._tick_duration_secs = tick_duration_secs
+        self._start_loop(window_size)
+
+    def _start_loop(self, window_size):
         app = QApplication(argv)
         self._ui = UI.UI(self._game_controller.map_controller, window_size)
-        Thread(target=self._start_loop).start()
+        Thread(target=self._main).start()
         exit(app.exec_())
 
-    def _start_loop(self) -> None:
+    def _main(self) -> None:
         while True:
             if self._game_controller.game_state == GameState.PAUSE:
                 continue
@@ -36,4 +39,3 @@ class MainLoop:
             sleep(self._tick_duration_secs)
             self._game_controller.map_controller.move_entities()
             self._ui.update()
-            # self._ui.move_spites()
