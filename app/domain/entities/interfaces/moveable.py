@@ -1,7 +1,6 @@
 import math
 
-from app.domain.data import Vector
-from app.domain.data import Direction
+from app.domain.data import Direction, Vector
 
 
 class Moveable:

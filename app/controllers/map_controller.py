@@ -1,7 +1,8 @@
+from typing import Union
+
 from app.domain import Map
 from app.domain.entities.details import Bullet
-from app.domain.entities.interfaces import Dangerous, Living, Moveable, Entity
-from typing import Union
+from app.domain.entities.interfaces import Dangerous, Entity, Living, Moveable
 
 
 class MapController:

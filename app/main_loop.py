@@ -6,8 +6,6 @@ from PyQt5.QtCore import QRect
 from PyQt5.QtWidgets import QApplication
 
 from app.controllers.game_controller import GameController
-from app.controllers.map_controller import MapController
-from app.domain import Game
 from app.domain.data.enums import GameState
 from app.ui import UI
 
