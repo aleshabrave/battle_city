@@ -1,13 +1,13 @@
 from app.domain.data import Direction, Size, Vector
 from app.domain.entities.details.bullet import Bullet, BulletSchema
 
-from .interfaces import Entity, Living, Moveable
+from .interfaces import Entity, Living, Movable
 
 DEFAULT_TANK_SPEED = 2
 DEFAULT_TANK_HEALTH_POINTS = 3
 
 
-class Tank(Moveable, Living, Entity):
+class Tank(Movable, Living, Entity):
     """Класс сущности танк."""
 
     def __init__(
@@ -22,7 +22,7 @@ class Tank(Moveable, Living, Entity):
     ) -> None:
         Entity.__init__(self, name, location, size)
         Living.__init__(self, health_points)
-        Moveable.__init__(self, speed, direction)
+        Movable.__init__(self, speed, direction)
         self._bullet_schema = bullet_schema
 
     def get_bullet(self) -> Bullet:

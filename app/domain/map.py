@@ -14,7 +14,12 @@ class Map:
     size: Size
     entities: List[Entity]
 
-    def get_entity(self, point: Vector) -> Entity:
+    def get_entity_by_name(self, name: str) -> List[Entity]:
+        """Получить сущность по имени."""
+
+        return [entity for entity in self.entities if entity.name == name]
+
+    def get_entity_by_location(self, point: Vector) -> Entity:
         """Получить сущность по координатам."""
 
         for entity in self.entities:

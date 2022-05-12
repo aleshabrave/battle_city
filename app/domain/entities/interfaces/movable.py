@@ -4,7 +4,7 @@ from app.domain.data import Vector
 from app.domain.data import Direction
 
 
-class Moveable:
+class Movable:
     """Абстрактный класс объектов, которые могут двигаться."""
 
     def __init__(self, speed: int, direction: Direction):
