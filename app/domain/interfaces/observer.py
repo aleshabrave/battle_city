@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 
-class Observer(metaclass=ABC):
+class Observer:
     """Интерфейс наблюдателя."""
 
     @abstractmethod

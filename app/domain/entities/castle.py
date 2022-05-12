@@ -14,6 +14,6 @@ class Castle(Living, Entity, Observable):
 
     @Observable.notify
     def take_damage(self, damage: int) -> None:
-        """Принять урон. """
+        """Принять урон."""
 
         self.health_points -= damage
