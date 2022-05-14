@@ -45,7 +45,7 @@ def _get_default_tank(location: Vector) -> Tank:
     return Tank(
         name="default_tank",
         speed=DEFAULT_TANK_SPEED,
-        direction=Direction.UP,
+        direction=Direction.DOWN,
         size=Size.one() * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,

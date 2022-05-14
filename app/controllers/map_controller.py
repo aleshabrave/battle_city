@@ -10,6 +10,11 @@ class MapController:
     def __init__(self, _map: Map) -> None:
         self.map = _map
 
+    def update_map(self):
+        self.move_entities()
+        self.resolve_move_conflicts()
+        self.resolve_dangerous_conflicts()
+
     def move_entities(self) -> None:
         """Подвинуть moveable entities."""
 
@@ -64,8 +69,8 @@ class MapController:
         if mover.location.x <= entity.location.x + entity.size.width:
             mover.location.x = entity.location.x + entity.size.width + 1
         if mover.location.x + mover.size.width >= entity.location.x:
-            mover.location.x -= entity.location.x - mover.size.width - 1
+            mover.location.x = entity.location.x - mover.size.width - 1
         if mover.location.y <= entity.location.y + entity.size.height:
             mover.location.y = entity.location.y + entity.size.height + 1
         if mover.location.y + mover.size.height >= entity.location.y:
-            mover.location.y -= entity.location.y - mover.size.height - 1
+            mover.location.y = entity.location.y - mover.size.height - 1

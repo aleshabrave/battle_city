@@ -37,5 +37,5 @@ class MainLoop:
                 # но это обязанности кого-то другого нврн
                 break
             sleep(self._tick_duration_secs)
-            self._game_controller.map_controller.move_entities()
+            self._game_controller.map_controller.update_map()
             self._ui.update()

@@ -17,6 +17,6 @@ if __name__ == "__main__":
     )
     MainLoop(
         game_controller=GameController(game, MapController(_map)),
-        tick_duration_secs=0.5,
+        tick_duration_secs=0.2,
         window_size=QRect(QPoint(0, 0), QPoint(1000, 900)),
     )
