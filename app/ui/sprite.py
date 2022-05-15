@@ -5,7 +5,7 @@ from PyQt5.QtGui import QImage, QTransform
 
 from app.domain.data import Direction
 from app.domain.entities.interfaces import Entity, Movable
-from app.ui.paths_to_images import Images
+from app.ui.images import Images
 
 
 class Sprite:
