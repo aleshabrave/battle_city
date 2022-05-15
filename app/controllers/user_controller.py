@@ -8,4 +8,4 @@ class UserController:
         self._map_controller = map_controller
 
     def handle_event(self, event: QKeyEvent) -> None:
-        print(f'FROM UserController: {chr(event.key())}')
+        print(f"FROM UserController: {chr(event.key())}")
