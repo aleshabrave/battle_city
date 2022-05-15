@@ -34,9 +34,9 @@ class Sprite:
 
     def _get_rotation_angle(self) -> QTransform:
         angle = (
-            0
-            if not isinstance(self._entity, Movable)
-            else math.degrees(self._entity.direction.value + Direction.UP.value)
+            math.degrees(self._entity.direction.value + Direction.UP.value)
+            if isinstance(self._entity, Movable)
+            else 0
         )
         return QTransform().rotate(angle)
 
