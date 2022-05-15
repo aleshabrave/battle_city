@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QRect
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QKeyEvent, QPainter
 from PyQt5.QtWidgets import QMainWindow
 
 from app.controllers.map_controller import MapController
@@ -16,17 +16,17 @@ class UI(QMainWindow):
         self.setStyleSheet("background-color: black;")
         self.show()
 
-    def _init_sprites(self) -> None:
-        self._sprites: dict[Entity, Sprite] = dict()
-        for entity in self._map_controller.map.entities:
-            self._sprites[entity] = Sprite(entity)
-
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
         for entity in self._map_controller.map.entities:
             sprite = self._get_else_create_sprite(entity)
             painter.drawImage(sprite.coordinates, sprite.next_image)
         self._delete_old_sprites()
+
+    def _init_sprites(self) -> None:
+        self._sprites: dict[Entity, Sprite] = dict()
+        for entity in self._map_controller.map.entities:
+            self._sprites[entity] = Sprite(entity)
 
     def _get_else_create_sprite(self, entity) -> Sprite:
         try:
