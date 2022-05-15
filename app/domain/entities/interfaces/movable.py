@@ -20,3 +20,6 @@ class Movable:
         )
         self.location += shift
         return shift
+
+    def is_moving(self) -> bool:
+        return self.speed != 0

@@ -3,6 +3,7 @@ from typing import List
 
 from app.domain.data import Size, Vector
 from app.domain.entities.interfaces import Entity
+from app.domain.entities.tank import Tank
 
 CELL_SIZE = 10
 
@@ -13,6 +14,7 @@ class Map:
 
     size: Size
     entities: List[Entity]
+    player: Tank
 
     def get_entity_by_name(self, name: str) -> List[Entity]:
         """Получить сущность по имени."""

@@ -8,8 +8,9 @@ from app.domain.data.enums import GameState
 from app.levels import parser
 from app.main_loop import MainLoop
 
-if __name__ == "__main__":
-    _map = parser.parse_map("./levels/wall_level.txt")
+
+def main():
+    _map = parser.parse_map("./levels/empty_level.txt")
     game = Game(
         _map,
         state=GameState.PLAY,
@@ -17,6 +18,10 @@ if __name__ == "__main__":
     )
     MainLoop(
         game_controller=GameController(game, MapController(_map)),
-        tick_duration_secs=0.2,
-        window_size=QRect(QPoint(0, 0), QPoint(1000, 900)),
-    )
+        tick_duration_secs=0.1,
+        window_size=QRect(QPoint(0, 0), QPoint(1000, 1000)),
+    ).start()
+
+
+if __name__ == "__main__":
+    main()
