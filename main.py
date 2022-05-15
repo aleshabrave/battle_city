@@ -10,7 +10,7 @@ from app.main_loop import MainLoop
 
 
 def main():
-    _map = parser.parse_map("./levels/wall_level.txt")
+    _map = parser.parse_map("./levels/empty_level.txt")
     game = Game(
         _map,
         state=GameState.PLAY,
@@ -18,7 +18,7 @@ def main():
     )
     MainLoop(
         game_controller=GameController(game, MapController(_map)),
-        tick_duration_secs=0.3,
+        tick_duration_secs=0.1,
         window_size=QRect(QPoint(0, 0), QPoint(1000, 1000)),
     ).start()
 

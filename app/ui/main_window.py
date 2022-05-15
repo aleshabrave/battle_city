@@ -10,11 +10,11 @@ from app.ui.sprite import Sprite
 
 class MainWindow(QMainWindow):
     def __init__(
-            self,
-            map_controller: MapController,
-            user_controller: PlayerController,
-            size: QRect,
-            ):
+        self,
+        map_controller: MapController,
+        user_controller: PlayerController,
+        size: QRect,
+    ):
         super().__init__()
         self._map_controller = map_controller
         self._user_controller = user_controller

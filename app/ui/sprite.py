@@ -17,7 +17,8 @@ class Sprite:
     @property
     def next_image(self) -> QImage:
         image = self._images[self._number_of_current_image]
-        self._shift_number_of_current_image()
+        if isinstance(self._entity, Movable) and self._entity.is_moving():
+            self._shift_number_of_current_image()
         return image.transformed(self._get_rotation_angle())
 
     @property
