@@ -1,13 +1,10 @@
-from PyQt5.QtCore import QPoint, QRect
-from PyQt5.QtGui import QImage, QPainter
+from PyQt5.QtCore import QRect
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QMainWindow
 
 from app.controllers.map_controller import MapController
 from app.domain.entities.interfaces import Entity
-from app.ui.paths_to_images import PATHS_TO_IMAGES
 from app.ui.sprite import Sprite
-
-_BASIC_TRANSITION = 8
 
 
 class UI(QMainWindow):
@@ -19,7 +16,7 @@ class UI(QMainWindow):
         self.setStyleSheet("background-color: black;")
         self.show()
 
-    def _init_sprites(self):
+    def _init_sprites(self) -> None:
         self._sprites: dict[Entity, Sprite] = dict()
         for entity in self._map_controller.map.entities:
             self._sprites[entity] = Sprite(entity)
@@ -27,9 +24,20 @@ class UI(QMainWindow):
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
         for entity in self._map_controller.map.entities:
-            try:
-                sprite = self._sprites[entity]
-            except KeyError:
-                self._sprites[entity] = Sprite(entity)
-                sprite = self._sprites[entity]
+            sprite = self._get_else_create_sprite(entity)
             painter.drawImage(sprite.coordinates, sprite.next_image)
+        self._delete_old_sprites()
+
+    def _get_else_create_sprite(self, entity) -> Sprite:
+        try:
+            sprite = self._sprites[entity]
+        except KeyError:
+            self._sprites[entity] = Sprite(entity)
+            sprite = self._sprites[entity]
+        return sprite
+
+    def _delete_old_sprites(self) -> None:
+        new: dict[Entity, Sprite] = dict()
+        for entity in self._map_controller.map.entities:
+            new[entity] = self._sprites[entity]
+        self._sprites = new
