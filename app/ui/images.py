@@ -10,6 +10,7 @@ class Images:
         Images._add_paths_to_images_for_wall()
         Images._add_paths_to_images_for_enemy()
         Images._add_paths_to_images_for_player()
+        Images._add_paths_to_images_for_bullets()
 
     @staticmethod
     def _add_paths_to_images_for_player() -> None:
@@ -28,6 +29,13 @@ class Images:
     @staticmethod
     def _add_paths_to_images_for_wall() -> None:
         Images._paths_to_images["default_wall"] = [r".\app\ui\spites\wall\wall.png"]
+
+    @staticmethod
+    def _add_paths_to_images_for_bullets() -> None:
+        Images._paths_to_images["enemy_bullet"] = [
+            r".\app\ui\spites\bullet\bullet.png"]
+        Images._paths_to_images["player_bullet"] = [
+            r".\app\ui\spites\bullet\bullet.png"]
 
     @staticmethod
     def get_images(entity_name: str) -> list[QImage]:
