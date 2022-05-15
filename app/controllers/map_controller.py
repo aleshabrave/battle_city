@@ -1,8 +1,8 @@
 from typing import Union
 
 from app.domain import Map
-from app.domain.entities.details import Bullet
-from app.domain.entities.interfaces import Dangerous, Entity, Living, Movable
+from app.domain.entities.interfaces import Dangerous, Entity, Living, MovableEntity
+from app.domain.entities.bullet import Bullet
 
 
 class MapController:
@@ -12,34 +12,35 @@ class MapController:
         self.map = _map
 
     def update_map(self):
+        """Обновить карту."""
         self.move_entities()
         self.resolve_move_conflicts()
         self.resolve_dangerous_conflicts()
 
     def move_entities(self) -> None:
         """Подвинуть moveable entities."""
-
         for entity in self.map.entities:
-            if isinstance(entity, Movable):
+            if isinstance(entity, MovableEntity):
                 entity.update_location()
 
     def resolve_dangerous_conflicts(self) -> None:
         """Разрешить ситуации с взаимодействием опасных сущностей."""
-
         for entity in self.map.entities:
             if not isinstance(entity, Dangerous):
                 continue
             neighbour = self.map.get_neighbour(entity)
             if neighbour is not None and isinstance(neighbour, Living):
                 neighbour.take_damage(entity.damage)
+                if not neighbour.is_available():
+                    self.map.remove_entity(neighbour)
+
                 if isinstance(entity, Bullet):
                     self.map.remove_entity(entity)
 
     def resolve_move_conflicts(self) -> None:
         """Разрешить столкновения сущностей."""
-
         for entity in self.map.entities:
-            if not isinstance(entity, Movable):
+            if not isinstance(entity, MovableEntity):
                 continue
 
             neighbour = self.map.get_neighbour(entity)
@@ -47,9 +48,12 @@ class MapController:
                 self._resolve_move_conflict_with_other_entity(entity, neighbour)
 
             if self.map.check_out_of_bounds(entity):
-                self._resolve_out_of_bounds(entity)
+                if isinstance(entity, Bullet):
+                    self.map.remove_entity(entity)
+                else:
+                    self._resolve_out_of_bounds(entity)
 
-    def _resolve_out_of_bounds(self, mover: Union[Movable, Entity]) -> None:
+    def _resolve_out_of_bounds(self, mover: Union[MovableEntity, Entity]) -> None:
         """Разрешить выход за пределы карты."""
 
         if mover.location.x < 0:
@@ -63,7 +67,7 @@ class MapController:
 
     @staticmethod
     def _resolve_move_conflict_with_other_entity(
-        mover: Union[Movable, Entity], entity: Union[Living, Entity]
+        mover: Union[MovableEntity, Entity], entity: Union[Living, Entity]
     ) -> None:
         """Разрешить столкновение сущности (если оно есть)."""
 

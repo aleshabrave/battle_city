@@ -32,10 +32,10 @@ class Images:
 
     @staticmethod
     def _add_paths_to_images_for_bullets() -> None:
-        Images._paths_to_images["enemy_bullet"] = [
-            r".\app\ui\spites\bullet\bullet.png"]
+        Images._paths_to_images["enemy_bullet"] = [r".\app\ui\spites\bullet\bullet.png"]
         Images._paths_to_images["player_bullet"] = [
-            r".\app\ui\spites\bullet\bullet.png"]
+            r".\app\ui\spites\bullet\bullet.png"
+        ]
 
     @staticmethod
     def get_images(entity_name: str) -> list[QImage]:

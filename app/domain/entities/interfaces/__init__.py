@@ -1,10 +1,10 @@
 from .dangerous import Dangerous
 from .entity import Entity
 from .living import Living
-from .movable import Movable
+from .movable_entity import MovableEntity
 
 __all__ = [
-    "Movable",
+    "MovableEntity",
     "Dangerous",
     "Living",
     "Entity",

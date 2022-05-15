@@ -1,7 +1,6 @@
 from app.domain.data import Direction, Size, Vector
 from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
-from app.domain.entities.details import BulletSchema
-from app.domain.entities.details.bullet import DEFAULT_DAMAGE
+from app.domain.entities.bullet import DEFAULT_DAMAGE, BulletSchema
 from app.domain.entities.tank import (
     DEFAULT_TANK_HEALTH_POINTS,
     DEFAULT_TANK_SPEED,
