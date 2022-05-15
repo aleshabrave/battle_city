@@ -3,7 +3,7 @@ from PyQt5.QtGui import QKeyEvent, QPainter
 from PyQt5.QtWidgets import QMainWindow
 
 from app.controllers.map_controller import MapController
-from app.controllers.user_controller import UserController
+from app.controllers.player_controller import PlayerController
 from app.domain.entities.interfaces import Entity
 from app.ui.sprite import Sprite
 
@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
     def __init__(
         self,
         map_controller: MapController,
-        user_controller: UserController,
+        user_controller: PlayerController,
         size: QRect,
     ):
         super().__init__()

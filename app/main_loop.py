@@ -6,7 +6,7 @@ from PyQt5.QtCore import QRect
 from PyQt5.QtWidgets import QApplication
 
 from app.controllers.game_controller import GameController
-from app.controllers.user_controller import UserController
+from app.controllers.player_controller import PlayerController
 from app.domain.data.enums import GameState
 from app.ui.main_window import MainWindow
 
@@ -27,7 +27,7 @@ class MainLoop:
         app = QApplication(argv)
         self._main_window = MainWindow(
             self._game_controller.map_controller,
-            UserController(self._game_controller.map_controller),
+            PlayerController(self._game_controller.map_controller),
             self._window_size,
         )
         self._main_window.show()

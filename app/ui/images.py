@@ -8,13 +8,21 @@ class Images:
     def _add_paths_to_images() -> None:
         Images._paths_to_images = dict()
         Images._add_paths_to_images_for_wall()
-        Images._add_paths_to_images_for_tank()
+        Images._add_paths_to_images_for_enemy()
+        Images._add_paths_to_images_for_player()
 
     @staticmethod
-    def _add_paths_to_images_for_tank() -> None:
-        Images._paths_to_images["default_tank"] = [
-            r".\app\ui\spites\tank\tank1",
-            r".\app\ui\spites\tank\tank2",
+    def _add_paths_to_images_for_player() -> None:
+        Images._paths_to_images["player_tank"] = [
+            r".\app\ui\spites\player\player1",
+            r".\app\ui\spites\player\player2",
+        ]
+
+    @staticmethod
+    def _add_paths_to_images_for_enemy() -> None:
+        Images._paths_to_images["enemy_tank"] = [
+            r".\app\ui\spites\enemy\enemy1",
+            r".\app\ui\spites\enemy\enemy2",
         ]
 
     @staticmethod
