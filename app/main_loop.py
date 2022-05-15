@@ -6,8 +6,6 @@ from PyQt5.QtCore import QRect
 from PyQt5.QtWidgets import QApplication
 
 from app.controllers.game_controller import GameController
-from app.controllers.map_controller import MapController
-from app.domain import Game
 from app.domain.data.enums import GameState
 from app.ui import UI
 
@@ -21,12 +19,15 @@ class MainLoop:
     ):
         self._game_controller = game_controller
         self._tick_duration_secs = tick_duration_secs
+        self._start_loop(window_size)
+
+    def _start_loop(self, window_size):
         app = QApplication(argv)
         self._ui = UI.UI(self._game_controller.map_controller, window_size)
-        Thread(target=self._start_loop).start()
+        Thread(target=self._main).start()
         exit(app.exec_())
 
-    def _start_loop(self) -> None:
+    def _main(self) -> None:
         while True:
             if self._game_controller.game_state == GameState.PAUSE:
                 continue
@@ -36,4 +37,5 @@ class MainLoop:
                 # но это обязанности кого-то другого нврн
                 break
             sleep(self._tick_duration_secs)
-            self._ui.move_spites()
+            self._game_controller.map_controller.update_map()
+            self._ui.update()
