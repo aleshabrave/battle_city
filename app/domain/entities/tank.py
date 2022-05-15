@@ -11,15 +11,15 @@ class Tank(Movable, Living, Entity):
     """Класс сущности танк."""
 
     def __init__(
-        self,
-        name: str,
-        location: Vector,
-        size: Size,
-        speed: int,
-        direction: Direction,
-        health_points: int,
-        bullet_schema: BulletSchema,
-    ) -> None:
+            self,
+            name: str,
+            location: Vector,
+            size: Size,
+            speed: int,
+            direction: Direction,
+            health_points: int,
+            bullet_schema: BulletSchema,
+            ) -> None:
         Entity.__init__(self, name, location, size)
         Living.__init__(self, health_points)
         Movable.__init__(self, speed, direction)
@@ -29,10 +29,17 @@ class Tank(Movable, Living, Entity):
         """Получить снаряд."""
 
         return Bullet(
-            name=self._bullet_schema.name,
-            location=self._bullet_schema.location,
-            size=self._bullet_schema.size,
-            damage=self._bullet_schema.damage,
-            speed=self._bullet_schema.speed,
-            direction=self.direction,
-        )
+                name=self._bullet_schema.name,
+                location=self._calculate_location_for_bullet(),
+                size=self._bullet_schema.size,
+                damage=self._bullet_schema.damage,
+                speed=self._bullet_schema.speed,
+                direction=self.direction,
+                )
+
+    def _calculate_location_for_bullet(self):
+        if self.direction == Direction.DOWN or self.direction == Direction.LEFT:
+            return self.location
+        if self.direction == Direction.RIGHT:
+            return self.location + Vector(self.size.width, 0)
+        return self.location + Vector(0, self.size.height)
