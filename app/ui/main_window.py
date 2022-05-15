@@ -10,11 +10,11 @@ from app.ui.sprite import Sprite
 
 class MainWindow(QMainWindow):
     def __init__(
-        self,
-        map_controller: MapController,
-        user_controller: PlayerController,
-        size: QRect,
-    ):
+            self,
+            map_controller: MapController,
+            user_controller: PlayerController,
+            size: QRect,
+            ):
         super().__init__()
         self._map_controller = map_controller
         self._user_controller = user_controller
@@ -23,7 +23,10 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("background-color: black;")
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        self._user_controller.handle_event(event)
+        self._user_controller.handle_press_key(event)
+
+    def keyReleaseEvent(self, event: QKeyEvent) -> None:
+        self._user_controller.handle_release_key(event)
 
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
