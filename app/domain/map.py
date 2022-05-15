@@ -33,7 +33,9 @@ class Map:
         """Получить соседа по локации."""
 
         for neighbour in self.entities:
-            if id(entity) != id(neighbour) and Entity.are_intersected(entity, neighbour):
+            if id(entity) != id(neighbour) and Entity.are_intersected(
+                entity, neighbour
+            ):
                 return neighbour
 
     def check_out_of_bounds(self, entity: Entity) -> bool:

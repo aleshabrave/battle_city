@@ -1,6 +1,7 @@
-from .interfaces import Living, Entity
-from app.domain.data import Vector, Size
+from app.domain.data import Size, Vector
 from app.domain.interfaces import Observable
+
+from .interfaces import Entity, Living
 
 DEFAULT_CASTLE_HEALTH_POINTS = 3
 

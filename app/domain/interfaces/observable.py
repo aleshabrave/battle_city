@@ -1,5 +1,6 @@
+from typing import Any, Callable, Dict, List, Tuple
+
 from .observer import Observer
-from typing import List, Callable, Dict, Tuple, Any
 
 
 class Observable:
