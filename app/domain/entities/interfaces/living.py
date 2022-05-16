@@ -1,4 +1,7 @@
-class Living:
+from app.domain.interfaces import Observable
+
+
+class Living(Observable):
     """Абстрактный класс объектов, у которых есть запрос прочности."""
 
     def __init__(self, health_points: int):
@@ -8,6 +11,7 @@ class Living:
             )
         self.health_points = health_points
 
+    @Observable.notify
     def take_damage(self, damage: int) -> None:
         """Принять урон."""
         if damage <= 0:

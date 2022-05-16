@@ -28,12 +28,6 @@ class Size:
     width: int
     height: int
 
-    @staticmethod
-    def one() -> "Size":
-        """Получить единичный размер."""
-
-        return Size(1, 1)
-
     def __mul__(self, scalar: int) -> "Size":
         """Умножить на скаляр."""
         width = self.width * scalar
@@ -42,4 +36,6 @@ class Size:
 
     def __floordiv__(self, scalar: int) -> "Size":
         """Поделить на скаляр."""
-        return Size(self.width // scalar, self.height // scalar)
+        width = (abs(self.width) // abs(scalar)) * (self.width // abs(self.width)) * (scalar // abs(scalar))
+        height = (abs(self.height) // abs(scalar)) * (self.height // abs(self.height)) * (scalar // abs(scalar))
+        return Size(width, height)

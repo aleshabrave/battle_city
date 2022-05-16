@@ -1,4 +1,5 @@
-from typing import Any, Callable, Dict, List, Tuple
+from functools import wraps
+from typing import Any, Callable, List
 
 from .observer import Observer
 
@@ -22,11 +23,12 @@ class Observable:
     def notify(method: Callable) -> Callable:
         """Оповестить наблюдателей."""
 
-        def wrapper(*args: Tuple, **kwargs: Dict) -> Any:
+        @wraps(method)
+        def wrapper(*args, **kwargs) -> Any:
             result = method(*args, **kwargs)
-
-            for observer in args[0].observers:
-                observer.handle_event(method.__name__)
+            if isinstance(args[0], Observable):
+                for observer in args[0].observers:
+                    observer.handle_event()
             return result
 
         return wrapper

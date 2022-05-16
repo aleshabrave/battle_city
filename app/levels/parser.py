@@ -42,7 +42,7 @@ def _get_player_tank(location: Vector) -> Tank:
     """Создать танк игрока."""
     bullet_schema = BulletSchema(
         name="player_bullet",
-        size=Size.one() * (CELL_SIZE // 4),
+        size=Size(1, 1) * (CELL_SIZE // 4),
         damage=DEFAULT_DAMAGE,
         speed=DEFAULT_TANK_SPEED * 2,
         location=location,
@@ -52,7 +52,7 @@ def _get_player_tank(location: Vector) -> Tank:
         name="player_tank",
         speed=0,
         direction=Direction.DOWN,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
         bullet_schema=bullet_schema,
