@@ -1,6 +1,6 @@
 import pytest
 
-from app.domain.data import Vector, Size
+from app.domain.data import Size, Vector
 
 
 class TestsVector:
@@ -27,17 +27,6 @@ class TestsVector:
 
 
 class TestsSize:
-    @pytest.mark.parametrize(
-        "size,scalar,expected",
-        [(Size(1, 1), 54, Size(0, 0)), (Size(500, 1000), 500, Size(1, 2))],
-    )
-    def test__floordiv(self, size, scalar, expected):
-        assert size // scalar == expected
-
-    def test__floordiv_with_exception(self):
-        with pytest.raises(ZeroDivisionError):
-            Size(1, 1) // 0
-
     @pytest.mark.parametrize(
         "size,scalar,expected",
         [

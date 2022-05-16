@@ -1,8 +1,8 @@
+from unittest.mock import MagicMock
+
 import pytest
 
-from unittest.mock import MagicMock
 from app.domain.data.params import Size, Vector
-
 from app.domain.entities.interfaces import Entity
 
 

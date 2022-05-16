@@ -1,6 +1,6 @@
 from app.domain.data import Direction, Size, Vector
-from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
 from app.domain.entities.bullet import DEFAULT_DAMAGE, BulletSchema
+from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
 from app.domain.entities.tank import (
     DEFAULT_TANK_HEALTH_POINTS,
     DEFAULT_TANK_SPEED,
@@ -45,7 +45,6 @@ def _get_player_tank(location: Vector) -> Tank:
         size=Size(1, 1) * (CELL_SIZE // 4),
         damage=DEFAULT_DAMAGE,
         speed=DEFAULT_TANK_SPEED * 2,
-        location=location,
     )
 
     return Tank(
@@ -86,7 +85,7 @@ def _get_default_wall(location: Vector) -> Wall:
     return Wall(
         name="default_wall",
         location=location,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         health_points=DEFAULT_WALL_HEALTH_POINTS,
     )
 
@@ -97,7 +96,7 @@ def _get_default_castle(location: Vector) -> Castle:
     return Castle(
         name="default_castle",
         location=location,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         health_points=DEFAULT_CASTLE_HEALTH_POINTS,
     )
 

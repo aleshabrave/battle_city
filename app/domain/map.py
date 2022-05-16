@@ -18,12 +18,10 @@ class Map:
 
     def get_entity_by_name(self, name: str) -> List[Entity]:
         """Получить сущность по имени."""
-
         return [entity for entity in self.entities if entity.name == name]
 
     def get_entity_by_location(self, point: Vector) -> Entity:
         """Получить сущность по координатам."""
-
         for entity in self.entities:
             if (
                 0 <= point.x - entity.location.x <= entity.size.width
@@ -33,7 +31,6 @@ class Map:
 
     def get_neighbour(self, entity: Entity) -> Entity:
         """Получить соседа по локации."""
-
         for neighbour in self.entities:
             if id(entity) != id(neighbour) and Entity.are_intersected(
                 entity, neighbour
@@ -42,7 +39,6 @@ class Map:
 
     def check_out_of_bounds(self, entity: Entity) -> bool:
         """Проверить выход сущности за пределы карты."""
-
         return (
             entity.location.x < 0
             or entity.location.x + entity.size.width >= self.size.width
@@ -52,10 +48,8 @@ class Map:
 
     def add_entity(self, entity: Entity) -> None:
         """Добавить сущность."""
-
         self.entities.append(entity)
 
     def remove_entity(self, entity: Entity) -> None:
         """Удалить сущность."""
-
         self.entities.remove(entity)

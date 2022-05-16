@@ -28,14 +28,21 @@ class Tank(MovableEntity, Living):
         """Получить снаряд."""
         return Bullet(
             name=self._bullet_schema.name,
-            location=self._get_location_for_bullet(),
+            location=self._get_bullet_location(),
             size=self._bullet_schema.size,
             damage=self._bullet_schema.damage,
             speed=self._bullet_schema.speed,
             direction=self.direction,
         )
 
-    def _get_location_for_bullet(self) -> Vector:
+    def _get_bullet_location(self) -> Vector:
         """Получить локацию пули."""
-        shift = self.size // 2
-        return Vector(self.location.x + shift.width, self.location.y + shift.height)
+        if self.direction == Direction.DOWN:
+            shift = Vector(self.size.width // 2, -1)
+        elif self.direction == Direction.UP:
+            shift = Vector(self.size.width // 2, self.size.height + 1)
+        elif self.direction == Direction.RIGHT:
+            shift = Vector(self.size.width + 1, self.size.height // 2)
+        else:
+            shift = Vector(-1, self.size.height // 2)
+        return self.location + shift

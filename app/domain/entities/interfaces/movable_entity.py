@@ -1,6 +1,6 @@
 import math
 
-from app.domain.data import Direction, Vector, Size
+from app.domain.data import Direction, Size, Vector
 from app.domain.entities.interfaces import Entity
 
 

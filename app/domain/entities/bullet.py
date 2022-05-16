@@ -10,7 +10,6 @@ DEFAULT_DAMAGE = 1
 @dataclass
 class BulletSchema:
     name: str
-    location: Vector
     size: Size
     damage: int
     speed: int

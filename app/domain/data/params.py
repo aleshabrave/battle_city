@@ -33,9 +33,3 @@ class Size:
         width = self.width * scalar
         height = self.height * scalar
         return Size(width, height)
-
-    def __floordiv__(self, scalar: int) -> "Size":
-        """Поделить на скаляр."""
-        width = (abs(self.width) // abs(scalar)) * (self.width // abs(self.width)) * (scalar // abs(scalar))
-        height = (abs(self.height) // abs(scalar)) * (self.height // abs(self.height)) * (scalar // abs(scalar))
-        return Size(width, height)

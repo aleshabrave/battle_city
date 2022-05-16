@@ -2,8 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.domain.data import Size, Vector, Direction
-
+from app.domain.data import Direction, Size, Vector
 from app.domain.entities.interfaces import MovableEntity
 
 
