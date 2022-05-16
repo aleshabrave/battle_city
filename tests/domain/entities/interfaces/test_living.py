@@ -24,20 +24,21 @@ class TestsLiving:
     def test__is_available(self, health_points, expected):
         living_obj = MagicMock(health_points=health_points)
 
-        result = Living.is_available(living_obj)
+        actual = Living.is_available(living_obj)
 
-        assert result == expected
+        assert actual == expected
 
     @pytest.mark.parametrize(
-        "start_health_points,damage,result_health_points",
+        "health_points,damage,expected",
         [(1, 2, 0), (1, 1, 0), (2, 1, 1)],
     )
-    def test__take_damage(self, start_health_points, damage, result_health_points):
-        living_obj = Living(health_points=start_health_points)
+    def test__take_damage(self, health_points, damage, expected):
+        living_obj = MagicMock(health_points=health_points)
 
-        living_obj.take_damage(damage)
+        Living.take_damage(living_obj, damage)
 
-        assert living_obj.health_points == result_health_points
+        living_obj.notify.assert_called_once_with()
+        assert living_obj.health_points == expected
 
     @pytest.mark.parametrize("damage", [-1, 0])
     def test__take_damage_with_exception(self, damage):

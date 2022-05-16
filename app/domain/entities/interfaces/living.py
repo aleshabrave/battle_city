@@ -11,12 +11,12 @@ class Living(Observable):
             )
         self.health_points = health_points
 
-    @Observable.notify
     def take_damage(self, damage: int) -> None:
         """Принять урон."""
         if damage <= 0:
             raise ValueError(f"Damage should be positive, but damage={damage}")
         self.health_points = max(0, self.health_points - damage)
+        self.notify()
 
     def is_available(self) -> bool:
         """Проверить жив ли объект."""

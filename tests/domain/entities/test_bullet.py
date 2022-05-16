@@ -1,4 +1,4 @@
-from app.domain.data import Vector, Size, Direction
+from app.domain.data import Direction, Size, Vector
 from app.domain.entities import Bullet
 
 

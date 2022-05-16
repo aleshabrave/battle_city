@@ -28,7 +28,7 @@ class MapController:
         for entity in self.map.entities:
             if not isinstance(entity, Dangerous):
                 continue
-            neighbour = self.map.get_neighbour(entity)
+            neighbour = self.map.get_neighbours(entity)
             if neighbour is not None and isinstance(neighbour, Living):
                 neighbour.take_damage(entity.damage)
                 if not neighbour.is_available():
@@ -43,7 +43,7 @@ class MapController:
             if not isinstance(entity, MovableEntity):
                 continue
 
-            neighbour = self.map.get_neighbour(entity)
+            neighbour = self.map.get_neighbours(entity)
             if isinstance(neighbour, Living):
                 self._resolve_move_conflict_with_other_entity(entity, neighbour)
 

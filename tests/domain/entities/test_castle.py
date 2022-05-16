@@ -1,4 +1,4 @@
-from app.domain.data import Vector, Size
+from app.domain.data import Size, Vector
 from app.domain.entities import Castle
 
 

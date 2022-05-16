@@ -35,7 +35,7 @@ def parse_map(filename: str) -> Map:
         if player is None:
             raise Exception("Танк игрока не найден")
 
-    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities, player)
+    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities)
 
 
 def _get_player_tank(location: Vector) -> Tank:
@@ -62,17 +62,16 @@ def _get_enemy_tank(location: Vector) -> Tank:
     """Создать вражеский танк."""
     bullet_schema = BulletSchema(
         name="enemy_bullet",
-        size=Size.one() * (CELL_SIZE // 4),
+        size=Size(1, 1) * (CELL_SIZE // 4),
         damage=DEFAULT_DAMAGE,
         speed=DEFAULT_TANK_SPEED * 2,
-        location=location,
     )
 
     return Tank(
         name="enemy_tank",
         speed=DEFAULT_TANK_SPEED,
         direction=Direction.DOWN,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
         bullet_schema=bullet_schema,

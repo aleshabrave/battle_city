@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any, Callable, List
+from typing import Any, Callable
 
 from .observer import Observer
 
@@ -7,28 +7,17 @@ from .observer import Observer
 class Observable:
     """Абстрактный класс наблюдаемых объектов."""
 
-    observers: List[Observer] = []
+    _observers: set[Observer] = set()
 
     def add_observer(self, observer: Observer) -> None:
         """Добавить наблюдателя."""
-
-        self.observers.append(observer)
+        self._observers.add(observer)
 
     def remove_observer(self, observer: Observer) -> None:
         """Удалить наблюдателя."""
+        self._observers.remove(observer)
 
-        self.observers.remove(observer)
-
-    @staticmethod
-    def notify(method: Callable) -> Callable:
+    def notify(self) -> None:
         """Оповестить наблюдателей."""
-
-        @wraps(method)
-        def wrapper(*args, **kwargs) -> Any:
-            result = method(*args, **kwargs)
-            if isinstance(args[0], Observable):
-                for observer in args[0].observers:
-                    observer.handle_event()
-            return result
-
-        return wrapper
+        for observer in self._observers:
+            observer.handle_event()

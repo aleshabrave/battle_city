@@ -51,13 +51,18 @@ class TestsEntity:
                 True,
             ),
             (
-                Entity("", Vector(1, 2), Size(1, 1)),
-                Entity("", Vector(3, 1), Size(1, 1)),
+                Entity("", Vector(1, 2), Size(2, 2)),
+                Entity("", Vector(3, 1), Size(2, 2)),
                 False,
             ),
             (
                 Entity("", Vector(1, 1), Size(1, 2)),
                 Entity("", Vector(1, 4), Size(1, 2)),
+                False,
+            ),
+            (
+                Entity("", Vector(1, 1), Size(1, 1)),
+                Entity("", Vector(0, 0), Size(1, 1)),
                 False,
             ),
         ],
