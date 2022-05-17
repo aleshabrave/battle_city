@@ -12,8 +12,8 @@ class GameState(Enum):
 
 
 @unique
-class GameResult(Enum):
-    """Результаты игры."""
+class LevelResult(Enum):
+    """Результат уровня."""
 
     WIN = 1
     LOSE = 2

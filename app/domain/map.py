@@ -1,9 +1,7 @@
 from dataclasses import dataclass
-from typing import List
 
 from app.domain.data import Size, Vector
 from app.domain.entities.interfaces import Entity
-from app.domain.entities.tank import Tank
 
 CELL_SIZE = 10
 
@@ -13,49 +11,60 @@ class Map:
     """Класс карты."""
 
     size: Size
-    entities: List[Entity]
-    player: Tank
+    _entities: dict[str, set[Entity]]
 
-    def get_entity_by_name(self, name: str) -> List[Entity]:
+    def get_entities(self) -> set[Entity]:
+        """Получить все сущности."""
+        entities = set()
+        for value in self._entities.values():
+            entities |= value
+        return entities
+
+    def get_entities_by_name(self, name: str) -> set[Entity]:
         """Получить сущность по имени."""
+        return self._entities.get(name, None)
 
-        return [entity for entity in self.entities if entity.name == name]
-
-    def get_entity_by_location(self, point: Vector) -> Entity:
+    def get_entities_by_location(self, point: Vector) -> set[Entity]:
         """Получить сущность по координатам."""
-
-        for entity in self.entities:
+        entities = set()
+        for entity in self.get_entities():
             if (
                 0 <= point.x - entity.location.x <= entity.size.width
                 and 0 <= point.y - entity.location.y <= entity.size.height
             ):
-                return entity
+                entities.add(entity)
+        if len(entities) != 0:
+            return entities
 
-    def get_neighbour(self, entity: Entity) -> Entity:
+    def get_neighbours(self, entity: Entity) -> set[Entity]:
         """Получить соседа по локации."""
-
-        for neighbour in self.entities:
+        entities = set()
+        for neighbour in self.get_entities():
             if id(entity) != id(neighbour) and Entity.are_intersected(
                 entity, neighbour
             ):
-                return neighbour
+                entities.add(neighbour)
+        if len(entities) != 0:
+            return entities
 
     def check_out_of_bounds(self, entity: Entity) -> bool:
         """Проверить выход сущности за пределы карты."""
-
         return (
             entity.location.x < 0
-            or entity.location.x + entity.size.width >= self.size.width
+            or entity.location.x + entity.size.width > self.size.width
             or entity.location.y < 0
-            or entity.location.y + entity.size.height >= self.size.height
+            or entity.location.y + entity.size.height > self.size.height
         )
 
     def add_entity(self, entity: Entity) -> None:
         """Добавить сущность."""
-
-        self.entities.append(entity)
+        if entity.name not in self._entities:
+            self._entities[entity.name] = set()
+        self._entities[entity.name].add(entity)
 
     def remove_entity(self, entity: Entity) -> None:
         """Удалить сущность."""
-
-        self.entities.remove(entity)
+        if entity.name in self._entities:
+            self._entities[entity.name].remove(entity)
+            if len(self._entities[entity.name]) == 0:
+                self._entities.pop(entity.name)

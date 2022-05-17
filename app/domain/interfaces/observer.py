@@ -5,5 +5,5 @@ class Observer:
     """Интерфейс наблюдателя."""
 
     @abstractmethod
-    def handle_event(self, name: str) -> None:
+    def handle_event(self) -> None:
         """Обработать событие."""

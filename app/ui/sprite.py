@@ -4,7 +4,7 @@ from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QImage, QTransform
 
 from app.domain.data import Direction
-from app.domain.entities.interfaces import Entity, Movable
+from app.domain.entities.interfaces import Entity, MovableEntity
 from app.ui.images import Images
 
 
@@ -17,7 +17,7 @@ class Sprite:
     @property
     def next_image(self) -> QImage:
         image = self._images[self._number_of_current_image]
-        if isinstance(self._entity, Movable) and self._entity.is_moving():
+        if isinstance(self._entity, MovableEntity) and self._entity.is_moving():
             self._shift_number_of_current_image()
         return image.transformed(self._get_rotation_angle())
 
@@ -36,7 +36,7 @@ class Sprite:
     def _get_rotation_angle(self) -> QTransform:
         angle = (
             math.degrees(self._entity.direction.value + Direction.UP.value)
-            if isinstance(self._entity, Movable)
+            if isinstance(self._entity, MovableEntity)
             else 0
         )
         return QTransform().rotate(angle)

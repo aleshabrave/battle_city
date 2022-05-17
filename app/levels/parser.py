@@ -1,7 +1,6 @@
 from app.domain.data import Direction, Size, Vector
+from app.domain.entities.bullet import DEFAULT_DAMAGE, BulletSchema
 from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
-from app.domain.entities.details import BulletSchema
-from app.domain.entities.details.bullet import DEFAULT_DAMAGE
 from app.domain.entities.tank import (
     DEFAULT_TANK_HEALTH_POINTS,
     DEFAULT_TANK_SPEED,
@@ -36,24 +35,23 @@ def parse_map(filename: str) -> Map:
         if player is None:
             raise Exception("Танк игрока не найден")
 
-    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities, player)
+    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities)
 
 
 def _get_player_tank(location: Vector) -> Tank:
     """Создать танк игрока."""
     bullet_schema = BulletSchema(
         name="player_bullet",
-        size=Size.one() * (CELL_SIZE // 4),
+        size=Size(1, 1) * (CELL_SIZE // 4),
         damage=DEFAULT_DAMAGE,
         speed=DEFAULT_TANK_SPEED * 2,
-        location=location,
     )
 
     return Tank(
         name="player_tank",
         speed=0,
         direction=Direction.DOWN,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
         bullet_schema=bullet_schema,
@@ -64,17 +62,16 @@ def _get_enemy_tank(location: Vector) -> Tank:
     """Создать вражеский танк."""
     bullet_schema = BulletSchema(
         name="enemy_bullet",
-        size=Size.one() * (CELL_SIZE // 4),
+        size=Size(1, 1) * (CELL_SIZE // 4),
         damage=DEFAULT_DAMAGE,
         speed=DEFAULT_TANK_SPEED * 2,
-        location=location,
     )
 
     return Tank(
         name="enemy_tank",
         speed=DEFAULT_TANK_SPEED,
         direction=Direction.DOWN,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,
         bullet_schema=bullet_schema,
@@ -87,7 +84,7 @@ def _get_default_wall(location: Vector) -> Wall:
     return Wall(
         name="default_wall",
         location=location,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         health_points=DEFAULT_WALL_HEALTH_POINTS,
     )
 
@@ -98,7 +95,7 @@ def _get_default_castle(location: Vector) -> Castle:
     return Castle(
         name="default_castle",
         location=location,
-        size=Size.one() * CELL_SIZE,
+        size=Size(1, 1) * CELL_SIZE,
         health_points=DEFAULT_CASTLE_HEALTH_POINTS,
     )
 

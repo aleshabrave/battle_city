@@ -1,45 +1,56 @@
 from app.domain.data import Direction, Size, Vector
-from app.domain.entities.details.bullet import Bullet, BulletSchema
+from app.domain.entities.bullet import Bullet, BulletSchema
 
-from .interfaces import Entity, Living, Movable
+from .interfaces import Living, MovableEntity
 
 DEFAULT_TANK_SPEED = 2
 DEFAULT_TANK_HEALTH_POINTS = 3
 
 
-class Tank(Movable, Living, Entity):
+class Tank(MovableEntity, Living):
     """Класс сущности танк."""
 
     def __init__(
-            self,
-            name: str,
-            location: Vector,
-            size: Size,
-            speed: int,
-            direction: Direction,
-            health_points: int,
-            bullet_schema: BulletSchema,
-            ) -> None:
-        Entity.__init__(self, name, location, size)
+        self,
+        name: str,
+        location: Vector,
+        size: Size,
+        speed: int,
+        direction: Direction,
+        health_points: int,
+        bullet_schema: BulletSchema,
+    ) -> None:
         Living.__init__(self, health_points)
-        Movable.__init__(self, speed, direction)
+        MovableEntity.__init__(self, name, location, size, speed, direction)
         self._bullet_schema = bullet_schema
 
     def get_bullet(self) -> Bullet:
         """Получить снаряд."""
-
         return Bullet(
-                name=self._bullet_schema.name,
-                location=self._calculate_location_for_bullet(),
-                size=self._bullet_schema.size,
-                damage=self._bullet_schema.damage,
-                speed=self._bullet_schema.speed,
-                direction=self.direction,
-                )
+            name=self._bullet_schema.name,
+            location=self._get_bullet_location(self._bullet_schema.size),
+            size=self._bullet_schema.size,
+            damage=self._bullet_schema.damage,
+            speed=self._bullet_schema.speed,
+            direction=self.direction,
+        )
 
-    def _calculate_location_for_bullet(self):
-        if self.direction == Direction.DOWN or self.direction == Direction.LEFT:
-            return self.location
-        if self.direction == Direction.RIGHT:
-            return self.location + Vector(self.size.width, 0)
-        return self.location + Vector(0, self.size.height)
+    def _get_bullet_location(self, bullet_size: Size) -> Vector:
+        """Получить локацию пули."""
+        if self.direction == Direction.DOWN:
+            shift = Vector(
+                self.size.width // 2 - bullet_size.width // 2, -1 - bullet_size.height
+            )
+        elif self.direction == Direction.UP:
+            shift = Vector(
+                self.size.width // 2 - bullet_size.width // 2, self.size.height + 1
+            )
+        elif self.direction == Direction.RIGHT:
+            shift = Vector(
+                self.size.width + 1, self.size.height // 2 - bullet_size.height // 2
+            )
+        else:
+            shift = Vector(
+                -1 - bullet_size.width, self.size.height // 2 - bullet_size.height // 2
+            )
+        return self.location + shift

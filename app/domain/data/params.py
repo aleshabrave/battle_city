@@ -28,12 +28,6 @@ class Size:
     width: int
     height: int
 
-    @staticmethod
-    def one() -> "Size":
-        """Получить единичный размер."""
-
-        return Size(1, 1)
-
     def __mul__(self, scalar: int) -> "Size":
         """Умножить на скаляр."""
         width = self.width * scalar

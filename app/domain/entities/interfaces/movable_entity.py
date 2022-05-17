@@ -1,14 +1,16 @@
 import math
 
-from app.domain.data import Direction, Vector
+from app.domain.data import Direction, Size, Vector
+from app.domain.entities.interfaces import Entity
 
 
-class Movable:
+class MovableEntity(Entity):
     """Абстрактный класс объектов, которые могут двигаться."""
 
-    def __init__(self, speed: int, direction: Direction):
-        """Конструктор абстрактного класса MoveableEntity."""
-
+    def __init__(
+        self, name: str, location: Vector, size: Size, speed: int, direction: Direction
+    ):
+        super().__init__(name, location, size)
         self.speed = speed
         self.direction = direction
 
@@ -22,4 +24,5 @@ class Movable:
         return shift
 
     def is_moving(self) -> bool:
+        """Проверка на движение."""
         return self.speed != 0

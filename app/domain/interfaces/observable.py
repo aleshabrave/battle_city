@@ -1,4 +1,5 @@
-from typing import Any, Callable, Dict, List, Tuple
+from functools import wraps
+from typing import Any, Callable
 
 from .observer import Observer
 
@@ -6,27 +7,17 @@ from .observer import Observer
 class Observable:
     """Абстрактный класс наблюдаемых объектов."""
 
-    observers: List[Observer] = []
+    _observers: set[Observer] = set()
 
     def add_observer(self, observer: Observer) -> None:
         """Добавить наблюдателя."""
-
-        self.observers.append(observer)
+        self._observers.add(observer)
 
     def remove_observer(self, observer: Observer) -> None:
         """Удалить наблюдателя."""
+        self._observers.remove(observer)
 
-        self.observers.remove(observer)
-
-    @staticmethod
-    def notify(method: Callable) -> Callable:
+    def notify(self) -> None:
         """Оповестить наблюдателей."""
-
-        def wrapper(*args: Tuple, **kwargs: Dict) -> Any:
-            result = method(*args, **kwargs)
-
-            for observer in args[0].observers:
-                observer.handle_event(method.__name__)
-            return result
-
-        return wrapper
+        for observer in self._observers:
+            observer.handle_event()
