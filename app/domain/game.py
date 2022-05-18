@@ -10,7 +10,7 @@ class Game:
 
     _levels: list[Level]
     _current_level_index: int = 0
-    state: GameState = GameState.PAUSE
+    state: GameState = GameState.PLAY
 
     def get_current_level(self) -> Level:
         """Получить текущий уровень."""

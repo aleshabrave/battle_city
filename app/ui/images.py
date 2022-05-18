@@ -11,10 +11,11 @@ class Images:
         Images._add_paths_to_images_for_enemy()
         Images._add_paths_to_images_for_player()
         Images._add_paths_to_images_for_bullets()
+        Images._add_paths_to_images_for_castle()
 
     @staticmethod
     def _add_paths_to_images_for_player() -> None:
-        Images._paths_to_images["player_tank"] = [
+        Images._paths_to_images["player"] = [
             r".\app\ui\spites\player\player1",
             r".\app\ui\spites\player\player2",
         ]
@@ -29,6 +30,10 @@ class Images:
     @staticmethod
     def _add_paths_to_images_for_wall() -> None:
         Images._paths_to_images["default_wall"] = [r".\app\ui\spites\wall\wall.png"]
+
+    @staticmethod
+    def _add_paths_to_images_for_castle() -> None:
+        Images._paths_to_images["castle"] = [r".\app\ui\spites\castle\castle.png"]
 
     @staticmethod
     def _add_paths_to_images_for_bullets() -> None:

@@ -16,7 +16,6 @@ def parse_map(filename: str) -> Map:
     with open(filename, "r") as file:
         column_counter = 0
         entities = []
-        player = None
 
         for line in file:
             line = line.replace("\n", "")
@@ -28,14 +27,13 @@ def parse_map(filename: str) -> Map:
                     location = Vector(idx, column_counter) * CELL_SIZE
                     entity = mapper(location)
                     entities.append(entity)
-                    if entity.name == "player_tank":
-                        if player is not None:
-                            raise Exception("Найдено более одного танка игрока")
-                        player = entity
-        if player is None:
-            raise Exception("Танк игрока не найден")
 
-    return Map(Size((idx + 1), column_counter) * CELL_SIZE, entities)
+    map_ = Map(Size((idx + 1), column_counter) * CELL_SIZE, {})
+
+    for entity in entities:
+        map_.add_entity(entity)
+
+    return map_
 
 
 def _get_player_tank(location: Vector) -> Tank:
@@ -48,7 +46,7 @@ def _get_player_tank(location: Vector) -> Tank:
     )
 
     return Tank(
-        name="player_tank",
+        name="player",
         speed=0,
         direction=Direction.DOWN,
         size=Size(1, 1) * CELL_SIZE,
@@ -59,7 +57,7 @@ def _get_player_tank(location: Vector) -> Tank:
 
 
 def _get_enemy_tank(location: Vector) -> Tank:
-    """Создать вражеский танк."""
+    """Получить вражеский танк."""
     bullet_schema = BulletSchema(
         name="enemy_bullet",
         size=Size(1, 1) * (CELL_SIZE // 4),
@@ -78,8 +76,8 @@ def _get_enemy_tank(location: Vector) -> Tank:
     )
 
 
-def _get_default_wall(location: Vector) -> Wall:
-    """Получить дефолтную стену."""
+def _get_wall(location: Vector) -> Wall:
+    """Получить стену."""
 
     return Wall(
         name="default_wall",
@@ -89,11 +87,11 @@ def _get_default_wall(location: Vector) -> Wall:
     )
 
 
-def _get_default_castle(location: Vector) -> Castle:
-    """Получить дефолтную базу."""
+def _get_castle(location: Vector) -> Castle:
+    """Получить базу."""
 
     return Castle(
-        name="default_castle",
+        name="castle",
         location=location,
         size=Size(1, 1) * CELL_SIZE,
         health_points=DEFAULT_CASTLE_HEALTH_POINTS,
@@ -102,8 +100,8 @@ def _get_default_castle(location: Vector) -> Castle:
 
 object_mapper = {
     "P": _get_player_tank,
-    "W": _get_default_wall,
+    "W": _get_wall,
     "T": _get_enemy_tank,
-    "C": _get_default_castle,
+    "C": _get_castle,
     ".": None,
 }
