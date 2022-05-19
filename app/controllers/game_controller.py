@@ -23,6 +23,7 @@ class GameController:
     _win_observer: Observer = None
     _lose_observer: Observer = None
     _ais: list[StupidAI] = None
+    _random: Random = Random(1234)
 
     def __post_init__(self):
         self.update_controller(init_flag=True)
@@ -53,7 +54,8 @@ class GameController:
             self._ais.append(
                 StupidAI(
                     level.map_,
-                    TankController(enemy, _cd=2)
+                    TankController(enemy, _cd=2),
+                    _seed=Random(self._random.randint(1, 1337)),
                 )
             )
 

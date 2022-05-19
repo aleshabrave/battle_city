@@ -46,13 +46,12 @@ class Bullet(Dangerous, MovableEntity):
 
         for neighbour in neighbours:
             if isinstance(neighbour, Living):
-                if (
-                    self.name == "player_bullet"
-                    and neighbour.name == "player"
-                    or self.name == "enemy_bullet"
-                    and neighbour.name == "enemy_tank"
-                ):
+                if self.name == "player_bullet" and neighbour.name == "player":
                     continue
+                if self.name == "enemy_bullet" and neighbour.name == "enemy_tank":
+                    map_.remove_entity(self)
+                    return
+
                 if not self.name == "player_bullet" or not neighbour.name == "castle":
                     neighbour.take_damage(self.damage)
 

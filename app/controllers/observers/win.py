@@ -18,9 +18,16 @@ class WinObserver(Observer):
 
     def handle_event(self) -> None:
         """Обработать событие."""
-        some_enemies = any(map(lambda e: e.is_available(), self._enemies))
+        available_enemies: set[Living] = set()
 
-        if some_enemies:
+        for enemy in self._enemies:
+            if enemy.is_available():
+                available_enemies.add(enemy)
+            else:
+                enemy.remove_observer(self)
+
+        self._enemies = available_enemies
+        if self._enemies:
             return
 
         self._game_controller.game.get_current_level().state = LevelResult.WIN

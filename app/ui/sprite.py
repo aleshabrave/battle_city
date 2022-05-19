@@ -24,8 +24,10 @@ class Sprite:
     @property
     def coordinates(self) -> QRect:
         return QRect(
-            QPoint(self._entity.location.x, self._entity.location.y) * self._basic_transition,
-            QSize(self._entity.size.width, self._entity.size.height) * self._basic_transition
+            QPoint(self._entity.location.x, self._entity.location.y)
+            * self._basic_transition,
+            QSize(self._entity.size.width, self._entity.size.height)
+            * self._basic_transition,
         )
 
     def _init_images(self) -> None:

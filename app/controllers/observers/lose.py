@@ -21,6 +21,10 @@ class LoseObserver(Observer):
 
         for entity in self._entities:
             if not entity.is_available():
+                self._clear()
                 self._game_controller.game.get_current_level().state = LevelResult.LOSE
-                self._game_controller.update_controller()
                 return
+
+    def _clear(self) -> None:
+        for entity in self._entities:
+            entity.remove_observer(self)
