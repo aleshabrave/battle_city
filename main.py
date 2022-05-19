@@ -11,7 +11,7 @@ def main():
     game = Game(level_generator.generate())
     game_controller = GameController(game)
 
-    MainLoop(game_controller, 0.1, QRect(QPoint(0, 0), QPoint(256, 256))).start()
+    MainLoop(game_controller, 0.1, QRect(QPoint(0, 0), QPoint(512, 512))).start()
 
 
 if __name__ == "__main__":

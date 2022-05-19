@@ -53,7 +53,7 @@ class GameController:
             self._ais.append(
                 StupidAI(
                     level.map_,
-                    TankController(enemy),
+                    TankController(enemy, _cd=2)
                 )
             )
 

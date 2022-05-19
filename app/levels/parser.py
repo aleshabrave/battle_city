@@ -68,7 +68,7 @@ def _get_enemy_tank(location: Vector) -> Tank:
     return Tank(
         name="enemy_tank",
         speed=DEFAULT_TANK_SPEED,
-        direction=Direction.DOWN,
+        direction=Direction.UP,
         size=Size(1, 1) * CELL_SIZE,
         location=location,
         health_points=DEFAULT_TANK_HEALTH_POINTS,

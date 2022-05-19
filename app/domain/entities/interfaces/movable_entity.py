@@ -17,11 +17,6 @@ class MovableEntity(Entity):
 
     def update_location(self, map_: Map) -> None:
         """Обновить позицию сущности."""
-        if self.name == "player":
-            print(self.location)
-            print(self.speed)
-            print(self.direction)
-
         shift = Vector(
             int(math.cos(self.direction.value) * self.speed),
             int(math.sin(self.direction.value) * self.speed),
@@ -39,7 +34,7 @@ class MovableEntity(Entity):
         conflict_entities = list(
             filter(
                 lambda x: id(x) != id(self),
-                map_.get_entities_by_location(self.location, shift_size),
+                map_.get_entities_by_location(new_location, shift_size),
             )
         )
 
@@ -58,13 +53,13 @@ class MovableEntity(Entity):
                 conflict_entities,
                 key=lambda z: abs(z.location.y + z.size.height - self.location.y),
             )
-            new_location.y = entity.location.y + entity.size.height
+            new_location.y = entity.location.y + entity.size.height + 1
         elif self.direction == Direction.LEFT:
             entity = min(
                 conflict_entities,
                 key=lambda z: abs(z.location.x + z.size.width - self.location.x),
             )
-            new_location.x = entity.location.x + entity.size.width
+            new_location.x = entity.location.x + entity.size.width + 1
         elif self.direction == Direction.RIGHT:
             entity = min(
                 conflict_entities,

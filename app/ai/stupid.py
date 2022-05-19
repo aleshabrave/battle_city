@@ -14,8 +14,8 @@ class StupidAI:
     _map: Map
     _enemy: TankController
     _seed: Random = Random(1234)
-    _cd: int = 1
-    _previous_move_datetime: datetime = datetime.now()
+    _cd: int = 4
+    _previous_move_dttm: datetime = datetime.now()
     _directions: list[Direction] = None
 
     def __post_init__(self):
@@ -29,12 +29,12 @@ class StupidAI:
     def make_move(self) -> None:
         if not self._enemy._tank.is_available():
             return
+        self._enemy.fire(self._map)
 
-        if (datetime.now() - self._previous_move_datetime).seconds.real < self._cd:
+        if (datetime.now() - self._previous_move_dttm).seconds.real < self._cd:
             return
 
         next_direction = self._directions[self._seed.randint(0, 3)]
         self._enemy.update_direction(next_direction)
-        self._previous_move_datetime = datetime.now()
-        self._enemy.fire(self._map)
+        self._previous_move_dttm = datetime.now()
         self._seed = Random(self._seed.randint(1, 1337))

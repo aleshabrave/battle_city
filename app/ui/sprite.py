@@ -1,6 +1,6 @@
 import math
 
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, QRect, QSize
 from PyQt5.QtGui import QImage, QTransform
 
 from app.domain.data import Direction
@@ -9,7 +9,7 @@ from app.ui.images import Images
 
 
 class Sprite:
-    def __init__(self, entity: Entity, basic_transition: int = 1):
+    def __init__(self, entity: Entity, basic_transition: int = 2):
         self._entity = entity
         self._init_images()
         self._basic_transition = basic_transition
@@ -22,10 +22,10 @@ class Sprite:
         return image.transformed(self._get_rotation_angle())
 
     @property
-    def coordinates(self) -> QPoint:
-        return QPoint(
-            self._basic_transition * self._entity.location.x,
-            self._basic_transition * self._entity.location.y,
+    def coordinates(self) -> QRect:
+        return QRect(
+            QPoint(self._entity.location.x, self._entity.location.y) * self._basic_transition,
+            QSize(self._entity.size.width, self._entity.size.height) * self._basic_transition
         )
 
     def _init_images(self) -> None:

@@ -4,7 +4,8 @@ from app.levels import parser
 
 class LevelGenerator:
     def generate(self) -> list[Level]:
-        map_ = parser.parse_map("./levels/empty_level.txt")
-        level = Level(map_)
+        levels = []
+        for i in range(3):
+            levels.append(Level(parser.parse_map(f"./levels/level_{i}.txt")))
 
-        return [level]
+        return levels

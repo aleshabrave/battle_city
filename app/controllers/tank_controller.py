@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 from app.domain.data.enums import Direction
 from app.domain.entities.tank import Tank
@@ -10,6 +11,8 @@ class TankController:
     """Контроллер для сущности Tank"""
 
     _tank: Tank
+    _previous_shot_dttm: datetime = datetime.now()
+    _cd: int = 1
 
     def update_speed(self, speed: int) -> None:
         """Обновить скорость танка."""
@@ -25,4 +28,8 @@ class TankController:
 
     def fire(self, map_: Map) -> None:
         """Выстрелить."""
+        if (datetime.now() - self._previous_shot_dttm).seconds.real < self._cd:
+            return
+
+        self._previous_shot_dttm = datetime.now()
         map_.add_entity(self._tank.get_bullet())
