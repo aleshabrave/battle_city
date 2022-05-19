@@ -101,7 +101,7 @@ def _get_castle(location: Vector) -> Castle:
 object_mapper = {
     "P": _get_player_tank,
     "W": _get_wall,
-    "T": _get_enemy_tank,
+    "E": _get_enemy_tank,
     "C": _get_castle,
     ".": None,
 }

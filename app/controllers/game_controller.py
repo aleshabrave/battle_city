@@ -1,9 +1,12 @@
 from dataclasses import dataclass
+from random import Random
 
+from app.ai.stupid import StupidAI
 from app.controllers.map_controller import MapController
 from app.controllers.observers.lose import LoseObserver
 from app.controllers.observers.win import WinObserver
 from app.controllers.player_controller import PlayerController
+from app.controllers.tank_controller import TankController
 from app.domain.data.enums import GameState
 from app.domain.game import Game
 from app.domain.interfaces import Observer
@@ -19,6 +22,7 @@ class GameController:
     _map_controller: MapController = None
     _win_observer: Observer = None
     _lose_observer: Observer = None
+    _ais: list[StupidAI] = None
 
     def __post_init__(self):
         self.update_controller(init_flag=True)
@@ -40,9 +44,18 @@ class GameController:
         player.add_observer(self._lose_observer)
         castle.add_observer(self._lose_observer)
 
-        enemies = level.map_.get_entities_by_name("enemy")
+        enemies = level.map_.get_entities_by_name("enemy_tank")
         if not enemies:
             return
+
+        self._ais = []
+        for enemy in enemies:
+            self._ais.append(
+                StupidAI(
+                    level.map_,
+                    TankController(enemy),
+                )
+            )
 
         self._win_observer = WinObserver(enemies, self)
 
@@ -51,6 +64,11 @@ class GameController:
 
     def make_move(self) -> None:
         self._map_controller.update_map()
+        if not self._ais:
+            return
+
+        for ai in self._ais:
+            ai.make_move()
 
     def get_current_map(self) -> Map:
         return self.game.get_current_level().map_
