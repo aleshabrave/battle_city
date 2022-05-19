@@ -4,7 +4,7 @@ from app.domain.data import Size, Vector
 from app.domain.data.params import are_intersected
 from app.domain.entities.interfaces import Entity
 
-CELL_SIZE = 8
+CELL_SIZE = 16
 
 
 @dataclass
@@ -23,9 +23,8 @@ class Map:
 
     def get_entities_by_name(self, name: str) -> set[Entity]:
         """Получить сущность по имени."""
-        entities = self._entities.get(name, None)
-        if entities is not None:
-            return entities.copy()
+        entities = self._entities.get(name, set())
+        return entities.copy()
 
     def get_entities_by_location(self, point: Vector, size: Size) -> set[Entity]:
         """Получить сущность по координатам."""
@@ -35,8 +34,7 @@ class Map:
                 source=(point, size), other=(entity.location, entity.size)
             ):
                 entities.add(entity)
-        if len(entities) != 0:
-            return entities
+        return entities
 
     def get_neighbours(self, entity: Entity) -> set[Entity]:
         """Получить соседа по локации."""
@@ -47,8 +45,7 @@ class Map:
                 other=(neighbour.location, neighbour.size),
             ):
                 entities.add(neighbour)
-        if len(entities) != 0:
-            return entities
+        return entities
 
     def check_out_of_bounds(self, location: Vector, size: Size) -> bool:
         """Проверить выход сущности за пределы карты."""

@@ -28,7 +28,7 @@ def parse_map(filename: str) -> Map:
                     entity = mapper(location)
                     entities.append(entity)
 
-    map_ = Map(Size((idx + 1), column_counter) * CELL_SIZE, {})
+    map_ = Map(Size((idx + 1), column_counter + 1) * CELL_SIZE, {})
 
     for entity in entities:
         map_.add_entity(entity)

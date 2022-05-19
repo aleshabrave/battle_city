@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from datetime import datetime
+from random import Random
 
 from app.controllers.tank_controller import TankController
 from app.domain.data import Direction
-from random import Random
-
 from app.domain.map import Map
 
 
@@ -24,10 +23,13 @@ class StupidAI:
             Direction.UP,
             Direction.DOWN,
             Direction.RIGHT,
-            Direction.LEFT
+            Direction.LEFT,
         ]
 
     def make_move(self) -> None:
+        if not self._enemy._tank.is_available():
+            return
+
         if (datetime.now() - self._previous_move_datetime).seconds.real < self._cd:
             return
 

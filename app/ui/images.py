@@ -16,30 +16,34 @@ class Images:
     @staticmethod
     def _add_paths_to_images_for_player() -> None:
         Images._paths_to_images["player"] = [
-            r".\app\ui\spites\player\player1",
-            r".\app\ui\spites\player\player2",
+            r".\app\ui\spites\player\player1_16x16",
+            r".\app\ui\spites\player\player2_16x16",
         ]
 
     @staticmethod
     def _add_paths_to_images_for_enemy() -> None:
         Images._paths_to_images["enemy_tank"] = [
-            r".\app\ui\spites\enemy\enemy1",
-            r".\app\ui\spites\enemy\enemy2",
+            r".\app\ui\spites\enemy\enemy1_16x16",
+            r".\app\ui\spites\enemy\enemy2_16x16",
         ]
 
     @staticmethod
     def _add_paths_to_images_for_wall() -> None:
-        Images._paths_to_images["default_wall"] = [r".\app\ui\spites\wall\wall.png"]
+        Images._paths_to_images["default_wall"] = [
+            r".\app\ui\spites\wall\wall_16x16.png"
+        ]
 
     @staticmethod
     def _add_paths_to_images_for_castle() -> None:
-        Images._paths_to_images["castle"] = [r".\app\ui\spites\castle\castle.png"]
+        Images._paths_to_images["castle"] = [r".\app\ui\spites\castle\castle16x16.png"]
 
     @staticmethod
     def _add_paths_to_images_for_bullets() -> None:
-        Images._paths_to_images["enemy_bullet"] = [r".\app\ui\spites\bullet\bullet.png"]
+        Images._paths_to_images["enemy_bullet"] = [
+            r".\app\ui\spites\bullet\enemy_bullet_4x4.png"
+        ]
         Images._paths_to_images["player_bullet"] = [
-            r".\app\ui\spites\bullet\bullet.png"
+            r".\app\ui\spites\bullet\player_bullet_4x4.png"
         ]
 
     @staticmethod

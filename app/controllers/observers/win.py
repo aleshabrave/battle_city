@@ -18,11 +18,7 @@ class WinObserver(Observer):
 
     def handle_event(self) -> None:
         """Обработать событие."""
-        some_enemies = False
-
-        for enemy in self._enemies:
-            if not enemy.is_available():
-                some_enemies = True
+        some_enemies = any(map(lambda e: e.is_available(), self._enemies))
 
         if some_enemies:
             return

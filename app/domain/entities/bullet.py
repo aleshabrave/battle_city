@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from app.domain.data import Size, Vector
 from app.domain.data.enums import Direction
-from app.domain.entities.interfaces import Dangerous, MovableEntity, Living
+from app.domain.entities.interfaces import Dangerous, Living, MovableEntity
 from app.domain.map import Map
 
 DEFAULT_DAMAGE = 1

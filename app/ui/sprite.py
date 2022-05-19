@@ -9,7 +9,7 @@ from app.ui.images import Images
 
 
 class Sprite:
-    def __init__(self, entity: Entity, basic_transition: int = 8):
+    def __init__(self, entity: Entity, basic_transition: int = 1):
         self._entity = entity
         self._init_images()
         self._basic_transition = basic_transition

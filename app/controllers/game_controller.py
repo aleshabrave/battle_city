@@ -7,7 +7,7 @@ from app.controllers.observers.lose import LoseObserver
 from app.controllers.observers.win import WinObserver
 from app.controllers.player_controller import PlayerController
 from app.controllers.tank_controller import TankController
-from app.domain.data.enums import GameState
+from app.domain.data.enums import GameState, LevelResult
 from app.domain.game import Game
 from app.domain.interfaces import Observer
 from app.domain.map import Map
@@ -63,6 +63,9 @@ class GameController:
             enemy.add_observer(self._win_observer)
 
     def make_move(self) -> None:
+        if self.game.get_current_level().state != LevelResult.UNDEFINED:
+            return
+
         self._map_controller.update_map()
         if not self._ais:
             return
