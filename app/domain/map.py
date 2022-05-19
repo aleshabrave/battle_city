@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
 from app.domain.data import Size, Vector
+from app.domain.data.params import are_intersected
 from app.domain.entities.interfaces import Entity
 
-CELL_SIZE = 10
+CELL_SIZE = 16
 
 
 @dataclass
@@ -22,38 +23,37 @@ class Map:
 
     def get_entities_by_name(self, name: str) -> set[Entity]:
         """Получить сущность по имени."""
-        return self._entities.get(name, None)
+        entities = self._entities.get(name, set())
+        return entities.copy()
 
-    def get_entities_by_location(self, point: Vector) -> set[Entity]:
+    def get_entities_by_location(self, point: Vector, size: Size) -> set[Entity]:
         """Получить сущность по координатам."""
         entities = set()
         for entity in self.get_entities():
-            if (
-                0 <= point.x - entity.location.x <= entity.size.width
-                and 0 <= point.y - entity.location.y <= entity.size.height
+            if are_intersected(
+                source=(point, size), other=(entity.location, entity.size)
             ):
                 entities.add(entity)
-        if len(entities) != 0:
-            return entities
+        return entities
 
     def get_neighbours(self, entity: Entity) -> set[Entity]:
         """Получить соседа по локации."""
         entities = set()
         for neighbour in self.get_entities():
-            if id(entity) != id(neighbour) and Entity.are_intersected(
-                entity, neighbour
+            if id(entity) != id(neighbour) and are_intersected(
+                source=(entity.location, entity.size),
+                other=(neighbour.location, neighbour.size),
             ):
                 entities.add(neighbour)
-        if len(entities) != 0:
-            return entities
+        return entities
 
-    def check_out_of_bounds(self, entity: Entity) -> bool:
+    def check_out_of_bounds(self, location: Vector, size: Size) -> bool:
         """Проверить выход сущности за пределы карты."""
         return (
-            entity.location.x < 0
-            or entity.location.x + entity.size.width > self.size.width
-            or entity.location.y < 0
-            or entity.location.y + entity.size.height > self.size.height
+            location.x < 0
+            or location.x + size.width > self.size.width
+            or location.y < 0
+            or location.y + size.height > self.size.height
         )
 
     def add_entity(self, entity: Entity) -> None:

@@ -3,7 +3,7 @@ from app.domain.entities.bullet import Bullet, BulletSchema
 
 from .interfaces import Living, MovableEntity
 
-DEFAULT_TANK_SPEED = 2
+DEFAULT_TANK_SPEED = 4
 DEFAULT_TANK_HEALTH_POINTS = 3
 
 

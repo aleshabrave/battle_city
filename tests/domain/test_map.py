@@ -5,6 +5,7 @@ import pytest
 from app.domain.data import Size, Vector
 from app.domain.entities.interfaces import Entity
 from app.domain.map import Map
+from tests import data
 
 
 class TestsMap:
@@ -15,7 +16,7 @@ class TestsMap:
             self._get_entity("amogus"),
         )
         map_ = Map(MagicMock(), {})
-        self._set_up_map(map_, entities)
+        data._set_up_map(map_, entities)
 
         actual = map_.get_entities()
 
@@ -36,7 +37,7 @@ class TestsMap:
 
     def _check_get_entities_by_name(self, entities, name, expected):
         map_ = Map(MagicMock(), {})
-        self._set_up_map(map_, entities)
+        data._set_up_map(map_, entities)
 
         actual = map_.get_entities_by_name(name)
 
@@ -69,7 +70,7 @@ class TestsMap:
 
     def _check_get_entities_by_location(self, entities, point, expected):
         map_ = Map(MagicMock(), {})
-        self._set_up_map(map_, entities)
+        data._set_up_map(map_, entities)
 
         actual = map_.get_entities_by_location(point)
 
@@ -104,7 +105,7 @@ class TestsMap:
 
     def _check_get_neighbours(self, entities, entity, expected):
         map_ = Map(MagicMock(), {})
-        self._set_up_map(map_, entities)
+        data._set_up_map(map_, entities)
 
         actual = map_.get_neighbours(entity)
 
@@ -124,7 +125,7 @@ class TestsMap:
     def test__check_out_of_bounds(self, location, entity_size, map_size, expected):
         entity = self._get_entity("test_name", location, entity_size)
         map_ = Map(map_size, {})
-        self._set_up_map(map_, (entity,))
+        data._set_up_map(map_, (entity,))
 
         actual = map_.check_out_of_bounds(entity)
 
@@ -152,8 +153,3 @@ class TestsMap:
     @staticmethod
     def _get_entity(name, location=None, size=None):
         return Entity(name, location, size)
-
-    @staticmethod
-    def _set_up_map(map_, entities):
-        for entity in entities:
-            map_.add_entity(entity)
