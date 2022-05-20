@@ -33,7 +33,7 @@ class TestsMap:
 
     def test__get_entities_by_name_if_no_needed_name(self):
         entities = (self._get_entity("aboba"),)
-        self._check_get_entities_by_name(entities, "amogus", None)
+        self._check_get_entities_by_name(entities, "amogus", set())
 
     def _check_get_entities_by_name(self, entities, name, expected):
         map_ = Map(MagicMock(), {})
@@ -50,7 +50,7 @@ class TestsMap:
             self._get_entity("test_name2", location=Vector(3, 3), size=Size(1, 1)),
         )
         point = Vector(2, 2)
-        self._check_get_entities_by_location(entities, point, None)
+        self._check_get_entities_by_location(entities, point, set())
 
     def test__get_entities_by_location_if_some_entities(self):
         entities = (
@@ -83,7 +83,7 @@ class TestsMap:
             self._get_entity("test_name2", location=Vector(2, 2), size=Size(1, 1)),
             entity,
         ]
-        self._check_get_neighbours(entities, entity, None)
+        self._check_get_neighbours(entities, entity, set())
 
     def test__get_neighbours_if_some_neighbours(self):
         entity = self._get_entity("test_name3", location=Vector(1, 1), size=Size(1, 1))
@@ -127,7 +127,7 @@ class TestsMap:
         map_ = Map(map_size, {})
         data._set_up_map(map_, (entity,))
 
-        actual = map_.check_out_of_bounds(entity)
+        actual = map_.check_out_of_bounds(entity.location, entity.size)
 
         assert actual == expected
         assert len(map_._entities) != 0

@@ -33,3 +33,7 @@ class TankController:
 
         self._previous_shot_dttm = datetime.now()
         map_.add_entity(self._tank.get_bullet())
+
+    @property
+    def tank(self):
+        return self._tank

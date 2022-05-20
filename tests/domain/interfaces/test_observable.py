@@ -27,7 +27,7 @@ class TestsObservable:
     def test__remove_observer_with_exception(self):
         observable_obj = Observable()
 
-        with pytest.raises(KeyError):
+        with pytest.raises(ValueError):
             observable_obj.remove_observer(observer=MagicMock())
 
     def test__notify(self):

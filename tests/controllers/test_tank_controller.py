@@ -33,7 +33,7 @@ class TestsTankController:
 
     def test__fire(self):
         map_ = MagicMock()
-        controller = TankController(_tank=MagicMock())
+        controller = TankController(_tank=MagicMock(), _cd=0)
 
         controller.fire(map_)
 

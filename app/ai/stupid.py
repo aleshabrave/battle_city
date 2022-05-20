@@ -22,15 +22,15 @@ class StupidAI:
         self._directions = [
             Direction.UP,
             Direction.UP,
-            Direction.UP,
             Direction.DOWN,
             Direction.RIGHT,
             Direction.LEFT,
         ]
 
     def make_move(self) -> None:
-        if not self._enemy._tank.is_available():
+        if not self._enemy.tank.is_available():
             return
+
         self._enemy.fire(self._map)
 
         if (datetime.now() - self._previous_move_dttm).seconds.real < self._cd:
