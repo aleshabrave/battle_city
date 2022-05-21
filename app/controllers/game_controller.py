@@ -7,7 +7,7 @@ from app.controllers.observers.lose import LoseObserver
 from app.controllers.observers.win import WinObserver
 from app.controllers.player_controller import PlayerController
 from app.controllers.tank_controller import TankController
-from app.domain.data.enums import GameState, LevelResult
+from app.domain.enums import GameState, LevelResult
 from app.domain.game import Game
 from app.domain.interfaces import Observer
 from app.domain.map import Map

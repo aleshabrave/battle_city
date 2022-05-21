@@ -1,46 +1,39 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
-from app.domain.data import Direction, Size, Vector
 from app.domain.entities import Tank
-from app.domain.entities.bullet import BulletSchema
+from app.domain.enums import Direction
+from app.domain.utils import Size, Vector
+
+
+class _ModulePatch:
+    _PATH = "app.domain.entities.tank"
+    BULLET_FACTORY = f"{_PATH}.BulletFactory"
 
 
 class TestsTank:
-    def test__init(self):
-        name = "test_name"
-        location = Vector(54, 54)
-        size = Size(1, 1)
-        speed = 1
-        direction = Direction.DOWN
-        health_points = 1
-        bullet_schema = BulletSchema("test_bullet", size, 1, speed)
+    @patch(_ModulePatch.BULLET_FACTORY, new_callable=MagicMock)
+    def test__post_init(self, factory):
+        tank_obj = MagicMock()
 
-        tank = Tank(
-            name, location, size, speed, direction, health_points, bullet_schema
-        )
+        Tank.__post_init__(tank_obj)
 
-        assert tank.name == name
-        assert tank.location == location
-        assert tank.size == size
-        assert tank.speed == speed
-        assert tank.direction == direction
-        assert tank.health_points == health_points
+        factory.assert_called_once_with(tank_obj._bullet_schema)
+        tank_obj._bullet_factory = factory.return_value
 
     def test__get_bullet(self):
-        bullet_schema = BulletSchema("test_bullet", Size(1, 2), 3, 4)
+        bullet_schema = MagicMock()
         tank_obj = MagicMock(_bullet_schema=bullet_schema)
 
         bullet = Tank.get_bullet(tank_obj)
 
-        tank_obj._get_bullet_location.assert_called_once_with(bullet_schema.size)
-        assert bullet.location == tank_obj._get_bullet_location.return_value
-        assert bullet.size == bullet_schema.size
-        assert bullet.speed == bullet_schema.speed
-        assert bullet.name == bullet_schema.name
-        assert bullet.damage == bullet_schema.damage
-        assert bullet.direction == tank_obj.direction
+        tank_obj._get_bullet_position.assert_called_once_with(bullet_schema.size)
+        tank_obj._bullet_factory.create.assert_called_once_with(
+            position=tank_obj._get_bullet_position.return_value,
+            direction=tank_obj.direction,
+        )
+        assert bullet == tank_obj._bullet_factory.create.return_value
 
     @pytest.mark.parametrize(
         "tank_location,tank_size,bullet_size,direction,expected",
@@ -55,9 +48,9 @@ class TestsTank:
         self, tank_location, tank_size, bullet_size, direction, expected
     ):
         tank_obj = MagicMock(
-            direction=direction, location=tank_location, size=tank_size
+            direction=direction, position=tank_location, size=tank_size
         )
 
-        actual = Tank._get_bullet_location(tank_obj, bullet_size)
+        actual = Tank._get_bullet_position(tank_obj, bullet_size)
 
         assert actual == expected

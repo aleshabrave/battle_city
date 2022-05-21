@@ -1,4 +1,5 @@
 from app.domain.data import Direction, Size, Vector
+from app.domain.entities.block import DEFAULT_WALL_HEALTH_POINTS, Wall
 from app.domain.entities.bullet import DEFAULT_DAMAGE, BulletSchema
 from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
 from app.domain.entities.tank import (
@@ -6,7 +7,6 @@ from app.domain.entities.tank import (
     DEFAULT_TANK_SPEED,
     Tank,
 )
-from app.domain.entities.wall import DEFAULT_WALL_HEALTH_POINTS, Wall
 from app.domain.map import CELL_SIZE, Map
 
 

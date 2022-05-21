@@ -1,16 +1,22 @@
+from dataclasses import dataclass
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeyEvent
 
+from app.constants import Default
 from app.controllers.tank_controller import TankController
-from app.domain.data import Direction
-from app.domain.entities.tank import DEFAULT_TANK_SPEED, Tank
+from app.domain.enums import Direction
 from app.domain.map import Map
 
 
+@dataclass
 class PlayerController:
-    def __init__(self, tank: Tank, map_: Map):
-        self._map: Map = map_
-        self._tank_controller = TankController(tank)
+    """Класс контроллера player."""
+
+    _map: Map
+    _tank_controller: TankController
+
+    def __post_init__(self):
         self._init_movement_keys()
 
     def _init_movement_keys(self):
@@ -29,7 +35,7 @@ class PlayerController:
         elif key == Qt.Key_X:
             self._tank_controller.fire(self._map)
         if key in self._movement_keys:
-            self._tank_controller.update_speed(DEFAULT_TANK_SPEED)
+            self._tank_controller.update_speed(Default.TANK_SPEED)
 
     def handle_release_key(self, event: QKeyEvent) -> None:
         key = event.key()
