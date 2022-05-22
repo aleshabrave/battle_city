@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional
 
 from app.domain.enums import Direction
 from app.domain.interfaces.entity import Entity
@@ -19,7 +19,7 @@ class Movable(Entity):
 
     def update_location(
         self, map_: "Map", out_of_bound_remove_flag: bool = True
-    ) -> Union[None, Entity]:
+    ) -> Optional[Entity]:
         """Обновить позицию сущности."""
         new_position = self._get_new_position()
 
@@ -27,7 +27,9 @@ class Movable(Entity):
             if out_of_bound_remove_flag:
                 map_.remove_entity(self)
             else:
-                self.position = self._resolve_out_of_bounds(new_position, map_.size)
+                self.position = self._resolve_out_of_bounds(
+                    new_position, self.size, map_.size
+                )
             return
 
         conflict_entities = self._get_conflict_entities(new_position, map_)
@@ -53,15 +55,15 @@ class Movable(Entity):
     def _get_conflict_entities(self, new_position: Vector, map_: "Map") -> list[Entity]:
         """Получить сущностей, которые могут помешать движению."""
         shift_size = Size(
-            abs(new_position.x - self.position.x) + self.size.width - 1,
-            abs(new_position.y - self.position.y) + self.size.height - 1,
+            abs(new_position.x - self.position.x) + self.size.width,
+            abs(new_position.y - self.position.y) + self.size.height,
         )
-        return list(
-            filter(
-                lambda x: id(x) != id(self),
-                map_.get_entities_by_location(new_position, shift_size),
-            )
+        entities = (
+            map_.get_entities_by_location(new_position, shift_size)
+            if self.direction == Direction.LEFT or self.direction == Direction.DOWN
+            else map_.get_entities_by_location(self.position, shift_size)
         )
+        return list(filter(lambda x: id(x) != id(self), entities))
 
     @staticmethod
     def _resolve_out_of_bounds(
@@ -86,25 +88,25 @@ class Movable(Entity):
         if self.direction == Direction.UP:
             entity = min(
                 conflict_entities,
-                key=lambda z: abs(z.location.y - self.position.y - self.size.height),
+                key=lambda z: abs(z.position.y - self.position.y - self.size.height),
             )
             self.position.y = entity.position.y - self.size.height - 1
         elif self.direction == Direction.DOWN:
             entity = min(
                 conflict_entities,
-                key=lambda z: abs(z.location.y + z.size.height - self.position.y),
+                key=lambda z: abs(z.position.y + z.size.height - self.position.y),
             )
             self.position.y = entity.position.y + entity.size.height + 1
         elif self.direction == Direction.LEFT:
             entity = min(
                 conflict_entities,
-                key=lambda z: abs(z.location.x + z.size.width - self.position.x),
+                key=lambda z: abs(z.position.x + z.size.width - self.position.x),
             )
             self.position.x = entity.position.x + entity.size.width + 1
         else:
             entity = min(
                 conflict_entities,
-                key=lambda z: abs(z.location.y + z.size.height - self.position.y),
+                key=lambda z: abs(z.position.y + z.size.height - self.position.y),
             )
             self.position.x = entity.position.x - self.size.width - 1
 
