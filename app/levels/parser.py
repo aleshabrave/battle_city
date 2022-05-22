@@ -1,13 +1,11 @@
-from app.domain.data import Direction, Size, Vector
-from app.domain.entities.block import DEFAULT_WALL_HEALTH_POINTS, Wall
-from app.domain.entities.bullet import DEFAULT_DAMAGE, BulletSchema
-from app.domain.entities.castle import DEFAULT_CASTLE_HEALTH_POINTS, Castle
-from app.domain.entities.tank import (
-    DEFAULT_TANK_HEALTH_POINTS,
-    DEFAULT_TANK_SPEED,
-    Tank,
-)
-from app.domain.map import CELL_SIZE, Map
+from typing import Callable
+
+from app.domain.entities import Tank, Block
+from app.domain.entities.bullet import BulletSchema
+from app.domain.enums import Direction
+from app.domain.map import Map
+from app.constants import Default
+from app.domain.utils import Vector, Size
 
 
 def parse_map(filename: str) -> Map:
@@ -24,84 +22,54 @@ def parse_map(filename: str) -> Map:
             for idx, obj in enumerate(line):
                 mapper = object_mapper[obj]
                 if mapper is not None:
-                    location = Vector(idx, column_counter) * CELL_SIZE
+                    location = Vector(idx, column_counter) * Default.MAP_CELL_SIZE
                     entity = mapper(location)
                     entities.append(entity)
 
-    map_ = Map(Size((idx + 1), column_counter + 1) * CELL_SIZE, {})
-
-    for entity in entities:
-        map_.add_entity(entity)
-
-    return map_
+    return Map(Size((idx + 1), column_counter + 1) * Default.MAP_CELL_SIZE, entities)
 
 
-def _get_player_tank(location: Vector) -> Tank:
-    """Создать танк игрока."""
+def _get_tank(tank_name: str, bullet_name: str) -> Callable:
+    """Получить танк."""
     bullet_schema = BulletSchema(
-        name="player_bullet",
-        size=Size(1, 1) * (CELL_SIZE // 4),
-        damage=DEFAULT_DAMAGE,
-        speed=DEFAULT_TANK_SPEED * 2,
+        name=bullet_name,
+        size=Size(1, 1) * (Default.MAP_CELL_SIZE // 4),
+        damage=Default.BULLET_DAMAGE,
+        speed=Default.TANK_SPEED * 2,
     )
 
-    return Tank(
-        name="player",
-        speed=0,
-        direction=Direction.DOWN,
-        size=Size(1, 1) * CELL_SIZE,
-        location=location,
-        health_points=DEFAULT_TANK_HEALTH_POINTS,
-        bullet_schema=bullet_schema,
-    )
+    def wrapper(position: Vector) -> Tank:
+        return Tank(
+            name=tank_name,
+            speed=0,
+            direction=Direction.DOWN,
+            size=Size(1, 1) * Default.MAP_CELL_SIZE,
+            position=position,
+            health_points=Default.TANK_HEALTH_POINTS,
+            _bullet_schema=bullet_schema,
+        )
+
+    return wrapper
 
 
-def _get_enemy_tank(location: Vector) -> Tank:
-    """Получить вражеский танк."""
-    bullet_schema = BulletSchema(
-        name="enemy_bullet",
-        size=Size(1, 1) * (CELL_SIZE // 4),
-        damage=DEFAULT_DAMAGE,
-        speed=DEFAULT_TANK_SPEED * 2,
-    )
+def _get_block(name: str, hps: int) -> Callable:
+    """Получить блок."""
 
-    return Tank(
-        name="enemy_tank",
-        speed=DEFAULT_TANK_SPEED,
-        direction=Direction.UP,
-        size=Size(1, 1) * CELL_SIZE,
-        location=location,
-        health_points=DEFAULT_TANK_HEALTH_POINTS,
-        bullet_schema=bullet_schema,
-    )
+    def wrapper(position: Vector) -> Block:
+        return Block(
+            name=name,
+            position=position,
+            size=Size(1, 1) * Default.MAP_CELL_SIZE,
+            health_points=hps,
+        )
 
-
-def _get_wall(location: Vector) -> Wall:
-    """Получить стену."""
-
-    return Wall(
-        name="default_wall",
-        location=location,
-        size=Size(1, 1) * CELL_SIZE,
-        health_points=DEFAULT_WALL_HEALTH_POINTS,
-    )
-
-
-def _get_castle(location: Vector) -> Castle:
-    """Получить базу."""
-
-    return Castle(
-        name="castle",
-        location=location,
-        size=Size(1, 1) * CELL_SIZE,
-        health_points=DEFAULT_CASTLE_HEALTH_POINTS,
-    )
+    return wrapper
 
 
 object_mapper = {
-    "P": _get_player_tank,
-    "W": _get_wall,
-    "E": _get_enemy_tank,
-    "C": _get_castle,
+    "P": _get_tank("player", "player_bullet"),
+    "W": _get_block("default_wall", Default.WALL_HEALTH_POINTS),
+    "E": _get_tank("enemy_tank", "enemy_bullet"),
+    "C": _get_block("castle", Default.CASTLE_HEALTH_POINTS),
     ".": None,
 }
