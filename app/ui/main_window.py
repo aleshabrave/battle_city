@@ -3,7 +3,7 @@ from PyQt5.QtGui import QKeyEvent, QPainter
 from PyQt5.QtWidgets import QMainWindow
 
 from app.controllers.game_controller import GameController
-from app.domain.entities.interfaces import Entity
+from app.domain.interfaces import Entity
 from app.ui.sprite import Sprite
 
 
@@ -27,14 +27,14 @@ class MainWindow(QMainWindow):
 
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
-        for entity in self.game_controller.get_current_map().get_entities():
+        for entity in self.game_controller.get_current_level().map_.entities:
             sprite = self._get_else_create_sprite(entity)
             painter.drawImage(sprite.coordinates, sprite.next_image)
         self._delete_old_sprites()
 
     def _init_sprites(self) -> None:
         self._sprites: dict[Entity, Sprite] = dict()
-        for entity in self.game_controller.get_current_map().get_entities():
+        for entity in self.game_controller.get_current_level().map_.entities:
             self._sprites[entity] = Sprite(entity)
 
     def _get_else_create_sprite(self, entity: Entity) -> Sprite:
@@ -47,6 +47,6 @@ class MainWindow(QMainWindow):
 
     def _delete_old_sprites(self) -> None:
         new: dict[Entity, Sprite] = dict()
-        for entity in self.game_controller.get_current_map().get_entities():
+        for entity in self.game_controller.get_current_level().map_.entities:
             new[entity] = self._sprites[entity]
         self._sprites = new

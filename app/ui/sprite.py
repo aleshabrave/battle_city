@@ -3,8 +3,8 @@ import math
 from PyQt5.QtCore import QPoint, QRect, QSize
 from PyQt5.QtGui import QImage, QTransform
 
-from app.domain.data import Direction
-from app.domain.entities.interfaces import Entity, MovableEntity
+from app.domain.enums import Direction
+from app.domain.interfaces import Entity, Movable
 from app.ui.images import Images
 
 
@@ -17,14 +17,14 @@ class Sprite:
     @property
     def next_image(self) -> QImage:
         image = self._images[self._number_of_current_image]
-        if isinstance(self._entity, MovableEntity) and self._entity.is_moving():
+        if isinstance(self._entity, Movable) and self._entity.is_moving():
             self._shift_number_of_current_image()
         return image.transformed(self._get_rotation_angle())
 
     @property
     def coordinates(self) -> QRect:
         return QRect(
-            QPoint(self._entity.location.x, self._entity.location.y)
+            QPoint(self._entity.position.x, self._entity.position.y)
             * self._basic_transition,
             QSize(self._entity.size.width, self._entity.size.height)
             * self._basic_transition,
@@ -38,7 +38,7 @@ class Sprite:
     def _get_rotation_angle(self) -> QTransform:
         angle = (
             math.degrees(self._entity.direction.value + Direction.UP.value)
-            if isinstance(self._entity, MovableEntity)
+            if isinstance(self._entity, Movable)
             else 0
         )
         return QTransform().rotate(angle)

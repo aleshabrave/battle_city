@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from app.domain.enums import Direction
-from app.domain.interfaces import Movable, Entity
+from app.domain.interfaces import Entity, Movable
 from app.domain.utils import Size, Vector
 
 

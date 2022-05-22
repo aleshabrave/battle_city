@@ -8,7 +8,6 @@ class GameState(Enum):
 
     FINISHED = 1
     PLAY = 2
-    PAUSE = 3
 
 
 @unique

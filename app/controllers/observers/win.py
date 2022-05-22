@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from app.domain.data import LevelResult
-from app.domain.entities.interfaces import Living
-from app.domain.interfaces import Observer
+from app.domain.enums import LevelResult
+from app.domain.interfaces import Observer, Living
 
 if TYPE_CHECKING:
     from app.controllers.game_controller import GameController
@@ -11,18 +10,18 @@ if TYPE_CHECKING:
 
 @dataclass
 class WinObserver(Observer):
-    """Класс наблюдателя за поражением."""
+    """Класс наблюдателя за победой."""
 
-    _enemies: set[Living]
+    _enemies: list[Living]
     _game_controller: "GameController"
 
     def handle_event(self) -> None:
         """Обработать событие."""
-        available_enemies: set[Living] = set()
+        available_enemies: list[Living] = []
 
         for enemy in self._enemies:
             if enemy.is_available():
-                available_enemies.add(enemy)
+                available_enemies.append(enemy)
             else:
                 enemy.remove_observer(self)
 

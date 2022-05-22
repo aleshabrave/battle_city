@@ -6,7 +6,7 @@ from app.domain.interfaces import Living, Movable
 from app.domain.utils import Size, Vector
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Tank(Movable, Living):
     """Класс сущности танк."""
 

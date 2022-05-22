@@ -6,7 +6,7 @@ from app.domain.map import Map
 from app.domain.utils import Size, Vector
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class BulletSchema:
     name: str
     size: Size
@@ -34,7 +34,7 @@ class Bullet(Movable, Dangerous):
             map_.remove_entity(self)
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class BulletFactory:
     """Класс фабрики снарядов."""
 

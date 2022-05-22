@@ -1,14 +1,16 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from app.domain.interfaces import Movable
-from app.domain.map import Map
 
+if TYPE_CHECKING:
+    from app.domain.map import Map
 
 @dataclass
 class MapController:
     """Класс контроллера Map."""
 
-    _map: Map
+    _map: "Map"
 
     def update_map(self) -> None:
         """Обновить состояние карты."""

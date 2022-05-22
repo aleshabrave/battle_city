@@ -30,7 +30,7 @@ class TestsGame:
         with pytest.raises(IndexError):
             game.get_current_level()
 
-    @pytest.mark.parametrize("count,expected", [(1, [True]), (3, [True, False, False])])
+    @pytest.mark.parametrize("count,expected", [(1, [True]), (3, [True, True, False])])
     def test__next_level(self, count, expected):
         levels = [MagicMock(), MagicMock()]
         game = Game(levels)
@@ -40,4 +40,4 @@ class TestsGame:
             actual.append(game.next_level())
 
         assert actual == expected
-        assert game._current_level_index == count - expected.count(False)
+        assert game._current_level_index == count - expected.count(False) - 1

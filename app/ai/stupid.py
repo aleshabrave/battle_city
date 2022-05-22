@@ -3,7 +3,7 @@ from datetime import datetime
 from random import Random
 
 from app.controllers.tank_controller import TankController
-from app.domain.data import Direction
+from app.domain.enums import Direction
 from app.domain.map import Map
 
 

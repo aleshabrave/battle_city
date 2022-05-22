@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Vector:
     """Класс вектора."""
 
@@ -21,7 +21,7 @@ class Vector:
         return Vector(x, y)
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Size:
     """Класс размера."""
 

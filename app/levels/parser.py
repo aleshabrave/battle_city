@@ -1,11 +1,10 @@
 from typing import Callable
 
-from app.domain.entities import Tank, Block
-from app.domain.entities.bullet import BulletSchema
+from app.constants import Default
+from app.domain.entities import Block, BulletSchema, Tank
 from app.domain.enums import Direction
 from app.domain.map import Map
-from app.constants import Default
-from app.domain.utils import Vector, Size
+from app.domain.utils import Size, Vector
 
 
 def parse_map(filename: str) -> Map:

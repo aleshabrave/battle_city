@@ -1,11 +1,12 @@
-from app.db.models import postgr_db, GameModel
+from contextlib import contextmanager
+
+from app.db.models import GameModel, postgr_db
 
 
+@contextmanager
 def on_app_start():
-    if not postgr_db.connect():
-        raise ValueError("Bad connection with db, check your env.json.")
-
-    with postgr_db.connection_context():
-        postgr_db.create_tables([GameModel])
-
-    postgr_db.close()
+    try:
+        with postgr_db.connection_context():
+            postgr_db.create_tables([GameModel])
+    finally:
+        yield postgr_db.close()
