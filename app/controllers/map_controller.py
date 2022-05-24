@@ -6,6 +6,7 @@ from app.domain.interfaces import Movable
 if TYPE_CHECKING:
     from app.domain.map import Map
 
+
 @dataclass
 class MapController:
     """Класс контроллера Map."""

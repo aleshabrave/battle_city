@@ -121,7 +121,7 @@ class GameController:
         castle.add_observer(self._lose_observer)
 
     def _update_win_logic(self) -> None:
-        """"Обновить логику победы."""
+        """ "Обновить логику победы."""
         enemies = self.get_current_level().map_.get_entities_by_name("enemy_tank")
 
         self._ais = []

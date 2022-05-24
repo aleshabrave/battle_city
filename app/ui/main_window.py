@@ -1,52 +1,25 @@
-from PyQt5.QtCore import QRect
-from PyQt5.QtGui import QKeyEvent, QPainter
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QStackedWidget, QWidget
 
-from app.controllers.game_controller import GameController
-from app.domain.interfaces import Entity
-from app.ui.sprite import Sprite
+from app.constants import Default
+from app.ui.widgets.menu import MenuWidget
 
 
 class MainWindow(QMainWindow):
-    def __init__(
-        self,
-        game_controller: GameController,
-        size: QRect,
-    ):
-        super().__init__()
-        self.game_controller = game_controller
-        self._init_sprites()
-        self.setGeometry(size)
-        self.setStyleSheet("background-color: black;")
+    def __init__(self, size: QSize, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Battle city")
+        self.setWindowIcon(QIcon(Default.PATH_TO_ICON))
+        self.setFixedSize(size)
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        self.game_controller.player_controller.handle_press_key(event)
+        self.widgets = QStackedWidget(self)
+        self.initWidgets(size)
 
-    def keyReleaseEvent(self, event: QKeyEvent) -> None:
-        self.game_controller.player_controller.handle_release_key(event)
+    def initWidgets(self, size):
+        self.widgets.resize(size)
+        menu = MenuWidget(self, QWidget())
+        self.widgets.addWidget(menu.widget)
 
-    def paintEvent(self, event) -> None:
-        painter = QPainter(self)
-        for entity in self.game_controller.get_current_level().map_.entities:
-            sprite = self._get_else_create_sprite(entity)
-            painter.drawImage(sprite.coordinates, sprite.next_image)
-        self._delete_old_sprites()
-
-    def _init_sprites(self) -> None:
-        self._sprites: dict[Entity, Sprite] = dict()
-        for entity in self.game_controller.get_current_level().map_.entities:
-            self._sprites[entity] = Sprite(entity)
-
-    def _get_else_create_sprite(self, entity: Entity) -> Sprite:
-        try:
-            sprite = self._sprites[entity]
-        except KeyError:
-            self._sprites[entity] = Sprite(entity)
-            sprite = self._sprites[entity]
-        return sprite
-
-    def _delete_old_sprites(self) -> None:
-        new: dict[Entity, Sprite] = dict()
-        for entity in self.game_controller.get_current_level().map_.entities:
-            new[entity] = self._sprites[entity]
-        self._sprites = new
+    def display(self, idx: int):
+        self.widgets.setCurrentIndex(idx)
