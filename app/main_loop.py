@@ -29,7 +29,7 @@ class MainLoop:
         exit(app.exec_())
 
     def _main(self) -> None:
-        self._game_controller.start()
+        self._game_controller.run()
         while True:
             sleep(self._tick_duration_secs)
             self._main_window.update()

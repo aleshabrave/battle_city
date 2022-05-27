@@ -9,4 +9,5 @@ def on_app_start():
         with postgr_db.connection_context():
             postgr_db.create_tables([GameModel])
     finally:
-        yield postgr_db.close()
+        yield
+        postgr_db.close()

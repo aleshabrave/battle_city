@@ -6,8 +6,8 @@ from app.constants import Default
 from app.domain.enums import Direction
 
 if TYPE_CHECKING:
-    from app.domain.map import Map
     from app.domain.entities.tank import Tank
+    from app.domain.map import Map
 
 
 @dataclass

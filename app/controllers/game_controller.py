@@ -1,20 +1,19 @@
 import time
 from dataclasses import dataclass
-from threading import Thread, Event
 from typing import TYPE_CHECKING
 
 from app.ai.stupid import StupidAI
+from app.controllers.map_controller import MapController
 from app.controllers.observers.lose import LoseObserver
 from app.controllers.observers.win import WinObserver
+from app.controllers.tank_controller import TankController
 from app.domain import Level
-from app.domain.enums import LevelResult
+from app.domain.enums import GameState
 from app.domain.game import Game
 from app.domain.interfaces import Observer
-from app.controllers.map_controller import MapController
-from app.controllers.tank_controller import TankController
+from app.controllers.player_controller import PlayerController
 
 if TYPE_CHECKING:
-    from app.controllers import PlayerController
     from app.levels.generator import GameGenerator
 
 
@@ -25,43 +24,27 @@ class GameController:
     _timer: float
     _game_generator: "GameGenerator"
     game: Game = None
-    player_controller: "PlayerController" = None
-    _pause: Event = None
-    _game_thread: Thread = None
-    _update: Event = None
-    _update_thread: Thread = None
+    player_controller: PlayerController = None
+    pause: bool = False
+    update: bool = False
     _map_controller: MapController = None
     _win_observer: Observer = None
     _lose_observer: Observer = None
     _ais: list[StupidAI] = None
 
-    def __post_init__(self):
-        self._game_thread = Thread(target=self._handle_game, daemon=True)
-        self._pause = Event()
-        self._update_thread = Thread(target=self._handle_update, daemon=True)
-        self._update = Event()
-
-    def start(self) -> None:
+    def run(self):
         """Запустить игру."""
-        self._game_thread.run()
-
-    def unpause(self) -> None:
-        """Снять с паузы."""
-        self._pause.set()
-
-    def pause(self) -> None:
-        """Поставить на паузу."""
-        self._pause.clear()
-
-    def _handle_game(self):
-        """Обработчик игры."""
         while True:
-            self._pause.wait()
-            self.make_move()
+            if self.pause:
+                continue
 
-            if self.game.get_current_level().state != LevelResult.UNDEFINED:
-                self._pause.clear()
-                self._update.set()
+            if self.update and self.game.next_level():
+                self._update_inner_controllers()
+                self._update_win_logic()
+                self._update_lose_logic()
+                self.update = False
+
+            self.make_move()
 
             time.sleep(self._timer)
 
@@ -81,19 +64,7 @@ class GameController:
                 return
 
         self.game = self._game_generator.generate()
-
-    def _handle_update(self) -> None:
-        """Обработчик внутреннего состояния контроллера."""
-        while True:
-            self._update.wait()
-
-            if self.game.next_level():
-                self._update_inner_controllers()
-                self._update_win_logic()
-                self._update_lose_logic()
-
-            self._pause.set()
-            self._update.clear()
+        self.update = True
 
     def save(self) -> None:
         """Сохранить игру."""

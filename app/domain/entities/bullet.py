@@ -14,7 +14,7 @@ class BulletSchema:
     speed: int
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Bullet(Movable, Dangerous):
     """Класс снаряда."""
 
