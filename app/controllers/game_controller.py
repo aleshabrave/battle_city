@@ -39,10 +39,10 @@ class GameController:
                 continue
 
             if self.update and self.game.next_level():
+                self.update = False
                 self._update_inner_controllers()
                 self._update_win_logic()
                 self._update_lose_logic()
-                self.update = False
             elif self.update and not self.game.next_level():
                 self.game.state = GameState.FINISHED
                 break
@@ -95,7 +95,7 @@ class GameController:
         castle.add_observer(self._lose_observer)
 
     def _update_win_logic(self) -> None:
-        """ "Обновить логику победы."""
+        """Обновить логику победы."""
         enemies = self.get_current_level().map_.get_entities_by_name("enemy_tank")
 
         self._ais = []

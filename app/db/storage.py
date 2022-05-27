@@ -18,4 +18,4 @@ class GameStorage:
     @staticmethod
     def put(username: str, game: Game) -> None:
         """Положить игру."""
-        GameModel.create(username=username, backup=game)
+        GameModel.insert(username=username, backup=game)
