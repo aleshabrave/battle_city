@@ -1,17 +1,30 @@
-from PyQt5.QtCore import QPoint, QRect
+import sys
+import traceback
 
-from app.controllers.game_controller import GameController
-from app.domain.game import Game
-from app.levels.generator import LevelGenerator
-from app.main_loop import MainLoop
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QApplication, QMessageBox
+
+from app.ui.main_window import MainWindow
+
+
+def log_uncaught_exceptions(ex_cls, ex, tb):
+    text = "{}: {}:\n".format(ex_cls.__name__, ex)
+
+    text += "".join(traceback.format_tb(tb))
+
+    print(text)
+    QMessageBox.critical(None, "Error", text)
+
+    sys.exit()
 
 
 def main():
-    level_generator = LevelGenerator()
-    game = Game(level_generator.generate())
-    game_controller = GameController(game)
+    sys.excepthook = log_uncaught_exceptions
 
-    MainLoop(game_controller, 0.1, QRect(QPoint(0, 0), QPoint(512, 512))).start()
+    app = QApplication(sys.argv)
+    win = MainWindow(QSize(512, 512))
+    win.show()
+    sys.exit(app.exec_())
 
 
 if __name__ == "__main__":

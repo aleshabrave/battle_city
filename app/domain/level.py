@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.domain.data.enums import LevelResult
+from app.domain.enums import LevelResult
 from app.domain.map import Map
 
 

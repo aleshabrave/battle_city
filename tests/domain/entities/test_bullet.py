@@ -1,21 +1,77 @@
-from app.domain.data import Direction, Size, Vector
-from app.domain.entities import Bullet
+from unittest.mock import MagicMock, call, patch
+
+import pytest
+
+from app.domain.entities.bullet import Bullet, BulletFactory
+from app.domain.interfaces import Living
+
+
+class _ModulePatch:
+    _PATH = "app.domain.entities.bullet"
+    MOVABLE = f"{_PATH}.Movable"
 
 
 class TestsBullet:
-    def test__init(self):
-        name = "test_name"
-        location = Vector(54, 54)
-        size = Size(1, 1)
-        speed = 1
-        direction = Direction.DOWN
-        damage = 1
+    @patch(_ModulePatch.MOVABLE, new_callable=MagicMock)
+    def test__update_location_if_no_entity_to_damage(self, movable):
+        map_ = MagicMock()
+        bullet_obj = MagicMock()
+        movable.update_location.return_value = None
 
-        bullet = Bullet(name, location, size, damage, speed, direction)
+        Bullet.update_location(bullet_obj, map_)
 
-        assert bullet.name == name
-        assert bullet.location == location
-        assert bullet.size == size
-        assert bullet.damage == damage
-        assert bullet.speed == speed
+        movable.update_location.assert_called_once_with(
+            bullet_obj, map_=map_, out_of_bound_remove_flag=True
+        )
+
+    @pytest.mark.parametrize("is_available", [False, True])
+    @patch(_ModulePatch.MOVABLE, new_callable=MagicMock)
+    def test__update_location_if_some_entity_to_damage(self, movable, is_available):
+        map_ = MagicMock()
+        bullet_obj = MagicMock()
+        entity = MagicMock(
+            is_available=MagicMock(return_value=is_available), spec=Living
+        )
+        movable.update_location.return_value = entity
+
+        Bullet.update_location(bullet_obj, map_)
+
+        movable.update_location.assert_called_once_with(
+            bullet_obj, map_=map_, out_of_bound_remove_flag=True
+        )
+        bullet_obj.do_damage.assert_called_once_with(entity)
+        if is_available:
+            map_.remove_entity.assert_called_once_with(bullet_obj)
+        else:
+            map_.remove_entity.assert_has_calls([call(entity), call(bullet_obj)])
+
+    @patch(_ModulePatch.MOVABLE, new_callable=MagicMock)
+    def test__update_location_if_some_entity_is_other_bullet(self, movable):
+        map_ = MagicMock()
+        bullet_obj = MagicMock()
+        entity = MagicMock(spec=Bullet)
+        movable.update_location.return_value = entity
+
+        Bullet.update_location(bullet_obj, map_)
+
+        movable.update_location.assert_called_once_with(
+            bullet_obj, map_=map_, out_of_bound_remove_flag=True
+        )
+        map_.remove_entity.assert_has_calls([call(entity), call(bullet_obj)])
+
+
+class TestsBulletFactory:
+    def test__create(self):
+        bullet_schema = MagicMock(damage=1)
+        position = MagicMock()
+        direction = MagicMock()
+        factory = BulletFactory(bullet_schema)
+
+        bullet = factory.create(position, direction)
+
+        assert bullet.name == bullet_schema.name
+        assert bullet.position == position
         assert bullet.direction == direction
+        assert bullet.size == bullet_schema.size
+        assert bullet.damage == bullet_schema.damage
+        assert bullet.speed == bullet_schema.speed

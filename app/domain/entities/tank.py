@@ -1,42 +1,31 @@
-from app.domain.data import Direction, Size, Vector
-from app.domain.entities.bullet import Bullet, BulletSchema
+from dataclasses import dataclass
 
-from .interfaces import Living, MovableEntity
+from app.domain.entities.bullet import Bullet, BulletFactory, BulletSchema
+from app.domain.enums import Direction
+from app.domain.interfaces import Living, Movable
+from app.domain.utils import Size, Vector
 
-DEFAULT_TANK_SPEED = 4
-DEFAULT_TANK_HEALTH_POINTS = 3
 
-
-class Tank(MovableEntity, Living):
+@dataclass(unsafe_hash=True)
+class Tank(Movable, Living):
     """Класс сущности танк."""
 
-    def __init__(
-        self,
-        name: str,
-        location: Vector,
-        size: Size,
-        speed: int,
-        direction: Direction,
-        health_points: int,
-        bullet_schema: BulletSchema,
-    ) -> None:
-        Living.__init__(self, health_points)
-        MovableEntity.__init__(self, name, location, size, speed, direction)
-        self._bullet_schema = bullet_schema
+    _bullet_schema: BulletSchema
+    _bullet_factory: BulletFactory = None
+
+    def __post_init__(self):
+        self._bullet_factory = BulletFactory(self._bullet_schema)
 
     def get_bullet(self) -> Bullet:
         """Получить снаряд."""
-        return Bullet(
-            name=self._bullet_schema.name,
-            location=self._get_bullet_location(self._bullet_schema.size),
-            size=self._bullet_schema.size,
-            damage=self._bullet_schema.damage,
-            speed=self._bullet_schema.speed,
+
+        return self._bullet_factory.create(
+            position=self._get_bullet_position(self._bullet_schema.size),
             direction=self.direction,
         )
 
-    def _get_bullet_location(self, bullet_size: Size) -> Vector:
-        """Получить локацию пули."""
+    def _get_bullet_position(self, bullet_size: Size) -> Vector:
+        """Получить позицию пули."""
         if self.direction == Direction.DOWN:
             shift = Vector(
                 self.size.width // 2 - bullet_size.width // 2, -1 - bullet_size.height
@@ -53,4 +42,4 @@ class Tank(MovableEntity, Living):
             shift = Vector(
                 -1 - bullet_size.width, self.size.height // 2 - bullet_size.height // 2
             )
-        return self.location + shift
+        return self.position + shift

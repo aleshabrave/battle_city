@@ -1,15 +1,12 @@
-import math
 from dataclasses import dataclass
 
-from app.domain.data import Size, Vector
-from app.domain.data.enums import Direction
-from app.domain.entities.interfaces import Dangerous, Living, MovableEntity
+from app.domain.enums import Direction
+from app.domain.interfaces import Dangerous, Living, Movable
 from app.domain.map import Map
+from app.domain.utils import Size, Vector
 
-DEFAULT_DAMAGE = 1
 
-
-@dataclass
+@dataclass(unsafe_hash=True)
 class BulletSchema:
     name: str
     size: Size
@@ -17,45 +14,39 @@ class BulletSchema:
     speed: int
 
 
-class Bullet(Dangerous, MovableEntity):
+@dataclass(unsafe_hash=True)
+class Bullet(Movable, Dangerous):
     """Класс снаряда."""
 
-    def __init__(
-        self,
-        name: str,
-        location: Vector,
-        size: Size,
-        damage: int,
-        speed: int,
-        direction: Direction,
-    ):
-        """Конструктор класса Bullet."""
-        Dangerous.__init__(self, damage)
-        MovableEntity.__init__(self, name, location, size, speed, direction)
+    def update_location(self, map_: Map, **kwargs: dict) -> None:
+        """Обновить позицию снаряда."""
+        entity = Movable.update_location(self, map_=map_, out_of_bound_remove_flag=True)
 
-    def update_location(self, map_: Map) -> None:
-        shift = Vector(
-            int(math.cos(self.direction.value) * self.speed),
-            int(math.sin(self.direction.value) * self.speed),
+        if entity is not None:
+            if isinstance(entity, Living):
+                self.do_damage(entity)
+                if not entity.is_available():
+                    map_.remove_entity(entity)
+
+            if isinstance(entity, Bullet):
+                map_.remove_entity(entity)
+
+            map_.remove_entity(self)
+
+
+@dataclass(unsafe_hash=True)
+class BulletFactory:
+    """Класс фабрики снарядов."""
+
+    _bullet_schema: BulletSchema
+
+    def create(self, position: Vector, direction: Direction) -> Bullet:
+        """Создать снаряд."""
+        return Bullet(
+            name=self._bullet_schema.name,
+            size=self._bullet_schema.size,
+            speed=self._bullet_schema.speed,
+            position=position,
+            direction=direction,
+            damage=self._bullet_schema.damage,
         )
-        self.location += shift
-
-        neighbours = map_.get_neighbours(self)
-        if not neighbours:
-            return
-
-        for neighbour in neighbours:
-            if isinstance(neighbour, Living):
-                if self.name == "player_bullet" and neighbour.name == "player":
-                    continue
-                if self.name == "enemy_bullet" and neighbour.name == "enemy_tank":
-                    map_.remove_entity(self)
-                    return
-
-                if not self.name == "player_bullet" or not neighbour.name == "castle":
-                    neighbour.take_damage(self.damage)
-
-                if not neighbour.is_available():
-                    map_.remove_entity(neighbour)
-                map_.remove_entity(self)
-                return

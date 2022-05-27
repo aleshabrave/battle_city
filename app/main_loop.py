@@ -19,6 +19,7 @@ class MainLoop:
 
     def start(self):
         app = QApplication(argv)
+        self._game_controller.init_game()
         self._main_window = MainWindow(
             self._game_controller,
             self._window_size,
@@ -28,7 +29,7 @@ class MainLoop:
         exit(app.exec_())
 
     def _main(self) -> None:
+        self._game_controller.run()
         while True:
             sleep(self._tick_duration_secs)
-            self._game_controller.make_move()
             self._main_window.update()

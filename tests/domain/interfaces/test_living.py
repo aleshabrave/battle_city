@@ -2,19 +2,12 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.domain.entities.interfaces import Living
+from app.domain.interfaces import Living
 
 
 class TestsLiving:
-    def test__init(self):
-        health_points = 1
-
-        living_obj = Living(health_points=health_points)
-
-        assert living_obj.health_points == health_points
-
     @pytest.mark.parametrize("health_points", [-1, 0])
-    def test__init_with_exception(self, health_points):
+    def test__post_init(self, health_points):
         with pytest.raises(ValueError):
             Living(health_points=health_points)
 

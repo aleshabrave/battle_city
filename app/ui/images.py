@@ -16,15 +16,15 @@ class Images:
     @staticmethod
     def _add_paths_to_images_for_player() -> None:
         Images._paths_to_images["player"] = [
-            r".\app\ui\spites\player\player1_32x32",
-            r".\app\ui\spites\player\player2_32x32",
+            r".\app\ui\spites\player\player1_32x32.png",
+            r".\app\ui\spites\player\player2_32x32.png",
         ]
 
     @staticmethod
     def _add_paths_to_images_for_enemy() -> None:
         Images._paths_to_images["enemy_tank"] = [
-            r".\app\ui\spites\enemy\enemy1_32x32",
-            r".\app\ui\spites\enemy\enemy2_32x32",
+            r".\app\ui\spites\enemy\enemy1_32x32.png",
+            r".\app\ui\spites\enemy\enemy2_32x32.png",
         ]
 
     @staticmethod
@@ -47,7 +47,7 @@ class Images:
         ]
 
     @staticmethod
-    def get_images(entity_name: str) -> list[QImage]:
+    def get_images(name: str) -> list[QImage]:
         if Images._paths_to_images is None:
             Images._add_paths_to_images()
-        return list(map(QImage, Images._paths_to_images[entity_name]))
+        return list(map(QImage, Images._paths_to_images[name]))

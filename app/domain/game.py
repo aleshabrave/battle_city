@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.domain.data.enums import GameState
+from app.domain.enums import GameState
 from app.domain.level import Level
 
 
@@ -9,7 +9,7 @@ class Game:
     """Класс игры."""
 
     _levels: list[Level]
-    _current_level_index: int = 0
+    _current_level_index: int = -1
     state: GameState = GameState.PLAY
 
     def get_current_level(self) -> Level:

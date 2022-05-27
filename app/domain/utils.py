@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Vector:
-    """Класс Vector."""
+    """Класс вектора."""
 
     x: int
     y: int
@@ -21,9 +21,9 @@ class Vector:
         return Vector(x, y)
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class Size:
-    """Дата класс для размера."""
+    """Класс размера."""
 
     width: int
     height: int
@@ -35,10 +35,14 @@ class Size:
         return Size(width, height)
 
 
-def are_intersected(source: tuple[Vector, Size], other: tuple[Vector, Size]) -> bool:
-    return (
-        source[0].x + source[1].width > other[0].x
-        and source[0].y < other[0].y + other[1].height
-        and other[0].x + other[1].width > source[0].x
-        and other[0].y < source[0].y + source[1].height
-    )
+class Methods:
+    @staticmethod
+    def are_intersected(
+        source: tuple[Vector, Size], other: tuple[Vector, Size]
+    ) -> bool:
+        return (
+            source[0].x + source[1].width > other[0].x
+            and source[0].y < other[0].y + other[1].height
+            and other[0].x + other[1].width > source[0].x
+            and other[0].y < source[0].y + source[1].height
+        )

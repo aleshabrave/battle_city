@@ -2,117 +2,83 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from app.domain.data import Size, Vector
-from app.domain.entities.interfaces import Entity
+from app.domain.interfaces import Entity
 from app.domain.map import Map
-from tests import data
+from app.domain.utils import Size, Vector
 
 
 class TestsMap:
-    def test__get_entities(self):
-        entities = (
-            self._get_entity("aboba"),
-            self._get_entity("aboba"),
-            self._get_entity("amogus"),
-        )
-        map_ = Map(MagicMock(), {})
-        data._set_up_map(map_, entities)
+    @pytest.mark.parametrize(
+        "entities, expected",
+        [([Entity("1", None, None)], [Entity("1", None, None)]), (None, [])],
+    )
+    def test__post_init(self, entities, expected):
+        map_ = Map(size=MagicMock(), entities=entities)
 
-        actual = map_.get_entities()
+        assert map_.entities == expected
 
-        assert actual == set(entities)
-        assert len(map_._entities) != 0
-
-    def test__get_entities_by_name(self):
-        entities = (
-            self._get_entity("aboba"),
-            self._get_entity("aboba"),
-            self._get_entity("amogus"),
-        )
-        self._check_get_entities_by_name(entities, "aboba", set(entities[:2]))
-
-    def test__get_entities_by_name_if_no_needed_name(self):
-        entities = (self._get_entity("aboba"),)
-        self._check_get_entities_by_name(entities, "amogus", set())
-
-    def _check_get_entities_by_name(self, entities, name, expected):
-        map_ = Map(MagicMock(), {})
-        data._set_up_map(map_, entities)
+    @pytest.mark.parametrize(
+        "name,entities,expected",
+        [
+            (
+                "1",
+                [Entity("1", None, None), Entity("1", None, None)],
+                [Entity("1", None, None), Entity("1", None, None)],
+            ),
+            ("1", [Entity("2", None, None), Entity("2", None, None)], []),
+        ],
+    )
+    def test__get_entities_by_name(self, name, entities, expected):
+        map_ = Map(size=MagicMock(), entities=entities)
 
         actual = map_.get_entities_by_name(name)
 
         assert actual == expected
-        assert len(map_._entities) != 0
 
-    def test__get_entities_by_location_if_no_entities(self):
-        entities = (
-            self._get_entity("test_name1", location=Vector(0, 0), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(3, 3), size=Size(1, 1)),
-        )
-        point = Vector(2, 2)
-        self._check_get_entities_by_location(entities, point, set())
-
-    def test__get_entities_by_location_if_some_entities(self):
-        entities = (
-            self._get_entity("test_name1", location=Vector(0, 0), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(1, 1), size=Size(1, 1)),
-        )
-        point = Vector(1, 1)
-        self._check_get_entities_by_location(entities, point, set(entities))
-
-    def test__get_entities_by_location_if_one_entity(self):
-        entities = (
-            self._get_entity("test_name1", location=Vector(0, 0), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(3, 3), size=Size(1, 1)),
-        )
-        point = Vector(1, 1)
-        self._check_get_entities_by_location(entities, point, set(entities[:1]))
-
-    def _check_get_entities_by_location(self, entities, point, expected):
-        map_ = Map(MagicMock(), {})
-        data._set_up_map(map_, entities)
-
-        actual = map_.get_entities_by_location(point)
-
-        assert actual == expected
-
-    def test__get_neighbours_if_no_neighbours(self):
-        entity = self._get_entity("test_name3", location=Vector(1, 1), size=Size(1, 1))
-        entities = [
-            self._get_entity("test_name1", location=Vector(0, 0), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(2, 2), size=Size(1, 1)),
-            entity,
-        ]
-        self._check_get_neighbours(entities, entity, set())
-
-    def test__get_neighbours_if_some_neighbours(self):
-        entity = self._get_entity("test_name3", location=Vector(1, 1), size=Size(1, 1))
-        entities = [
-            self._get_entity("test_name1", location=Vector(1, 1), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(1, 1), size=Size(1, 1)),
-            entity,
-        ]
-        self._check_get_neighbours(entities, entity, set(entities[:2]))
-
-    def test__get_neighbours_if_one_neighbour(self):
-        entity = self._get_entity("test_name3", location=Vector(1, 1), size=Size(1, 1))
-        entities = [
-            self._get_entity("test_name1", location=Vector(0, 0), size=Size(1, 1)),
-            self._get_entity("test_name2", location=Vector(1, 1), size=Size(1, 1)),
-            entity,
-        ]
-        self._check_get_neighbours(entities, entity, set(entities[1:2]))
-
-    def _check_get_neighbours(self, entities, entity, expected):
-        map_ = Map(MagicMock(), {})
-        data._set_up_map(map_, entities)
-
-        actual = map_.get_neighbours(entity)
+    @pytest.mark.parametrize(
+        "entities, position, size, expected",
+        [
+            (
+                [
+                    Entity("1", Vector(0, 0), Size(1, 1)),
+                    Entity("2", Vector(1, 1), Size(1, 1)),
+                ],
+                Vector(0, 0),
+                Size(2, 2),
+                [
+                    Entity("1", Vector(0, 0), Size(1, 1)),
+                    Entity("2", Vector(1, 1), Size(1, 1)),
+                ],
+            ),
+            (
+                [
+                    Entity("1", Vector(0, 0), Size(1, 1)),
+                    Entity("2", Vector(1, 1), Size(1, 1)),
+                ],
+                Vector(2, 2),
+                Size(2, 2),
+                [],
+            ),
+            (
+                [
+                    Entity("1", Vector(0, 0), Size(2, 2)),
+                    Entity("2", Vector(1, 1), Size(1, 1)),
+                ],
+                Vector(0, 0),
+                Size(1, 1),
+                [Entity("1", Vector(0, 0), Size(2, 2))],
+            ),
+        ],
+    )
+    def test__get_entities_by_location(self, entities, position, size, expected):
+        map_ = Map(size=MagicMock())
+        map_.entities = entities
+        actual = map_.get_entities_by_location(position, size)
 
         assert actual == expected
 
     @pytest.mark.parametrize(
-        "location,entity_size,map_size,expected",
+        "position,size,map_size,expected",
         [
             (Vector(-1, 0), Size(1, 1), Size(1, 1), True),
             (Vector(1, 0), Size(1, 1), Size(1, 1), True),
@@ -122,34 +88,26 @@ class TestsMap:
             (Vector(5, 5), Size(1, 1), Size(10, 10), False),
         ],
     )
-    def test__check_out_of_bounds(self, location, entity_size, map_size, expected):
-        entity = self._get_entity("test_name", location, entity_size)
-        map_ = Map(map_size, {})
-        data._set_up_map(map_, (entity,))
+    def test__check_out_of_bounds(self, position, size, map_size, expected):
+        map_ = Map(map_size)
 
-        actual = map_.check_out_of_bounds(entity.location, entity.size)
+        actual = map_.check_out_of_bounds(position, size)
 
         assert actual == expected
-        assert len(map_._entities) != 0
 
     def test__add_entity(self):
-        entity = self._get_entity("aboba")
-        map_ = Map(MagicMock(), {})
+        entity = Entity("1", None, None)
+        map_ = Map(size=MagicMock())
 
         map_.add_entity(entity)
 
-        assert len(map_._entities) == 1
-        assert entity.name in map_._entities
-        assert entity in map_._entities[entity.name]
+        assert entity in map_.entities
+        assert len(map_.entities) == 1
 
     def test__remove_entity(self):
-        entity = self._get_entity("aboba")
-        map_ = Map(MagicMock(), {entity.name: {entity}})
+        entity = Entity("1", None, None)
+        map_ = Map(size=MagicMock(), entities=[entity])
 
         map_.remove_entity(entity)
 
-        assert len(map_._entities) == 0
-
-    @staticmethod
-    def _get_entity(name, location=None, size=None):
-        return Entity(name, location, size)
+        assert entity not in map_.entities
