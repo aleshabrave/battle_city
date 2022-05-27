@@ -3,20 +3,20 @@ from math import pi
 
 
 @unique
-class GameState(Enum):
+class GameState(str, Enum):
     """Состояние игры."""
 
-    FINISHED = 1
-    PLAY = 2
+    FINISHED = "Finished"
+    PLAY = "Play"
 
 
 @unique
-class LevelResult(Enum):
+class LevelResult(str, Enum):
     """Результат уровня."""
 
-    WIN = 1
-    LOSE = 2
-    UNDEFINED = 3
+    WIN = "Win"
+    LOSE = "Lose"
+    UNDEFINED = "Undefined"
 
 
 @unique

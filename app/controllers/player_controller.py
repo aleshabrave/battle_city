@@ -20,17 +20,17 @@ class PlayerController:
         self._init_movement_keys()
 
     def _init_movement_keys(self):
-        self._movement_keys = (Qt.Key_Up, Qt.Key_Down, Qt.Key_Left, Qt.Key_Right)
+        self._movement_keys = (Qt.Key_A, Qt.Key_S, Qt.Key_D, Qt.Key_W)
 
     def handle_press_key(self, event: QKeyEvent) -> None:
         key = event.key()
-        if key == Qt.Key_Up:
+        if key == Qt.Key_W:
             self._tank_controller.update_direction(Direction.DOWN)
-        elif key == Qt.Key_Down:
+        elif key == Qt.Key_S:
             self._tank_controller.update_direction(Direction.UP)
-        elif key == Qt.Key_Left:
+        elif key == Qt.Key_A:
             self._tank_controller.update_direction(Direction.LEFT)
-        elif key == Qt.Key_Right:
+        elif key == Qt.Key_D:
             self._tank_controller.update_direction(Direction.RIGHT)
         elif key == Qt.Key_X:
             self._tank_controller.fire(self._map)

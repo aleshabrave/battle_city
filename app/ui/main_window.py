@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 
 from app.constants import Default
 from app.controllers import GameController
-from app.levels.generator import GameGenerator
 from app.ui.widgets.entry import EntryWidget
 from app.ui.widgets.game import GameWidget
 from app.ui.widgets.menu import MenuWidget
@@ -30,7 +29,7 @@ class MainWindow(QMainWindow):
         self.widgets.resize(size)
         entry = EntryWidget(self)
         menu = MenuWidget(self)
-        game = GameWidget(self, 0.1)
+        game = GameWidget(self)
 
         self.widgets.addWidget(entry)
         self.widgets.addWidget(menu)

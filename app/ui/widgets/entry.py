@@ -47,7 +47,5 @@ class EntryWidget(QWidget):
         if len(text) == 0:
             return
         self.main_window.username = text
-        self.main_window.game_controller = GameController(
-            0.1, GameGenerator(text)
-        )
+        self.main_window.game_controller = GameController(0.1, GameGenerator(text))
         self.main_window.display(1)

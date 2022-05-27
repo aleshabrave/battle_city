@@ -4,24 +4,25 @@ from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QKeyEvent, QPainter
-from PyQt5.QtWidgets import QBoxLayout, QPushButton, QWidget
+from PyQt5.QtWidgets import QBoxLayout, QPushButton, QFrame, QLabel
 
 from app.constants import Default
-from app.controllers import GameController
 from app.domain.interfaces import Entity
-from app.levels.generator import GameGenerator
 from app.ui.sprite import Sprite
 
 if TYPE_CHECKING:
     from app.ui.main_window import MainWindow
 
 
-class GameWidget(QWidget):
-    def __init__(self, parent: "MainWindow", paint_timer: float):
+class GameWidget(QFrame):
+    def __init__(self, parent: "MainWindow"):
         super(GameWidget, self).__init__(parent)
         self.main_window = parent
-        self.paint_timer = paint_timer
 
+        self.game_status_label = QLabel(self)
+        self.game_status_label.setStyleSheet("QLabel { color : green; }")
+        self.level_status_label = QLabel(self)
+        self.level_status_label.setStyleSheet("QLabel { color : green; }")
         pause_button = QPushButton(Default.PAUSE_BUTTON, self)
         pause_button.setStyleSheet(f"background-color: green;")
         restart_button = QPushButton(Default.RESTART_BUTTON, self)
@@ -33,8 +34,10 @@ class GameWidget(QWidget):
         layout.addWidget(pause_button)
         layout.addWidget(restart_button)
         layout.addWidget(save_button)
+        layout.addWidget(self.game_status_label)
+        layout.addWidget(self.level_status_label)
 
-        layout.setGeometry(QRect(450, 0, 50, 150))
+        layout.setGeometry(QRect(392, 0, 120, 100))
 
         pause_button.clicked.connect(self.pauseButtonClicked)
         restart_button.clicked.connect(self.restartButtonClicked)
@@ -42,18 +45,28 @@ class GameWidget(QWidget):
 
     def init(self):
         self.setStyleSheet("background-color: black;")
-        self.main_window.game_controller.init_game(new_game_flag=self.main_window.new_game_flag)
-        Thread(target=self._start_game).start()
+        self.main_window.game_controller.init_game(
+            new_game_flag=self.main_window.new_game_flag
+        )
+        Thread(target=self.main_window.game_controller.run).start()
+        Thread(target=self.updateStatuses).start()
         self._init_sprites()
 
-    def _start_game(self) -> None:
-        self.main_window.game_controller.run()
+    def updateStatuses(self):
         while True:
-            time.sleep(self.paint_timer)
-            self.update()
+            time.sleep(1)
+            self.game_status_label.setText(
+                f"Game status is {self.main_window.game_controller.game.state.value}"
+            )
+            self.game_status_label.adjustSize()
+            self.level_status_label.setText(
+                f"Level status is {self.main_window.game_controller.get_current_level().state.value}"
+            )
 
     def pauseButtonClicked(self):
-        self.main_window.game_controller.pause = not self.game_controller.pause
+        self.main_window.game_controller.pause = (
+            not self.main_window.game_controller.pause
+        )
 
     def restartButtonClicked(self):
         self.main_window.game_controller.init_game(new_game_flag=True)
@@ -72,17 +85,20 @@ class GameWidget(QWidget):
         self.main_window.game_controller.player_controller.handle_release_key(event)
 
     def paintEvent(self, event) -> None:
-        if self.main_window.game_controller.pause:
-            return
-        self.painter = QPainter(self)
-        for entity in self.main_window.game_controller.get_current_level().map_.entities:
+        painter = QPainter(self)
+        for (
+            entity
+        ) in self.main_window.game_controller.get_current_level().map_.entities:
             sprite = self._get_else_create_sprite(entity)
-            self.painter.drawImage(sprite.coordinates, sprite.next_image)
-        self._delete_old_sprites()
+            painter.drawImage(sprite.coordinates, sprite.next_image)
+        # self._delete_old_sprites()
+        self.update()
 
     def _init_sprites(self) -> None:
         self._sprites: dict[Entity, Sprite] = dict()
-        for entity in self.main_window.game_controller.get_current_level().map_.entities:
+        for (
+            entity
+        ) in self.main_window.game_controller.get_current_level().map_.entities:
             self._sprites[entity] = Sprite(entity)
 
     def _get_else_create_sprite(self, entity: Entity) -> Sprite:
@@ -95,6 +111,8 @@ class GameWidget(QWidget):
 
     def _delete_old_sprites(self) -> None:
         new: dict[Entity, Sprite] = dict()
-        for entity in self.main_window.game_controller.get_current_level().map_.entities:
+        for (
+            entity
+        ) in self.main_window.game_controller.get_current_level().map_.entities:
             new[entity] = self._sprites[entity]
         self._sprites = new

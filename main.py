@@ -8,15 +8,14 @@ from app.ui.main_window import MainWindow
 
 
 def log_uncaught_exceptions(ex_cls, ex, tb):
-    text = '{}: {}:\n'.format(ex_cls.__name__, ex)
+    text = "{}: {}:\n".format(ex_cls.__name__, ex)
 
-    text += ''.join(traceback.format_tb(tb))
+    text += "".join(traceback.format_tb(tb))
 
     print(text)
-    QMessageBox.critical(None, 'Error', text)
+    QMessageBox.critical(None, "Error", text)
 
     sys.exit()
-
 
 
 def main():

@@ -18,7 +18,7 @@ class Movable(Entity):
     direction: Direction
 
     def update_location(
-        self, map_: "Map", out_of_bound_remove_flag: bool = True
+        self, map_: "Map", out_of_bound_remove_flag: bool = False
     ) -> Optional[Entity]:
         """Обновить позицию сущности."""
         new_position = self._get_new_position()

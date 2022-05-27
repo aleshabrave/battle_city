@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from app.domain.enums import LevelResult
+from app.domain.enums import LevelResult, GameState
 from app.domain.interfaces import Living, Observer
 
 if TYPE_CHECKING:
@@ -21,6 +21,7 @@ class LoseObserver(Observer):
         for entity in self._entities:
             if not entity.is_available():
                 self._clear()
+                self._game_controller.game.state = GameState.FINISHED
                 self._game_controller.game.get_current_level().state = LevelResult.LOSE
                 return
 

@@ -8,7 +8,7 @@ from app.controllers.observers.lose import LoseObserver
 from app.controllers.observers.win import WinObserver
 from app.controllers.tank_controller import TankController
 from app.domain import Level
-from app.domain.enums import GameState
+from app.domain.enums import GameState, LevelResult
 from app.domain.game import Game
 from app.domain.interfaces import Observer
 from app.controllers.player_controller import PlayerController
@@ -34,7 +34,7 @@ class GameController:
 
     def run(self):
         """Запустить игру."""
-        while True:
+        while self.game.state != GameState.FINISHED:
             if self.pause:
                 continue
 
@@ -43,6 +43,9 @@ class GameController:
                 self._update_win_logic()
                 self._update_lose_logic()
                 self.update = False
+            elif self.update and not self.game.next_level():
+                self.game.state = GameState.FINISHED
+                break
 
             self.make_move()
 
