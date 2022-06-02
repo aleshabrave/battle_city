@@ -5,7 +5,7 @@ class Default:
     TANK_HEALTH_POINTS = 3
     MAP_CELL_SIZE = 16
     BULLET_DAMAGE = 1
-    TANK_CD = 0
+    TANK_CD = 1
     PATH_TO_ICON = r"./app/ui/resources/icon.png"
     PATH_TO_MM_BACKGROUND = r"./app/ui/resources/mm-background_612x512.jpg"
     PATH_TO_ENTRY_BACKGROUND = r"./app/ui/resources/background_612x512.jpg"

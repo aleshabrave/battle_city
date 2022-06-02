@@ -1,5 +1,5 @@
 import time
-from threading import Thread, Event
+from threading import Event, Thread
 
 from app.ai.stupid import StupidAI
 from app.controllers.map_controller import MapController
@@ -11,7 +11,8 @@ from app.domain import Level
 from app.domain.enums import GameState, LevelState
 from app.domain.game import Game
 from app.domain.interfaces import Observer
-from app.levels.generator import GameGenerator
+from app.levels.game_generator import GameGenerator
+from app.levels.tank_generator import TankFabric
 
 
 class GameController(Thread):
@@ -34,10 +35,12 @@ class GameController(Thread):
         self._username = username
 
     @staticmethod
-    def create(timer: float, username: str, new_game_flag: bool) -> "GameController":
+    def create(
+        timer: float, username: str, new_game_flag: bool, player_fabric: TankFabric
+    ) -> "GameController":
         """Создать контроллер."""
         controller = GameController(timer, username)
-        controller.init_game(new_game_flag)
+        controller.init_game(player_fabric, new_game_flag)
         return controller
 
     def run(self):
@@ -65,7 +68,7 @@ class GameController(Thread):
         for ai in self._ais:
             ai.make_move()
 
-    def init_game(self, new_game_flag=False) -> None:
+    def init_game(self, player_fabric: TankFabric, new_game_flag=False) -> None:
         """Инициализировать игру."""
         if not new_game_flag:
             self.game = GameGenerator.load(self._username)
@@ -73,7 +76,10 @@ class GameController(Thread):
             if self.game is not None:
                 return
 
-        self.game = GameGenerator.generate()
+        if player_fabric is None:
+            raise AttributeError("No player_fabric")
+
+        self.game = GameGenerator.generate(player_fabric)
 
     def save(self) -> None:
         """Сохранить игру."""
@@ -88,7 +94,7 @@ class GameController(Thread):
 
     def _update_lose_logic(self, level: Level) -> None:
         """Обновить логику поражения."""
-        player = level.map_.get_entities_by_name("player").pop()
+        player = level.map_.get_player()
         self.player_controller = PlayerController(
             level.map_,
             TankController(player),
@@ -102,7 +108,7 @@ class GameController(Thread):
 
     def _update_win_logic(self, level: Level) -> None:
         """Обновить логику победы."""
-        enemies = level.map_.get_entities_by_name("enemy_tank")
+        enemies = level.map_.get_enemies()
 
         self._ais = []
         for enemy in enemies:

@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
-from PyQt5.QtCore import QRect, Qt, QEvent
-from PyQt5.QtGui import QFont, QKeyEvent
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QBoxLayout, QLabel, QPushButton, QWidget
 
 from app.constants import Default
@@ -45,7 +45,7 @@ class MenuWidget(QWidget):
 
     def newGameButtonClicked(self):
         self.main_window.new_game_flag = True
-        self.main_window.display(2)
+        self.main_window.display(3)
 
     def continueGameButtonClicked(self):
         self.main_window.new_game_flag = False

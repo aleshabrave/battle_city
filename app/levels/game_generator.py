@@ -4,6 +4,7 @@ from typing import Optional
 from app.db.storage import GameStorage
 from app.domain import Game, Level
 from app.levels import parser
+from app.levels.tank_generator import TankFabric
 
 _PATH = "./app/levels/maps/"
 
@@ -22,11 +23,15 @@ class GameGenerator:
         return GameStorage.get(username)
 
     @staticmethod
-    def generate() -> Game:
+    def generate(player_fabric: TankFabric) -> Game:
         """Сгенерировать игру."""
         return Game(
             [
-                Level(parser.parse_map(filename=_PATH + filename))
+                Level(
+                    parser.parse_map(
+                        filename=_PATH + filename, player_fabric=player_fabric
+                    )
+                )
                 for filename in sorted(os.listdir(f"{_PATH}"))
             ]
         )

@@ -1,3 +1,4 @@
+import random
 from typing import Callable
 
 from app.constants import Default
@@ -5,10 +6,33 @@ from app.domain.entities import Block, BulletSchema, Tank
 from app.domain.enums import Direction
 from app.domain.map import Map
 from app.domain.utils import Size, Vector
+from app.levels.tank_generator import (
+    BigBulletTank,
+    DefaultTank,
+    FastBulletTank,
+    HealthyTank,
+    TankFabric,
+)
 
 
-def parse_map(filename: str) -> Map:
+def random_enemy_fabric():
+    rnd = random.Random()
+    tank_fabrics = [DefaultTank, FastBulletTank, BigBulletTank, HealthyTank]
+    while True:
+        yield tank_fabrics[rnd.randint(0, len(tank_fabrics) - 1)]
+
+
+def parse_map(filename: str, player_fabric: TankFabric) -> Map:
     """Построить карту по файлу."""
+    random_fabric = random_enemy_fabric()
+
+    object_mapper = {
+        "P": player_fabric.get_fabric(enemy_flag=False),
+        "W": _get_block("default_wall", Default.WALL_HEALTH_POINTS),
+        "E": next(random_fabric).get_fabric(),
+        "C": _get_block("castle", Default.CASTLE_HEALTH_POINTS),
+        ".": None,
+    }
 
     with open(filename, "r") as file:
         column_counter = 0
@@ -63,12 +87,3 @@ def _get_block(name: str, hps: int) -> Callable:
         )
 
     return wrapper
-
-
-object_mapper = {
-    "P": _get_tank("player", "player_bullet"),
-    "W": _get_block("default_wall", Default.WALL_HEALTH_POINTS),
-    "E": _get_tank("enemy_tank", "enemy_bullet"),
-    "C": _get_block("castle", Default.CASTLE_HEALTH_POINTS),
-    ".": None,
-}

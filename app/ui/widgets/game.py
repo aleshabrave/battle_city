@@ -16,8 +16,6 @@ if TYPE_CHECKING:
 
 
 class GameWidget(QFrame):
-    _threads: list[Thread] = []
-
     def __init__(self, parent: "MainWindow"):
         super(GameWidget, self).__init__(parent)
 
@@ -53,7 +51,8 @@ class GameWidget(QFrame):
     def init(self):
         self.setStyleSheet("background-color: black;")
         self.main_window.game_controller.init_game(
-            new_game_flag=self.main_window.new_game_flag
+            player_fabric=self.main_window.player_fabric,
+            new_game_flag=self.main_window.new_game_flag,
         )
 
         self.main_window.game_controller.start()
@@ -82,6 +81,7 @@ class GameWidget(QFrame):
             timer=self.main_window.game_controller.timer,
             username=self.main_window.username,
             new_game_flag=True,
+            player_fabric=self.main_window.player_fabric,
         )
         self.main_window.game_controller.start()
 

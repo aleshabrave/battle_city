@@ -15,6 +15,14 @@ class Map:
         if self.entities is None:
             self.entities = []
 
+    def get_enemies(self) -> list[Entity]:
+        """Get all enemies."""
+        return [entity for entity in self.entities if "enemy" in entity.name]
+
+    def get_player(self) -> Entity:
+        """Get player."""
+        return [entity for entity in self.entities if "player" in entity.name][0]
+
     def get_entities_by_name(self, name: str) -> list[Entity]:
         """Получить сущности по имени."""
         return [entity for entity in self.entities if entity.name == name]
