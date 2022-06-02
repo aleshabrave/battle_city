@@ -1,33 +1,32 @@
 import os
-from dataclasses import dataclass
 from typing import Optional
 
 from app.db.storage import GameStorage
 from app.domain import Game, Level
 from app.levels import parser
 
+_PATH = "./app/levels/maps/"
 
-@dataclass
+
 class GameGenerator:
     """Генератор игры."""
 
-    username: str
-
-    def save(self, game: Game) -> None:
+    @staticmethod
+    def save(username: str, game: Game) -> None:
         """Сохранить игру."""
-        GameStorage.put(self.username, game)
+        GameStorage.put(username, game)
 
-    def load(self) -> Optional[Game]:
+    @staticmethod
+    def load(username: str) -> Optional[Game]:
         """Загрузить игру."""
-        return GameStorage.get(self.username)
+        return GameStorage.get(username)
 
     @staticmethod
     def generate() -> Game:
         """Сгенерировать игру."""
-        levels = []
-
-        for i in range(len(os.listdir("./app/levels/maps/"))):
-            level = Level(parser.parse_map(f"./app/levels/maps/map_{i}.txt"))
-            levels.append(level)
-
-        return Game(levels)
+        return Game(
+            [
+                Level(parser.parse_map(filename=_PATH + filename))
+                for filename in sorted(os.listdir(f"{_PATH}"))
+            ]
+        )

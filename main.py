@@ -4,8 +4,8 @@ import traceback
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
-from app.ui.main_window import MainWindow
 from app.db import migration
+from app.ui.main_window import MainWindow
 
 
 def log_uncaught_exceptions(ex_cls, ex, tb):
@@ -23,7 +23,7 @@ def main():
     with migration.on_app_start():
         sys.excepthook = log_uncaught_exceptions
         app = QApplication(sys.argv)
-        win = MainWindow(QSize(512, 512))
+        win = MainWindow()
         win.show()
         sys.exit(app.exec_())
 

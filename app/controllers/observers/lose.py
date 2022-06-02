@@ -1,11 +1,8 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
-from app.domain.enums import LevelResult, GameState
+from app.domain import Game, Level
+from app.domain.enums import GameState, LevelState
 from app.domain.interfaces import Living, Observer
-
-if TYPE_CHECKING:
-    from app.controllers.game_controller import GameController
 
 
 @dataclass
@@ -13,7 +10,8 @@ class LoseObserver(Observer):
     """Класс наблюдателя за победой."""
 
     _entities: list[Living]
-    _game_controller: "GameController"
+    _level: Level
+    _game: Game
 
     def handle_event(self) -> None:
         """Обработать событие."""
@@ -21,8 +19,8 @@ class LoseObserver(Observer):
         for entity in self._entities:
             if not entity.is_available():
                 self._clear()
-                self._game_controller.game.state = GameState.FINISHED
-                self._game_controller.game.get_current_level().state = LevelResult.LOSE
+                self._game.state = GameState.FINISHED
+                self._level.state = LevelState.LOSE
                 return
 
     def _clear(self) -> None:

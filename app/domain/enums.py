@@ -11,7 +11,7 @@ class GameState(str, Enum):
 
 
 @unique
-class LevelResult(str, Enum):
+class LevelState(str, Enum):
     """Результат уровня."""
 
     WIN = "Win"

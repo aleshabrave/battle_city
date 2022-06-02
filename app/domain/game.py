@@ -9,18 +9,19 @@ class Game:
     """Класс игры."""
 
     _levels: list[Level]
-    _current_level_index: int = -1
+    _idx: int = -1
     state: GameState = GameState.PLAY
+
+    def __iter__(self):
+        return iter(self._levels)
+
+    def __next__(self):
+        if self._idx + 1 < len(self._levels):
+            self._idx += 1
+            return self._levels[self._idx]
+        else:
+            raise StopIteration("Levels are over.")
 
     def get_current_level(self) -> Level:
         """Получить текущий уровень."""
-        if self._current_level_index >= len(self._levels):
-            raise IndexError("Levels are over.")
-        return self._levels[self._current_level_index]
-
-    def next_level(self) -> bool:
-        """Перейти на следующий уровень."""
-        if self._current_level_index + 1 >= len(self._levels):
-            return False
-        self._current_level_index += 1
-        return True
+        return self._levels[self._idx]
