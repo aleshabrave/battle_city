@@ -47,8 +47,8 @@ class MainWindow(QMainWindow):
 
         result = QMessageBox.question(
             self,
-            "Accept closing WORLD OF TANKS",
-            "Maybe save?",
+            "Closing confirmation WORLD OF TANKS",
+            f"Maybe save, {self.username}?",
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No,
         )
