@@ -63,9 +63,9 @@ class BigBulletTank(TankFabric):
     def get_fabric(enemy_flag=True):
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 2,
-            bullet_damage=Default.BULLET_DAMAGE,
+            bullet_damage=Default.BULLET_DAMAGE + 2,
             bullet_speed=Default.TANK_SPEED * 2,
-            health_points=Default.TANK_HEALTH_POINTS - 1,
+            health_points=Default.TANK_HEALTH_POINTS - 2,
             direction=Direction.UP if enemy_flag else Direction.DOWN,
             tank_name=f"{'enemy' if enemy_flag else 'player'}_big_bullet_tank",
             bullet_name=f"{'enemy' if enemy_flag else 'player'}_bullet",
@@ -92,8 +92,8 @@ class HealthyTank(TankFabric):
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 8,
             bullet_damage=Default.BULLET_DAMAGE,
-            bullet_speed=Default.TANK_SPEED,
-            health_points=Default.TANK_HEALTH_POINTS + 3,
+            bullet_speed=Default.TANK_SPEED * 2,
+            health_points=Default.TANK_HEALTH_POINTS + 2,
             direction=Direction.UP if enemy_flag else Direction.DOWN,
             tank_name=f"{'enemy' if enemy_flag else 'player'}_healthy_tank",
             bullet_name=f"{'enemy' if enemy_flag else 'player'}_bullet",

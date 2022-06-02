@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from random import Random
 
+from app.constants import Default
 from app.controllers.tank_controller import TankController
 from app.domain.enums import Direction
 from app.domain.map import Map
@@ -24,8 +25,6 @@ class StupidAI:
             Direction.UP,
             Direction.UP,
             Direction.UP,
-            Direction.UP,
-            Direction.UP,
             Direction.DOWN,
             Direction.RIGHT,
             Direction.LEFT,
@@ -43,7 +42,7 @@ class StupidAI:
         next_direction = self._directions[
             self._seed.randint(0, len(self._directions) - 1)
         ]
-        self._enemy.tank.speed = 5
+        self._enemy.tank.speed = Default.TANK_SPEED
         self._cd = self._seed.randint(1, 4)
         self._enemy.update_direction(next_direction)
         self._previous_move_dttm = datetime.now()

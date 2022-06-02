@@ -64,7 +64,14 @@ class GameWidget(QFrame):
         while not self.status_handler_stop_flag:
             time.sleep(1)
             self.game_status_label.setText(
-                f"Game status is {self.main_window.game_controller.game.state.value}"
+                f"Game status is "
+                f"{self.main_window.game_controller.game.state.value}"
+                f"\nhp:"
+                f" {self.main_window.game_controller.player_controller.tank_controller.tank.health_points}"
+                f"\nbullet damage: "
+                f"{self.main_window.game_controller.player_controller.tank_controller.tank._bullet_schema.damage}"
+                f"\nbullet speed: "
+                f"{self.main_window.game_controller.player_controller.tank_controller.tank._bullet_schema.speed}"
             )
             self.game_status_label.adjustSize()
 

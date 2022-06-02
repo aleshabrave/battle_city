@@ -59,7 +59,9 @@ class Images:
 
     @staticmethod
     def _add_paths_to_images_for_castle() -> None:
-        Images._paths_to_images["castle"] = [r"./app/ui/sprites/castle/castle_32x32.png"]
+        Images._paths_to_images["castle"] = [
+            r"./app/ui/sprites/castle/castle_32x32.png"
+        ]
 
     @staticmethod
     def _add_paths_to_images_for_bullets() -> None:

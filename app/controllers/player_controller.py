@@ -14,7 +14,7 @@ class PlayerController:
     """Класс контроллера player."""
 
     _map: Map
-    _tank_controller: TankController
+    tank_controller: TankController
 
     def __post_init__(self):
         self._init_movement_keys()
@@ -25,19 +25,19 @@ class PlayerController:
     def handle_press_key(self, event: QKeyEvent) -> None:
         key = event.key()
         if key == Qt.Key_Up:
-            self._tank_controller.update_direction(Direction.DOWN)
+            self.tank_controller.update_direction(Direction.DOWN)
         elif key == Qt.Key_Down:
-            self._tank_controller.update_direction(Direction.UP)
+            self.tank_controller.update_direction(Direction.UP)
         elif key == Qt.Key_Left:
-            self._tank_controller.update_direction(Direction.LEFT)
+            self.tank_controller.update_direction(Direction.LEFT)
         elif key == Qt.Key_Right:
-            self._tank_controller.update_direction(Direction.RIGHT)
+            self.tank_controller.update_direction(Direction.RIGHT)
         elif key == Qt.Key_Space:
-            self._tank_controller.fire(self._map)
+            self.tank_controller.fire(self._map)
         if key in self._movement_keys:
-            self._tank_controller.update_speed(Default.TANK_SPEED)
+            self.tank_controller.update_speed(Default.TANK_SPEED)
 
     def handle_release_key(self, event: QKeyEvent) -> None:
         key = event.key()
         if key in self._movement_keys:
-            self._tank_controller.update_speed(0)
+            self.tank_controller.update_speed(0)
