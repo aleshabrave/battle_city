@@ -26,7 +26,9 @@ class EntryWidget(QWidget):
 
     def init(self):
         self.bg_label.resize(612, 512)
-        self.bg_label.setStyleSheet(f"background-image: url({Default.PATH_TO_ENTRY_BACKGROUND});")
+        self.bg_label.setStyleSheet(
+            f"background-image: url({Default.PATH_TO_ENTRY_BACKGROUND});"
+        )
 
         self.entry_label.setFont(QFont("Verdana", 24, QFont.Bold))
         self.entry_label.setText("USERNAME")

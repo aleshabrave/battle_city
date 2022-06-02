@@ -81,7 +81,7 @@ class GameWidget(QFrame):
         self.main_window.game_controller = GameController.create(
             timer=self.main_window.game_controller.timer,
             username=self.main_window.username,
-            new_game_flag=True
+            new_game_flag=True,
         )
         self.main_window.game_controller.start()
 

@@ -50,7 +50,8 @@ class MainWindow(QMainWindow):
             "Accept closing WORLD OF TANKS",
             "Maybe save?",
             QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No)
+            QMessageBox.No,
+        )
 
         if result == QMessageBox.Yes:
             self.game_controller.save()
@@ -58,4 +59,3 @@ class MainWindow(QMainWindow):
         self.game.close()
         e.accept()
         QMainWindow.closeEvent(self, e)
-

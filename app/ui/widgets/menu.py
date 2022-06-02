@@ -24,7 +24,9 @@ class MenuWidget(QWidget):
 
     def init(self):
         self.bg_label.resize(612, 512)
-        self.bg_label.setStyleSheet(f"background-image: url({Default.PATH_TO_MM_BACKGROUND});")
+        self.bg_label.setStyleSheet(
+            f"background-image: url({Default.PATH_TO_MM_BACKGROUND});"
+        )
 
         self.hello_label.setText(f"HELLO, {self.main_window.username}!")
         self.hello_label.setFont(QFont("Verdana", 12, QFont.Bold))

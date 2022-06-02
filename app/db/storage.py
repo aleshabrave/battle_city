@@ -1,6 +1,8 @@
 from typing import Optional
 
-from app.db.models import GameModel
+import peewee
+
+from app.db.models import GameModel, postgr_db
 from app.domain.game import Game
 
 
@@ -16,6 +18,13 @@ class GameStorage:
             return game.backup
 
     @staticmethod
-    def put(username: str, game: Game) -> None:
+    def put(username: str, backup: Game) -> None:
         """Положить игру."""
-        GameModel.insert(username=username, backup=game)
+        try:
+            with postgr_db.atomic():
+                GameModel.create(username=username, backup=backup)
+        except peewee.IntegrityError:
+            query = GameModel.update(backup=backup).where(
+                GameModel.username == username
+            )
+            query.execute()
