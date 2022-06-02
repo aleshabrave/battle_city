@@ -2,9 +2,10 @@ from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QBoxLayout, QLabel, QPushButton, QWidget
+from PyQt5.QtWidgets import QBoxLayout, QLabel, QPushButton, QWidget, QMessageBox
 
 from app.constants import Default
+from app.db.storage import GameStorage
 
 if TYPE_CHECKING:
     from app.ui.main_window import MainWindow
@@ -48,5 +49,14 @@ class MenuWidget(QWidget):
         self.main_window.display(3)
 
     def continueGameButtonClicked(self):
-        self.main_window.new_game_flag = False
-        self.main_window.display(2)
+        game = GameStorage.get(self.main_window.username)
+        if game is None:
+            QMessageBox.information(
+                self,
+                "WAR THUNDER",
+                "No saved games",
+                QMessageBox.Ok
+            )
+        else:
+            self.main_window.new_game_flag = False
+            self.main_window.display(2)

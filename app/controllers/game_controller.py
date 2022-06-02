@@ -61,6 +61,8 @@ class GameController(Thread):
                 self.make_move()
                 time.sleep(self.timer)
 
+        self.game.state = GameState.FINISHED
+
     def make_move(self) -> None:
         """Сделать ход."""
         self.map_controller.update_map()
