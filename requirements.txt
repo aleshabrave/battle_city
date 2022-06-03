@@ -1,0 +1,4 @@
+pytest==7.1.2
+peewee==3.14.10
+pyqt5==5.15.6
+psycopg2-binary==2.9.3

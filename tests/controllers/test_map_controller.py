@@ -11,7 +11,7 @@ class TestsMapController:
         map_ = Map(
             size=MagicMock(), entities=[MagicMock(spec=parent) for parent in clss]
         )
-        controller = MapController(_map=map_)
+        controller = MapController(map_=map_)
 
         controller.update_map()
 

@@ -53,7 +53,7 @@ class Movable(Entity):
         return self.position + shift
 
     def _get_conflict_entities(self, new_position: Vector, map_: "Map") -> list[Entity]:
-        """Получить сущностей, которые могут помешать движению."""
+        """Получить сущностей, которые могут помешать движению (кроме снарядов)."""
         shift_size = Size(
             abs(new_position.x - self.position.x) + self.size.width,
             abs(new_position.y - self.position.y) + self.size.height,
@@ -63,7 +63,12 @@ class Movable(Entity):
             if self.direction == Direction.LEFT or self.direction == Direction.DOWN
             else map_.get_entities_by_location(self.position, shift_size)
         )
-        return list(filter(lambda x: id(x) != id(self), entities))
+        return list(
+            filter(
+                lambda x: id(x) != id(self),
+                entities,
+            )
+        )
 
     @staticmethod
     def _resolve_out_of_bounds(
