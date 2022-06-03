@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox, QStackedWidget
 
 from app.constants import Default
 from app.controllers import GameController
+from app.domain.enums import GameState
 from app.levels.tank_generator import TankFabric
 from app.ui.widgets.choose_tank import ChooseTankWidget
 from app.ui.widgets.entry import EntryWidget
@@ -45,22 +46,26 @@ class MainWindow(QMainWindow):
         self.widgets.currentWidget().init()
 
     def closeEvent(self, e):
-        if self.game_controller is None or self.game_controller.game is None:
+        if (
+            self.game_controller is None
+            or self.game_controller.game is None
+        ):
             e.accept()
             return
 
         self.game_controller.pause.set()
 
-        result = QMessageBox.question(
-            self,
-            "Closing confirmation WORLD OF TANKS",
-            f"Maybe save, {self.username}?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
+        if self.game_controller.game.state != GameState.FINISHED:
+            result = QMessageBox.question(
+                self,
+                "Closing confirmation WORLD OF TANKS",
+                f"Maybe save, {self.username}?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No,
+            )
 
-        if result == QMessageBox.Yes:
-            self.game_controller.save()
+            if result == QMessageBox.Yes:
+                self.game_controller.save()
 
         self.game.close()
         e.accept()

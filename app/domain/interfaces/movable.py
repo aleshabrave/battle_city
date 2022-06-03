@@ -63,7 +63,13 @@ class Movable(Entity):
             if self.direction == Direction.LEFT or self.direction == Direction.DOWN
             else map_.get_entities_by_location(self.position, shift_size)
         )
-        return list(filter(lambda x: id(x) != id(self), entities))
+        return list(
+            filter(
+                lambda x: id(x) != id(self)
+                and ("bullet" not in x.name or "tank" in x.name),
+                entities,
+            )
+        )
 
     @staticmethod
     def _resolve_out_of_bounds(

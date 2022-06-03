@@ -1,15 +1,23 @@
 import time
+from datetime import datetime
 from threading import Thread
 from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QKeyEvent, QPainter
-from PyQt5.QtWidgets import QBoxLayout, QFrame, QLabel, QPushButton
+from PyQt5.QtWidgets import QBoxLayout, QFrame, QLabel, QPushButton, QMessageBox
 
 from app.constants import Default
 from app.controllers import GameController
 from app.domain.enums import GameState
 from app.domain.interfaces import Entity
+from app.levels.tank_generator import (
+    BigBulletTank,
+    DefaultTank,
+    FastBulletTank,
+    HealthyTank,
+    TankFabric,
+)
 from app.ui.sprite import Sprite
 
 if TYPE_CHECKING:
@@ -62,13 +70,18 @@ class GameWidget(QFrame):
         self._init_sprites()
 
     def updateStatuses(self):
+        start_time = datetime.now()
         while not self.status_handler_stop_flag:
             time.sleep(1)
+            if self.main_window.game_controller.pause.is_set():
+                continue
             self.game_status_label.setText(
                 f"Status: "
                 f"{self.main_window.game_controller.game.state.value}"
+                f"\nTime: "
+                f"{(datetime.now() - start_time).seconds}"
                 f"\nhp: "
-                f" {self.main_window.game_controller.player_controller.tank_controller.tank.health_points}"
+                f"{self.main_window.game_controller.player_controller.tank_controller.tank.health_points}"
                 f"\nbullet damage: "
                 f"{self.main_window.game_controller.player_controller.tank_controller.tank._bullet_schema.damage}"
                 f"\nbullet speed: "
@@ -89,12 +102,32 @@ class GameWidget(QFrame):
             timer=self.main_window.game_controller.timer,
             username=self.main_window.username,
             new_game_flag=True,
-            player_fabric=self.main_window.player_fabric,
+            player_fabric=self.getFabric()
+            if self.main_window.player_fabric is None
+            else self.main_window.player_fabric,
         )
         self.main_window.game_controller.start()
 
+    def getFabric(self) -> TankFabric:
+        player = self.main_window.game_controller.map_controller.map_.get_player()
+        if "fast_bullet" in player.name:
+            return FastBulletTank()
+        if "big_bullet" in player.name:
+            return BigBulletTank()
+        if "healthy" in player.name:
+            return HealthyTank()
+        return DefaultTank()
+
     def saveButtonClicked(self):
-        self.main_window.game_controller.save()
+        if self.main_window.game_controller.game.state == GameState.FINISHED:
+            QMessageBox.information(
+                self.main_window,
+                "WAR THUNDER",
+                "Game is finished, you can't save",
+                QMessageBox.Ok,
+            )
+        else:
+            self.main_window.game_controller.save()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if self.can_do_nothing():

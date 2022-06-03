@@ -17,7 +17,11 @@ class Map:
 
     def get_enemies(self) -> list[Entity]:
         """Get all enemies."""
-        return [entity for entity in self.entities if "enemy" in entity.name]
+        return [
+            entity
+            for entity in self.entities
+            if "enemy" in entity.name and "tank" in entity.name
+        ]
 
     def get_player(self) -> Entity:
         """Get player."""

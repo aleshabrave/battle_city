@@ -15,16 +15,15 @@ class StupidAI:
 
     _map: Map
     _enemy: TankController
-    _cd: int = 500000
+    _cd: int = 1
     _previous_move_dttm: datetime = datetime.now()
 
     def make_move(self) -> None:
+        """Сходить."""
         if not self._enemy.tank.is_available():
             return
 
-        self._enemy.fire(self._map)
-
-        if (datetime.now() - self._previous_move_dttm).microseconds.real < self._cd:
+        if (datetime.now() - self._previous_move_dttm).seconds.real < self._cd:
             return
 
         player = self._map.get_player()
@@ -36,18 +35,17 @@ class StupidAI:
             else castle
         )
 
+        self._enemy.fire(self._map)
         self._enemy.tank.speed = Default.TANK_SPEED
         self._enemy.update_direction(new_direction)
         self._previous_move_dttm = datetime.now()
 
-    def get_new_direction(self, entity: Entity):
-        if (
-            entity.position.x
-            > self._enemy.tank.position.x + self._enemy.tank.size.width
-        ):
-            return Direction.RIGHT
-        elif entity.position.y + entity.size.height < self._enemy.tank.position.y:
+    def get_new_direction(self, entity: Entity) -> Direction:
+        """Получить новое направление."""
+        if entity.position.y < self._enemy.tank.position.y:
             return Direction.DOWN
-        elif entity.position.y > self._enemy.tank.position.y:
+        if entity.position.x < self._enemy.tank.position.x:
+            return Direction.LEFT
+        if entity.position.y > self._enemy.tank.position.y:
             return Direction.UP
-        return Direction.LEFT
+        return Direction.RIGHT
