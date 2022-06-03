@@ -27,11 +27,11 @@ def parse_map(filename: str, player_fabric: TankFabric) -> Map:
     random_fabric = random_enemy_fabric()
 
     object_mapper = {
-        "P": player_fabric.get_fabric(enemy_flag=False),
-        "W": _get_block("default_wall", Default.WALL_HEALTH_POINTS),
-        "E": next(random_fabric).get_fabric(),
-        "C": _get_block("castle", Default.CASTLE_HEALTH_POINTS),
-        ".": None,
+        "P": lambda: player_fabric.get_fabric(enemy_flag=False),
+        "W": lambda: _get_block("default_wall", Default.WALL_HEALTH_POINTS),
+        "E": lambda: next(random_fabric).get_fabric(),
+        "C": lambda: _get_block("castle", Default.CASTLE_HEALTH_POINTS),
+        ".": lambda: None,
     }
 
     with open(filename, "r") as file:
@@ -43,7 +43,7 @@ def parse_map(filename: str, player_fabric: TankFabric) -> Map:
             column_counter += 1
 
             for idx, obj in enumerate(line):
-                mapper = object_mapper[obj]
+                mapper = object_mapper[obj]()
                 if mapper is not None:
                     location = Vector(idx, column_counter) * Default.MAP_CELL_SIZE
                     entity = mapper(location)

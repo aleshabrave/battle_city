@@ -46,10 +46,7 @@ class MainWindow(QMainWindow):
         self.widgets.currentWidget().init()
 
     def closeEvent(self, e):
-        if (
-            self.game_controller is None
-            or self.game_controller.game is None
-        ):
+        if self.game_controller is None or self.game_controller.game is None:
             e.accept()
             return
 

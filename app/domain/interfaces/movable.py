@@ -65,8 +65,7 @@ class Movable(Entity):
         )
         return list(
             filter(
-                lambda x: id(x) != id(self)
-                and ("bullet" not in x.name or "tank" in x.name),
+                lambda x: id(x) != id(self),
                 entities,
             )
         )
