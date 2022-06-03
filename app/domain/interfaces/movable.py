@@ -53,7 +53,7 @@ class Movable(Entity):
         return self.position + shift
 
     def _get_conflict_entities(self, new_position: Vector, map_: "Map") -> list[Entity]:
-        """Получить сущностей, которые могут помешать движению."""
+        """Получить сущностей, которые могут помешать движению (кроме снарядов)."""
         shift_size = Size(
             abs(new_position.x - self.position.x) + self.size.width,
             abs(new_position.y - self.position.y) + self.size.height,

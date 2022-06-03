@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QBoxLayout, QFrame, QLabel, QPushButton
 
 from app.constants import Default
 from app.controllers import GameController
+from app.domain.enums import GameState
 from app.domain.interfaces import Entity
 from app.ui.sprite import Sprite
 
@@ -96,22 +97,33 @@ class GameWidget(QFrame):
         self.main_window.game_controller.save()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        if self.main_window.game_controller.pause.is_set():
+        if self.can_do_nothing():
             return
+
         self.main_window.game_controller.player_controller.handle_press_key(event)
 
     def keyReleaseEvent(self, event: QKeyEvent) -> None:
-        if self.main_window.game_controller.pause.is_set():
+        if self.can_do_nothing():
             return
+
         self.main_window.game_controller.player_controller.handle_release_key(event)
 
     def paintEvent(self, event) -> None:
         painter = QPainter(self)
+
         for entity in self.main_window.game_controller.map_controller.map_.entities:
             sprite = self._get_else_create_sprite(entity)
-            painter.drawImage(sprite.coordinates, sprite.next_image)
-        # self._delete_old_sprites()
+            painter.drawImage(
+                sprite.coordinates, sprite.next_image(not self.can_do_nothing())
+            )
+
         self.update()
+
+    def can_do_nothing(self):
+        return (
+            self.main_window.game_controller.pause.is_set()
+            or self.main_window.game_controller.game.state == GameState.FINISHED
+        )
 
     def _init_sprites(self) -> None:
         self._sprites: dict[Entity, Sprite] = dict()

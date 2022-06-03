@@ -20,6 +20,10 @@ class Vector:
         y = self.y * scalar
         return Vector(x, y)
 
+    def dist_to(self, other: "Vector") -> int:
+        """Расстояние."""
+        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
+
 
 @dataclass(unsafe_hash=True)
 class Size:

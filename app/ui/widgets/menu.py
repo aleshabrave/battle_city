@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QBoxLayout, QLabel, QPushButton, QWidget, QMessageBox
+from PyQt5.QtWidgets import QBoxLayout, QLabel, QMessageBox, QPushButton, QWidget
 
 from app.constants import Default
 from app.db.storage import GameStorage
@@ -52,10 +52,7 @@ class MenuWidget(QWidget):
         game = GameStorage.get(self.main_window.username)
         if game is None:
             QMessageBox.information(
-                self,
-                "WAR THUNDER",
-                "No saved games",
-                QMessageBox.Ok
+                self, "WAR THUNDER", "No saved games", QMessageBox.Ok
             )
         else:
             self.main_window.new_game_flag = False

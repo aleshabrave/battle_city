@@ -14,10 +14,13 @@ class Sprite:
         self._init_images()
         self._basic_transition = basic_transition
 
-    @property
-    def next_image(self) -> QImage:
+    def next_image(self, shift_flag=True) -> QImage:
         image = self._images[self._number_of_current_image]
-        if isinstance(self._entity, Movable) and self._entity.is_moving():
+        if (
+            isinstance(self._entity, Movable)
+            and self._entity.is_moving()
+            and shift_flag
+        ):
             self._shift_number_of_current_image()
         return image.transformed(self._get_rotation_angle())
 
