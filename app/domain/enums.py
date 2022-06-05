@@ -4,7 +4,7 @@ from math import pi
 
 @unique
 class GameState(str, Enum):
-    """Состояние игры."""
+    """Game state."""
 
     FINISHED = "Finished"
     PLAY = "Play"
@@ -12,7 +12,7 @@ class GameState(str, Enum):
 
 @unique
 class LevelState(str, Enum):
-    """Результат уровня."""
+    """Level state."""
 
     WIN = "Win"
     LOSE = "Lose"
@@ -21,7 +21,7 @@ class LevelState(str, Enum):
 
 @unique
 class Direction(Enum):
-    """Направления движения в виде угла в радианах"""
+    """Direction of travel."""
 
     UP = pi / 2
     DOWN = -pi / 2

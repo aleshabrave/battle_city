@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class Movable(Entity):
-    """Абстрактный класс сущностей, которые могут двигаться."""
+    """Class for movable entities."""
 
     speed: int
     direction: Direction
@@ -20,7 +20,7 @@ class Movable(Entity):
     def update_location(
         self, map_: "Map", out_of_bound_remove_flag: bool = False
     ) -> Optional[Entity]:
-        """Обновить позицию сущности."""
+        """Update location."""
         new_position = self._get_new_position()
 
         if map_.check_out_of_bounds(new_position, self.size):
@@ -41,11 +41,11 @@ class Movable(Entity):
         return self._resolve_conflicts_with_other_entities(conflict_entities)
 
     def is_moving(self) -> bool:
-        """Проверка на движение."""
+        """Check if it is moving."""
         return self.speed != 0
 
     def _get_new_position(self) -> Vector:
-        """Получить новую позицию."""
+        """Get new position."""
         shift = Vector(
             int(math.cos(self.direction.value) * self.speed),
             int(math.sin(self.direction.value) * self.speed),
@@ -53,7 +53,7 @@ class Movable(Entity):
         return self.position + shift
 
     def _get_conflict_entities(self, new_position: Vector, map_: "Map") -> list[Entity]:
-        """Получить сущностей, которые могут помешать движению (кроме снарядов)."""
+        """Get all conflicts entities."""
         shift_size = Size(
             abs(new_position.x - self.position.x) + self.size.width,
             abs(new_position.y - self.position.y) + self.size.height,
@@ -74,7 +74,7 @@ class Movable(Entity):
     def _resolve_out_of_bounds(
         new_position: Vector, size: Size, map_size: Size
     ) -> Vector:
-        """Разрешить выход за пределы карты."""
+        """Resolve out of map's bounds."""
         result_position = Vector(new_position.x, new_position.y)
         if new_position.x < 0:
             result_position.x = 0
@@ -89,7 +89,7 @@ class Movable(Entity):
     def _resolve_conflicts_with_other_entities(
         self, conflict_entities: list[Entity]
     ) -> Entity:
-        """Разрешить столкновение с другими сущностями."""
+        """Resolve intersected moments with other entities."""
         if self.direction == Direction.UP:
             entity = min(
                 conflict_entities,

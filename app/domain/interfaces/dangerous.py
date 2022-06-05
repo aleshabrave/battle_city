@@ -5,7 +5,7 @@ from app.domain.interfaces.living import Living
 
 @dataclass
 class Dangerous:
-    """Абстрактный класс опасных объектов."""
+    """Class for dangerous entities."""
 
     damage: int
 
@@ -14,5 +14,5 @@ class Dangerous:
             raise ValueError(f"Damage should be positive, but damage={self.damage}")
 
     def do_damage(self, enemy: Living) -> None:
-        """Нанести урон."""
+        """Do damage."""
         enemy.take_damage(self.damage)

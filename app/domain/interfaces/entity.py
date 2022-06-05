@@ -6,7 +6,7 @@ from app.domain.utils import Size, Vector
 
 @dataclass
 class Entity:
-    """Абстрактный класс сущности."""
+    """Class for entity."""
 
     name: str
     position: Optional[Vector]

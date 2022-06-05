@@ -96,7 +96,7 @@ class GameController(Thread):
 
     def _update_lose_logic(self, level: Level) -> None:
         """Обновить логику поражения."""
-        player = level.map_.get_player()
+        player = level.map_.get_player_tank()
         self.player_controller = PlayerController(
             level.map_,
             TankController(player),
@@ -110,7 +110,7 @@ class GameController(Thread):
 
     def _update_win_logic(self, level: Level) -> None:
         """Обновить логику победы."""
-        enemies = level.map_.get_enemies()
+        enemies = level.map_.get_enemy_tanks()
 
         self._ais = []
         for enemy in enemies:

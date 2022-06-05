@@ -3,37 +3,37 @@ from dataclasses import dataclass
 
 @dataclass(unsafe_hash=True)
 class Vector:
-    """Класс вектора."""
+    """Class for entity location."""
 
     x: int
     y: int
 
     def __add__(self, other: "Vector") -> "Vector":
-        """Добавить вектор."""
+        """Add vector."""
         x = self.x + other.x
         y = self.y + other.y
         return Vector(x, y)
 
     def __mul__(self, scalar: int) -> "Vector":
-        """Умножить на скаляр."""
+        """Multiply by a scalar."""
         x = self.x * scalar
         y = self.y * scalar
         return Vector(x, y)
 
     def dist_to(self, other: "Vector") -> int:
-        """Расстояние."""
+        """Get distance to other vector-point."""
         return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
 
 
 @dataclass(unsafe_hash=True)
 class Size:
-    """Класс размера."""
+    """Class for entity size."""
 
     width: int
     height: int
 
     def __mul__(self, scalar: int) -> "Size":
-        """Умножить на скаляр."""
+        """Multiply by a scalar."""
         width = self.width * scalar
         height = self.height * scalar
         return Size(width, height)
@@ -44,6 +44,7 @@ class Methods:
     def are_intersected(
         source: tuple[Vector, Size], other: tuple[Vector, Size]
     ) -> bool:
+        """Check if rectangles are intersected"""
         return (
             source[0].x + source[1].width > other[0].x
             and source[0].y < other[0].y + other[1].height

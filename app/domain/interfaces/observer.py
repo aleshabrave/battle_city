@@ -2,8 +2,8 @@ from abc import abstractmethod
 
 
 class Observer:
-    """Интерфейс наблюдателя."""
+    """Interface for observer."""
 
     @abstractmethod
     def handle_event(self) -> None:
-        """Обработать событие."""
+        """Handle event."""

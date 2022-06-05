@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QKeyEvent, QPainter
-from PyQt5.QtWidgets import QBoxLayout, QFrame, QLabel, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QBoxLayout, QFrame, QLabel, QMessageBox, QPushButton
 
 from app.constants import Default
-from app.controllers import GameController
+from app.controllers.game_controller import GameController
 from app.domain.enums import GameState
 from app.domain.interfaces import Entity
 from app.levels.tank_generator import (

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QStackedWidget
 
 from app.constants import Default
-from app.controllers import GameController
+from app.controllers.game_controller import GameController
 from app.domain.enums import GameState
 from app.levels.tank_generator import TankFabric
 from app.ui.widgets.choose_tank import ChooseTankWidget

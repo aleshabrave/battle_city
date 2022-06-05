@@ -25,6 +25,19 @@ class TestsVector:
     def test__mul(self, vector, scalar, expected):
         assert vector * scalar == expected
 
+    @pytest.mark.parametrize(
+        "source,other,expected",
+        [
+            (Vector(0, 0), Vector(0, 0), 0),
+            (Vector(0, 0), Vector(54, 0), 54),
+            (Vector(0, 0), Vector(3, 4), 5),
+        ],
+    )
+    def test__dist_to(self, source, other, expected):
+        actual = source.dist_to(other)
+
+        assert actual == expected
+
 
 class TestsSize:
     @pytest.mark.parametrize(

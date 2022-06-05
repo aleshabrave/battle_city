@@ -15,6 +15,6 @@ class MapController:
 
     def update_map(self) -> None:
         """Обновить состояние карты."""
-        for entity in self.map_.entities:
+        for entity in list(reversed(self.map_.entities)):
             if isinstance(entity, Movable):
                 entity.update_location(self.map_)

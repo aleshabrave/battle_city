@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFont, QKeyEvent
 from PyQt5.QtWidgets import QBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
 from app.constants import Default
-from app.controllers import GameController
+from app.controllers.game_controller import GameController
 
 if TYPE_CHECKING:
     from app.ui.main_window import MainWindow

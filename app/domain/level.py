@@ -6,7 +6,7 @@ from app.domain.map import Map
 
 @dataclass
 class Level:
-    """Класс уровня."""
+    """Class for level."""
 
     map_: Map
     state: LevelState = LevelState.UNDEFINED

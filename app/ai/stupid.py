@@ -26,7 +26,7 @@ class StupidAI:
         if (datetime.now() - self._previous_move_dttm).seconds.real < self._cd:
             return
 
-        player = self._map.get_player()
+        player = self._map.get_player_tank()
         castle = self._map.get_entities_by_name("castle").pop()
         new_direction = self.get_new_direction(
             player

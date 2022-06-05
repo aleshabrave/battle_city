@@ -1,34 +1,33 @@
-import json
-
-import peewee
-from peewee import CharField, Model, PostgresqlDatabase
+from peewee import CharField, Model, Proxy, OperationalError
 from playhouse.fields import PickleField
 
-with open("env.json", "r") as f:
-    settings = json.load(f)
+from app.db import dependencies
 
-postgr_db = PostgresqlDatabase(**settings)
+db_proxy = Proxy()
 
 
 class BaseModel(Model):
-    """Базовая моделька."""
+    """Base model."""
 
     class Meta:
-        database = postgr_db
+        database = db_proxy
 
 
 class GameModel(BaseModel):
-    """Моделька игры."""
+    """Game model."""
 
     username = CharField(primary_key=True)
-    backup = PickleField()
+    backup = PickleField(default=None)
 
 
-def try_create_tables():
+def init_db():
+    """Initialize db."""
+    db = dependencies.get_db()
+    db_proxy.initialize(db)
     try:
-        with postgr_db.atomic():
-            postgr_db.create_tables([GameModel])
-    except peewee.OperationalError:
+        with db.atomic():
+            db.create_tables([GameModel])
+    except OperationalError:
         raise ConnectionError("Can not connect to database.")
     finally:
-        postgr_db.close()
+        db.close()

@@ -3,7 +3,7 @@ import traceback
 
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
-from app.db.models import try_create_tables
+from app.db import models
 from app.ui.main_window import MainWindow
 
 
@@ -25,7 +25,7 @@ def main():
     win.show()
 
     try:
-        try_create_tables()
+        models.init_db()
         sys.exit(app.exec_())
     except ConnectionError:
         QMessageBox.critical(
