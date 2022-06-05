@@ -12,22 +12,22 @@ if TYPE_CHECKING:
 
 @dataclass
 class TankController:
-    """Контроллер для сущности Tank"""
+    """Controller for tank"""
 
     tank: "Tank"
     _cd: int = Default.TANK_CD
     _previous_shot_dttm: datetime = datetime.now()
 
     def update_speed(self, speed: int) -> None:
-        """Обновить скорость танка."""
+        """Update tank speed."""
         self.tank.speed = speed
 
     def update_direction(self, direction: Direction) -> None:
-        """Обновить направление движения танка."""
+        """Update tank's direction of travel."""
         self.tank.direction = direction
 
     def fire(self, map_: "Map") -> None:
-        """Выстрелить."""
+        """Fire with cooldown."""
         if (datetime.now() - self._previous_shot_dttm).seconds.real < self._cd:
             return
 

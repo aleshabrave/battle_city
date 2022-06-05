@@ -5,7 +5,7 @@ from app.domain.interfaces.observable import Observable
 
 @dataclass
 class Living(Observable):
-    """Абстрактный класс объектов c health points."""
+    """Class for entities with health points."""
 
     health_points: int
 
@@ -16,12 +16,12 @@ class Living(Observable):
             )
 
     def take_damage(self, damage: int) -> None:
-        """Принять урон."""
+        """Take damage."""
         if damage <= 0:
             raise ValueError(f"Damage should be positive, but health_points={damage}")
         self.health_points = max(0, self.health_points - damage)
         self.notify()
 
     def is_available(self) -> bool:
-        """Проверить жив ли объект."""
+        """Check if entity is available."""
         return self.health_points > 0

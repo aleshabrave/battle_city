@@ -17,6 +17,8 @@ if TYPE_CHECKING:
 
 
 class ChooseTankWidget(QWidget):
+    """Widget for choosing a tank."""
+
     def __init__(self, parent: "MainWindow"):
         super(ChooseTankWidget, self).__init__(parent)
         self.main_window = parent
@@ -32,6 +34,7 @@ class ChooseTankWidget(QWidget):
         self.layout = QBoxLayout(QBoxLayout.Direction.TopToBottom)
 
     def init(self):
+        """Initialize main components."""
         self.bg_label.resize(612, 512)
         self.bg_label.setStyleSheet(
             f"background-image: url({Default.PATH_TO_MM_BACKGROUND});"

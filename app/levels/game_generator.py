@@ -10,25 +10,25 @@ _PATH = "./app/levels/maps/"
 
 
 class GameGenerator:
-    """Генератор игры."""
+    """Game generator."""
 
     @staticmethod
     def save(username: str, game: Game) -> None:
-        """Сохранить игру."""
+        """Save game."""
         GameStorage.put(username, game)
 
     @staticmethod
     def load(username: str) -> Optional[Game]:
-        """Загрузить игру."""
+        """Load game."""
         return GameStorage.get(username)
 
     @staticmethod
     def generate(player_fabric: TankFabric) -> Game:
-        """Сгенерировать игру."""
+        """Generate new game."""
         return Game(
             [
                 Level(
-                    parser.parse_map(
+                    parser.get_map(
                         filename=_PATH + filename, player_fabric=player_fabric
                     )
                 )

@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from app.domain.exceptions import MapException
 from app.domain.interfaces import Entity
 from app.domain.map import Map
 from app.domain.utils import Size, Vector
@@ -9,13 +10,52 @@ from app.domain.utils import Size, Vector
 
 class TestsMap:
     @pytest.mark.parametrize(
-        "entities, expected",
+        "entities,expected",
         [([Entity("1", None, None)], [Entity("1", None, None)]), (None, [])],
     )
     def test__post_init(self, entities, expected):
         map_ = Map(size=MagicMock(), entities=entities)
 
         assert map_.entities == expected
+
+    def test__get_player_tank(self):
+        player = MagicMock()
+        player.name = "player_tank"
+        some_entity = MagicMock()
+        some_entity.name = "some_entity"
+        map_ = Map(size=MagicMock(), entities=[player, some_entity])
+
+        actual = map_.get_player_tank()
+
+        assert actual == player
+
+    @pytest.mark.parametrize(
+        "players,message",
+        [
+            ([MagicMock(), MagicMock()], "Too many players, but should be only one."),
+            ([], "No player."),
+        ],
+    )
+    def test__get_player_tank_with_exception(self, players, message):
+        for player in players:
+            player.name = "player_tank"
+        map_ = Map(size=MagicMock(), entities=players)
+
+        with pytest.raises(MapException, match=message):
+            map_.get_player_tank()
+
+    def test__get_enemy_tanks(self):
+        tank1 = MagicMock()
+        tank1.name = "enemy_tank_1"
+        tank2 = MagicMock()
+        tank2.name = "enemy_tank_2"
+        some_entity = MagicMock()
+        some_entity.name = "some_entity"
+        map_ = Map(size=MagicMock(), entities=[tank1, tank2, some_entity])
+
+        actual = map_.get_enemy_tanks()
+
+        assert actual == [tank1, tank2]
 
     @pytest.mark.parametrize(
         "name,entities,expected",
@@ -36,7 +76,7 @@ class TestsMap:
         assert actual == expected
 
     @pytest.mark.parametrize(
-        "entities, position, size, expected",
+        "entities,position,size,expected",
         [
             (
                 [

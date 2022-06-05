@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QStackedWidget
 
 from app.constants import Default
-from app.controllers import GameController
+from app.controllers.game_controller import GameController
 from app.domain.enums import GameState
 from app.levels.tank_generator import TankFabric
 from app.ui.widgets.choose_tank import ChooseTankWidget
@@ -13,6 +13,8 @@ from app.ui.widgets.menu import MenuWidget
 
 
 class MainWindow(QMainWindow):
+    """Main window for app"""
+
     username: str = None
     new_game_flag: bool = True
     game_controller: GameController = None
@@ -35,6 +37,7 @@ class MainWindow(QMainWindow):
         self.display(0)
 
     def initWidgets(self, size: QSize):
+        """Initialize main widgets."""
         self.widgets.resize(size)
         self.widgets.addWidget(self.entry)
         self.widgets.addWidget(self.menu)

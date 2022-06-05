@@ -11,18 +11,16 @@ from app.domain.map import Map
 
 @dataclass
 class PlayerController:
-    """Класс контроллера player."""
+    """Controller for player-user."""
 
     _map: Map
     tank_controller: TankController
 
     def __post_init__(self):
-        self._init_movement_keys()
-
-    def _init_movement_keys(self):
         self._movement_keys = (Qt.Key_Up, Qt.Key_Down, Qt.Key_Right, Qt.Key_Left)
 
     def handle_press_key(self, event: QKeyEvent) -> None:
+        """Handle press key."""
         key = event.key()
         if key == Qt.Key_Up:
             self.tank_controller.update_direction(Direction.DOWN)
@@ -38,6 +36,7 @@ class PlayerController:
             self.tank_controller.update_speed(Default.TANK_SPEED)
 
     def handle_release_key(self, event: QKeyEvent) -> None:
+        """Handle release key."""
         key = event.key()
         if key in self._movement_keys:
             self.tank_controller.update_speed(0)
