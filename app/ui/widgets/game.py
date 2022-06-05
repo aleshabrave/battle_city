@@ -27,6 +27,8 @@ if TYPE_CHECKING:
 class GameWidget(QFrame):
     """Main widget with game."""
 
+    timer: int = 0
+
     def __init__(self, parent: "MainWindow"):
         super(GameWidget, self).__init__(parent)
 
@@ -73,16 +75,13 @@ class GameWidget(QFrame):
         self._init_sprites()
 
     def updateStatuses(self):
-        start_time = datetime.now()
         while not self.status_handler_stop_flag:
             time.sleep(1)
-            if self.main_window.game_controller.pause.is_set():
-                continue
             self.game_status_label.setText(
                 f"Status: "
                 f"{self.main_window.game_controller.game.state.value}"
                 f"\nTime: "
-                f"{(datetime.now() - start_time).seconds}"
+                f"{self.timer}"
                 f"\nhp: "
                 f"{self.main_window.game_controller.player_controller.tank_controller.tank.health_points}"
                 f"\nbullet damage: "
@@ -90,6 +89,13 @@ class GameWidget(QFrame):
                 f"\nbullet speed: "
                 f"{self.main_window.game_controller.player_controller.tank_controller.tank._bullet_schema.speed}"
             )
+
+            if (
+                self.main_window.game_controller.pause.is_set()
+                or self.main_window.game_controller.game.state == GameState.FINISHED
+            ):
+                continue
+            self.timer += 1
             self.game_status_label.adjustSize()
 
     def pauseButtonClicked(self):
