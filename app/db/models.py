@@ -1,4 +1,4 @@
-from peewee import CharField, Model, Proxy, OperationalError
+from peewee import CharField, Model, OperationalError, Proxy
 from playhouse.fields import PickleField
 
 from app.db import dependencies

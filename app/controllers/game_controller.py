@@ -16,7 +16,7 @@ from app.levels.tank_generator import TankFabric
 
 
 class GameController(Thread):
-    """Класс контроллера для Game."""
+    """Controller for game."""
 
     game: Game = None
     player_controller: PlayerController = None
@@ -38,13 +38,13 @@ class GameController(Thread):
     def create(
         timer: float, username: str, new_game_flag: bool, player_fabric: TankFabric
     ) -> "GameController":
-        """Создать контроллер."""
+        """Create controller."""
         controller = GameController(timer, username)
         controller.init_game(player_fabric, new_game_flag)
         return controller
 
     def run(self):
-        """Запустить игру."""
+        """Run game."""
         for level in self.game:
             if self.game.state == GameState.FINISHED:
                 break
@@ -64,14 +64,14 @@ class GameController(Thread):
         self.game.state = GameState.FINISHED
 
     def make_move(self) -> None:
-        """Сделать ход."""
+        """Make game move."""
         self.map_controller.update_map()
 
         for ai in self._ais:
             ai.make_move()
 
     def init_game(self, player_fabric: TankFabric, new_game_flag=False) -> None:
-        """Инициализировать игру."""
+        """Initialize game."""
         if not new_game_flag:
             self.game = GameGenerator.load(self._username)
 
@@ -84,18 +84,18 @@ class GameController(Thread):
         self.game = GameGenerator.generate(player_fabric)
 
     def save(self) -> None:
-        """Сохранить игру."""
+        """Save game."""
         GameGenerator.save(self._username, self.game)
 
     def _update_inner_controllers(self, level: Level) -> None:
-        """Обновить внутренние контроллеры."""
+        """Update inner controllers."""
         self.map_controller = MapController(level.map_)
 
         self._update_lose_logic(level)
         self._update_win_logic(level)
 
     def _update_lose_logic(self, level: Level) -> None:
-        """Обновить логику поражения."""
+        """Update lose logic."""
         player = level.map_.get_player_tank()
         self.player_controller = PlayerController(
             level.map_,
@@ -109,7 +109,7 @@ class GameController(Thread):
         castle.add_observer(self._lose_observer)
 
     def _update_win_logic(self, level: Level) -> None:
-        """Обновить логику победы."""
+        """Update win logic."""
         enemies = level.map_.get_enemy_tanks()
 
         self._ais = []

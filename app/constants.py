@@ -1,4 +1,6 @@
 class Default:
+    """Class for constants"""
+
     WALL_HEALTH_POINTS = 3
     CASTLE_HEALTH_POINTS = 3
     TANK_SPEED = 4

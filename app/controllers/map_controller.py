@@ -9,12 +9,12 @@ if TYPE_CHECKING:
 
 @dataclass
 class MapController:
-    """Класс контроллера Map."""
+    """Controller for map."""
 
     map_: "Map"
 
     def update_map(self) -> None:
-        """Обновить состояние карты."""
+        """Update map's state."""
         for entity in list(reversed(self.map_.entities)):
             if isinstance(entity, Movable):
                 entity.update_location(self.map_)
