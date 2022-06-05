@@ -12,6 +12,8 @@ if TYPE_CHECKING:
 
 
 class EntryWidget(QWidget):
+    """Entry widget."""
+
     text: str = None
 
     def __init__(self, parent: "MainWindow"):
@@ -25,6 +27,7 @@ class EntryWidget(QWidget):
         self.layout = QBoxLayout(QBoxLayout.Direction.TopToBottom)
 
     def init(self):
+        """Initialize main components."""
         self.bg_label.resize(612, 512)
         self.bg_label.setStyleSheet(
             f"background-image: url({Default.PATH_TO_ENTRY_BACKGROUND});"

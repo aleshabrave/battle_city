@@ -7,14 +7,14 @@ from app.domain.interfaces import Living, Observer
 
 @dataclass
 class LoseObserver(Observer):
-    """Класс наблюдателя за победой."""
+    """Observer, which checks castle and player."""
 
     _entities: list[Living]
     _level: Level
     _game: Game
 
     def handle_event(self) -> None:
-        """Обработать событие."""
+        """Handle event - check on lose state."""
 
         for entity in self._entities:
             if not entity.is_available():
@@ -24,5 +24,6 @@ class LoseObserver(Observer):
                 return
 
     def _clear(self) -> None:
+        """Unsubscribe enemies."""
         for entity in self._entities:
             entity.remove_observer(self)

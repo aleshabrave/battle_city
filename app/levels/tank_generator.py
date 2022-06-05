@@ -15,7 +15,7 @@ def _get_tank_fabric(
     tank_name: str,
     bullet_name: str,
 ) -> Callable:
-    """Получить танк."""
+    """Get tank fabric."""
 
     bullet_schema = BulletSchema(
         name=bullet_name,
@@ -24,7 +24,8 @@ def _get_tank_fabric(
         speed=bullet_speed,
     )
 
-    def wrapper(position: Vector) -> Tank:
+    def fabric(position: Vector) -> Tank:
+        """Get tank."""
         return Tank(
             name=tank_name,
             speed=0,
@@ -35,18 +36,23 @@ def _get_tank_fabric(
             _bullet_schema=bullet_schema,
         )
 
-    return wrapper
+    return fabric
 
 
 class TankFabric:
+    """Fabric for tanks."""
+
     @staticmethod
     def get_fabric(enemy_flag=True):
-        """Получить фабрику."""
+        """Get fabric."""
 
 
 class DefaultTank(TankFabric):
+    """Fabric for default tanks"""
+
     @staticmethod
     def get_fabric(enemy_flag=True):
+        """Get fabric."""
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 4,
             bullet_damage=Default.BULLET_DAMAGE,
@@ -59,8 +65,11 @@ class DefaultTank(TankFabric):
 
 
 class BigBulletTank(TankFabric):
+    """Fabric for tanks with big bullet."""
+
     @staticmethod
     def get_fabric(enemy_flag=True):
+        """Get fabric."""
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 2,
             bullet_damage=Default.BULLET_DAMAGE + 2,
@@ -73,8 +82,11 @@ class BigBulletTank(TankFabric):
 
 
 class FastBulletTank(TankFabric):
+    """Fabric for tanks with fast bullet."""
+
     @staticmethod
     def get_fabric(enemy_flag=True):
+        """Get fabric."""
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 4,
             bullet_damage=Default.BULLET_DAMAGE,
@@ -87,8 +99,11 @@ class FastBulletTank(TankFabric):
 
 
 class HealthyTank(TankFabric):
+    """Fabric for tanks with many health points."""
+
     @staticmethod
     def get_fabric(enemy_flag=True):
+        """Get fabric."""
         return _get_tank_fabric(
             bullet_size=Default.MAP_CELL_SIZE // 8,
             bullet_damage=Default.BULLET_DAMAGE,

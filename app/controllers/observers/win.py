@@ -7,14 +7,14 @@ from app.domain.interfaces import Living, Observer
 
 @dataclass
 class WinObserver(Observer):
-    """Класс наблюдателя за победой."""
+    """Observer, which checks enemies."""
 
     _enemies: list[Living]
     _level: Level
     _game: Game
 
     def handle_event(self) -> None:
-        """Обработать событие."""
+        """Handle event - check on win state."""
         available_enemies: list[Living] = []
 
         for enemy in self._enemies:

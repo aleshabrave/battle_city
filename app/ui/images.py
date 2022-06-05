@@ -2,6 +2,8 @@ from PyQt5.QtGui import QImage
 
 
 class Images:
+    """Constant images."""
+
     _paths_to_images: dict[str, list[str]] = None
 
     @staticmethod
@@ -74,6 +76,7 @@ class Images:
 
     @staticmethod
     def get_images(name: str) -> list[QImage]:
+        """Get images by name."""
         if Images._paths_to_images is None:
             Images._add_paths_to_images()
         return list(map(QImage, Images._paths_to_images[name]))

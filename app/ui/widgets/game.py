@@ -25,6 +25,8 @@ if TYPE_CHECKING:
 
 
 class GameWidget(QFrame):
+    """Main widget with game."""
+
     def __init__(self, parent: "MainWindow"):
         super(GameWidget, self).__init__(parent)
 
@@ -58,6 +60,7 @@ class GameWidget(QFrame):
         save_button.clicked.connect(self.saveButtonClicked)
 
     def init(self):
+        """Initialize main components."""
         self.setStyleSheet("background-color: black;")
         self.main_window.game_controller.init_game(
             player_fabric=self.main_window.player_fabric,
@@ -109,7 +112,8 @@ class GameWidget(QFrame):
         self.main_window.game_controller.start()
 
     def getFabric(self) -> TankFabric:
-        player = self.main_window.game_controller.map_controller.map_.get_player()
+        """Get user fabric for restart if game was loaded."""
+        player = self.main_window.game_controller.map_controller.map_.get_player_tank()
         if "fast_bullet" in player.name:
             return FastBulletTank()
         if "big_bullet" in player.name:
@@ -145,7 +149,7 @@ class GameWidget(QFrame):
         painter = QPainter(self)
 
         for entity in self.main_window.game_controller.map_controller.map_.entities:
-            sprite = self._get_else_create_sprite(entity)
+            sprite = self._get_sprite(entity)
             painter.drawImage(
                 sprite.coordinates, sprite.next_image(not self.can_do_nothing())
             )
@@ -153,17 +157,20 @@ class GameWidget(QFrame):
         self.update()
 
     def can_do_nothing(self):
+        """Check on pause."""
         return (
             self.main_window.game_controller.pause.is_set()
             or self.main_window.game_controller.game.state == GameState.FINISHED
         )
 
     def _init_sprites(self) -> None:
+        """Initialize sprites."""
         self._sprites: dict[Entity, Sprite] = dict()
         for entity in self.main_window.game_controller.map_controller.map_.entities:
             self._sprites[entity] = Sprite(entity)
 
-    def _get_else_create_sprite(self, entity: Entity) -> Sprite:
+    def _get_sprite(self, entity: Entity) -> Sprite:
+        """Get sprite."""
         try:
             sprite = self._sprites[entity]
         except KeyError:
@@ -171,13 +178,8 @@ class GameWidget(QFrame):
             sprite = self._sprites[entity]
         return sprite
 
-    def _delete_old_sprites(self) -> None:
-        new: dict[Entity, Sprite] = dict()
-        for entity in self.main_window.game_controller.map_controller.map_.entities:
-            new[entity] = self._sprites[entity]
-        self._sprites = new
-
     def close(self):
+        """Stop game process."""
         self.status_handler_stop_flag = True
         self.main_window.game_controller.stop = True
 
